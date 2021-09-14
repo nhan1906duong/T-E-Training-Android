@@ -47,8 +47,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$coroutine_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$coroutine_version"
 
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+
     implementation "androidx.fragment:fragment-ktx:1.3.6"
-    
+
     // Test
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
