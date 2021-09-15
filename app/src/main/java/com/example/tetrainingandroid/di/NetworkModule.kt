@@ -1,17 +1,21 @@
 package com.example.tetrainingandroid.di
 
 import com.example.tetrainingandroid.config.Config
-import com.example.tetrainingandroid.data.adapter.DateTimeAdapter
+import com.example.tetrainingandroid.data.adapter.DateAdapter
+import com.example.tetrainingandroid.data.adapter.SearchableAdapter
 import com.example.tetrainingandroid.data.interceptor.AuthenticationInterceptor
 import com.example.tetrainingandroid.data.interceptor.ExtraDataInterceptor
-import com.example.tetrainingandroid.data.service.TestService
+import com.example.tetrainingandroid.data.model.Searchable
+import com.example.tetrainingandroid.data.service.MovieDBOauth2Service
+import com.example.tetrainingandroid.data.service.MovieService
+import com.example.tetrainingandroid.data.service.PeopleService
+import com.example.tetrainingandroid.data.service.SearchService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -25,10 +29,11 @@ import javax.inject.Singleton
 object NetworkModule {
     @Singleton
     @Provides
-    fun provideMoshi(): Moshi {
+    fun provideMoshi(dateAdapter: DateAdapter, searchableAdapter: SearchableAdapter): Moshi {
         return Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
-            .add(Date::class.java, DateTimeAdapter())
+            .add(Date::class.java, dateAdapter)
+            .add(Searchable::class.java, searchableAdapter)
             .build()
     }
 
@@ -65,6 +70,21 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideTestService(retrofit: Retrofit): TestService =
-        retrofit.create(TestService::class.java)
+    fun providerMovieService(retrofit: Retrofit): MovieService =
+        retrofit.create(MovieService::class.java)
+
+    @Singleton
+    @Provides
+    fun providerPeopleService(retrofit: Retrofit): PeopleService =
+        retrofit.create(PeopleService::class.java)
+
+    @Singleton
+    @Provides
+    fun providerMovieDBService(retrofit: Retrofit): MovieDBOauth2Service =
+        retrofit.create(MovieDBOauth2Service::class.java)
+
+    @Singleton
+    @Provides
+    fun providerSearchService(retrofit: Retrofit): SearchService =
+        retrofit.create(SearchService::class.java)
 }

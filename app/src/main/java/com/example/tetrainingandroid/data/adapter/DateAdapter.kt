@@ -3,8 +3,11 @@ package com.example.tetrainingandroid.data.adapter
 import com.squareup.moshi.*
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class DateTimeAdapter: JsonAdapter<Date>() {
+@Singleton
+class DateAdapter @Inject constructor(): JsonAdapter<Date>() {
     companion object {
         const val ISO_DATE_TIME_FORMAT: String = "yyyy-MM-dd HH:mm:ss"
     }
