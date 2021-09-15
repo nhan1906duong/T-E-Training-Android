@@ -1,11 +1,15 @@
 package com.example.tetrainingandroid.deeplink
 
 import com.example.tetrainingandroid.config.Config
+import com.example.tetrainingandroid.data.storage.RequestTokenResponseStorage
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AuthorizePermissionHelper {
+@Singleton
+class AuthorizePermissionHelper @Inject constructor(val storage: RequestTokenResponseStorage) {
     companion object {
-        const val authenticate: String = "${Config.BASE_URL}/authenticate"
+        const val authenticate: String = "https://www.themoviedb.org/authenticate"
     }
 
-    fun getAuthorizeLink(requestToken: String) = "${authenticate}/$requestToken"
+    fun getAuthorizeLink() = "${authenticate}/${storage.get()?.requestToken}"
 }
