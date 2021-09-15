@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">T&amp;E Training Android</string>
+    <string name="api_key_v3">11faa9e3ee901594910ad2ddfb94060e</string>
+    <string name="api_key_v4">eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMWZhYTllM2VlOTAxNTk0OTEwYWQyZGRmYjk0MDYwZSIsInN1YiI6IjYxNDAzYzEwYWFmODk3MDA4YzA4Zjg5ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Iy9ksUAvPTz74qhLYGm3dWhUK0D2cht-LagxuUWuwdc</string>
 </resources>
