@@ -5,6 +5,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-android-extensions'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -67,6 +68,9 @@ dependencies {
     implementation "com.squareup.picasso:picasso:$picasso_version"
 
     implementation "androidx.security:security-crypto:$crypto_version"
+
+    implementation platform('com.google.firebase:firebase-bom:28.4.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
     // Test
     testImplementation 'junit:junit:4.+'

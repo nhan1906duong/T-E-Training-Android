@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1008700726205",
+    "project_id": "netfake-1146a",
+    "storage_bucket": "netfake-1146a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1008700726205:android:6ab101bb38fe55c5dd10d4",
+        "android_client_info": {
+          "package_name": "com.example.tetrainingandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1008700726205-do2k3p25g2u42bg26am9sn2aa7ea8ljo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tetrainingandroid",
+            "certificate_hash": "740688b6de22842672c2fd11f38c3640c06ecc4f"
+          }
+        },
+        {
+          "client_id": "1008700726205-ij5vuqfn898vn1mkn500eoutloakhgkj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHqGthidBWu0MoJNfl8R5IJp_4CeDMvWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1008700726205-ij5vuqfn898vn1mkn500eoutloakhgkj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
