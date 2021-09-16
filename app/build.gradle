@@ -72,6 +72,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.4.1')
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    implementation 'com.facebook.android:facebook-android-sdk:11.3.0'
 
     // Test
     testImplementation 'junit:junit:4.+'

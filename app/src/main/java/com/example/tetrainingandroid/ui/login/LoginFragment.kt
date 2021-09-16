@@ -13,7 +13,6 @@ import com.example.tetrainingandroid.validate.Validation
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
@@ -28,19 +27,11 @@ class LoginFragment: Fragment(R.layout.login_fragment) {
         onSignInResult(result)
     }
 
-    private val providers = arrayListOf(
-        AuthUI.IdpConfig.GoogleBuilder().build()
-    )
-
-    private val signInIntent = AuthUI.getInstance()
-        .createSignInIntentBuilder()
-        .setAvailableProviders(providers)
-        .build()
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
-        val response = result.idpResponse
+        //val response = result.idpResponse
         if (result.resultCode == RESULT_OK) {
-            val user = FirebaseAuth.getInstance().currentUser
+            //val user = FirebaseAuth.getInstance().currentUser
             findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
         }
     }
@@ -61,11 +52,11 @@ class LoginFragment: Fragment(R.layout.login_fragment) {
         }
 
         btnFacebook.setOnClickListener {
-            loginViaFacebook()
+            loginViaSocialMedia(AuthUI.IdpConfig.FacebookBuilder().build())
         }
 
         btnGoogle.setOnClickListener {
-            loginViaGoogle()
+            loginViaSocialMedia(AuthUI.IdpConfig.GoogleBuilder().build())
         }
 
         parentLayout?.setOnClickListener { hideKeyboard() }
@@ -93,11 +84,14 @@ class LoginFragment: Fragment(R.layout.login_fragment) {
         }
     }
 
-    private fun loginViaFacebook() {
+    private fun loginViaSocialMedia(idpConfig: AuthUI.IdpConfig) {
+        val providers = arrayListOf(idpConfig)
 
-    }
+        val signInIntent = AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(providers)
+            .build()
 
-    private fun loginViaGoogle() {
         signInLauncher.launch(signInIntent)
     }
 

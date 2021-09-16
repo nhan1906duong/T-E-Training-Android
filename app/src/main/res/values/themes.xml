@@ -33,7 +33,7 @@
         <item name="android:textColor">@color/color_text_black</item>
         <item name="android:paddingStart">@dimen/edittext_padding_horizontal</item>
         <item name="android:paddingEnd">@dimen/edittext_padding_horizontal</item>
-        <item name="android:textSize">@dimen/edittext_size_14sp</item>
+        <item name="android:textSize">@dimen/edittext_text_size</item>
         <item name="android:paddingBottom">@dimen/edittext_padding_bottom</item>
     </style>
 
