@@ -69,6 +69,7 @@ dependencies {
 
     implementation "androidx.security:security-crypto:$crypto_version"
 
+    // Firebase
     implementation platform('com.google.firebase:firebase-bom:28.4.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
