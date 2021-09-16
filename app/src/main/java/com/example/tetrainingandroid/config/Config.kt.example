@@ -8,7 +8,4 @@ object Config {
     const val REQUEST_TOKEN_EXPIRES_AT = 60 * 60 * 1000
     const val SESSION_EXPIRES_AT = 7 * 60 * 60 * 1000
     const val APPLICATION_TOKEN_v4 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMWZhYTllM2VlOTAxNTk0OTEwYWQyZGRmYjk0MDYwZSIsInN1YiI6IjYxNDAzYzEwYWFmODk3MDA4YzA4Zjg5ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Iy9ksUAvPTz74qhLYGm3dWhUK0D2cht-LagxuUWuwdc"
-    const val APPLICATION_TOKEN_v3 =  "11faa9e3ee901594910ad2ddfb94060e"
-
-    const val REQUEST_TOKEN = "3d32a73c4b02b6e6ac6e653fc227e728f181cec6"
 }
