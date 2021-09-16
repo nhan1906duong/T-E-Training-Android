@@ -1,9 +1,8 @@
 package com.example.tetrainingandroid.data.storage
 
 import android.content.SharedPreferences
-import com.example.tetrainingandroid.data.model.RequestTokenResponse
+import com.example.tetrainingandroid.data.response.RequestTokenResponse
 import javax.inject.Inject
-import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Singleton

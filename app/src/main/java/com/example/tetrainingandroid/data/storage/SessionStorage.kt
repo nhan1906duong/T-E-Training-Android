@@ -32,4 +32,10 @@ class SessionStorage @Inject constructor(
             apply()
         }
     }
+
+    fun resetToken() {
+        val token = get() ?: return
+        token.expiresAtSinceEpoch = Calendar.getInstance().time.time
+        save(token)
+    }
 }

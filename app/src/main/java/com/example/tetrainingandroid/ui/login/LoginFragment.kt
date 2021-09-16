@@ -7,12 +7,16 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.tetrainingandroid.R
+import com.example.tetrainingandroid.data.storage.SessionStorage
 import com.example.tetrainingandroid.validate.Validation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.main_fragment.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment: Fragment(R.layout.login_fragment) {
+    @Inject lateinit var sessionStorage: SessionStorage
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setEvents()
@@ -53,6 +57,7 @@ class LoginFragment: Fragment(R.layout.login_fragment) {
     private fun login(username: String, password: String) {
         if (Validation.isValidAccount(username, password)) {
             findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+            sessionStorage.resetToken()
         } else {
             LoginFailedDialog().show(childFragmentManager, "TAG")
         }

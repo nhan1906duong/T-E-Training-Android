@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.deeplink.AuthorizePermissionHelper
-import com.example.tetrainingandroid.viewmodel.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -36,7 +35,7 @@ class SplashFragment : Fragment(R.layout.splash_fragment) {
                     findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
                 }
                 false -> {
-                    Toast.makeText(context, "Request token failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, viewModel.exceptionHandler.errorMessage.value, Toast.LENGTH_SHORT).show()
                 }
             }
         })
