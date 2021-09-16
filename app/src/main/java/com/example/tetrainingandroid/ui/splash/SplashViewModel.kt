@@ -26,6 +26,7 @@ class SplashViewModel @Inject constructor(
         _data.addSource(exceptionHandler.errorMessage) {
             sessionHelper.removeAll()
             _data.value = false
+            _data.removeSource(exceptionHandler.errorMessage)
         }
     }
 }

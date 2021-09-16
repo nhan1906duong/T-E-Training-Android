@@ -1,5 +1,6 @@
 package com.example.tetrainingandroid.ui.login
 
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -9,6 +10,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.data.storage.SessionStorage
 import com.example.tetrainingandroid.validate.Validation
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
@@ -16,6 +20,21 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LoginFragment: Fragment(R.layout.login_fragment) {
     @Inject lateinit var sessionStorage: SessionStorage
+
+    private val signInLauncher = registerForActivityResult(
+        FirebaseAuthUIActivityResultContract()
+    ) { result ->
+        onSignInResult(result)
+    }
+
+
+    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
+        //val response = result.idpResponse
+        if (result.resultCode == RESULT_OK) {
+            //val user = FirebaseAuth.getInstance().currentUser
+            findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,11 +52,11 @@ class LoginFragment: Fragment(R.layout.login_fragment) {
         }
 
         btnFacebook.setOnClickListener {
-            loginViaFacebook()
+            loginViaSocialMedia(AuthUI.IdpConfig.FacebookBuilder().build())
         }
 
         btnGoogle.setOnClickListener {
-            loginViaGoogle()
+            loginViaSocialMedia(AuthUI.IdpConfig.GoogleBuilder().build())
         }
 
         parentLayout?.setOnClickListener { hideKeyboard() }
@@ -65,12 +84,15 @@ class LoginFragment: Fragment(R.layout.login_fragment) {
         }
     }
 
-    private fun loginViaFacebook() {
+    private fun loginViaSocialMedia(idpConfig: AuthUI.IdpConfig) {
+        val providers = arrayListOf(idpConfig)
 
-    }
+        val signInIntent = AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(providers)
+            .build()
 
-    private fun loginViaGoogle() {
-
+        signInLauncher.launch(signInIntent)
     }
 
     private fun hideKeyboard() {

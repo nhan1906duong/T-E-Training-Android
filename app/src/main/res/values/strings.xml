@@ -1,4 +1,6 @@
 <resources>
+    <string name="facebook_application_id">603985970975282</string>
+
     <string name="app_name">Netfake</string>
     <string name="company_name">Teqnological Asia</string>
     <string name="copyright">© 2021 Copyright Execution Lab</string>
@@ -11,4 +13,6 @@
     <string name="username">Username</string>
     <string name="validate_username">Please enter your username</string>
     <string name="validate_password">Please enter your password</string>
+    <string name="login_failed">Login failed</string>
+    <string name="ok">Ok</string>
 </resources>
