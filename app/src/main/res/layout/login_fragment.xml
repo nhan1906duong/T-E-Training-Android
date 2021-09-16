@@ -1,97 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingHorizontal="32dp">
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imgLogo"
-        android:src="@drawable/ic_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/txtFieldUsername"
-        app:layout_constraintVertical_chainStyle="packed"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtFieldUsername"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parentLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:hint="Username"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgLogo"
-        app:layout_constraintBottom_toTopOf="@id/txtFieldPassword">
-        <com.google.android.material.textfield.TextInputEditText
-            android:inputType="textPersonName"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/layout_padding_32dp">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine10Percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.10"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine45Percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.45"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgLogo"
+            android:src="@drawable/ic_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideLine10Percent"/>
+
+        <TextView
+            android:id="@+id/lbUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/username"
+            style="@style/TextViewBold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideLine45Percent" />
+
+        <EditText
+            android:id="@+id/edtUsername"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_margin_8dp"
+            android:hint="@string/username_hint_text"
+            android:autofillHints="username"
             android:imeOptions="actionNext"
-            android:layout_height="wrap_content"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:inputType="textPersonName"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbUsername"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtFieldPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="Password"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtFieldUsername"
-        app:layout_constraintBottom_toTopOf="@id/btnLogin">
-        <com.google.android.material.textfield.TextInputEditText
+        <TextView
+            android:id="@+id/lbPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/password"
+            style="@style/TextViewBold"
+            android:layout_marginTop="@dimen/layout_margin_16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtUsername" />
+
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_margin_8dp"
+            android:hint="@string/password_hint_text"
+            android:autofillHints="password"
             android:inputType="textPassword"
             android:imeOptions="actionDone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbPassword"/>
+
+        <TextView
+            android:id="@+id/txtForgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forgot_password"
+            style="@style/TextViewBold"
+            android:layout_marginTop="@dimen/layout_margin_16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtPassword"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogin"
+            android:text="@string/login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_margin_24dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtForgotPassword"/>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnLogin"
-        android:text="Login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtFieldPassword"
-        app:layout_constraintBottom_toTopOf="@id/lbOr"/>
+        <TextView
+            android:id="@+id/lbOrLoginVia"
+            android:text="@string/or_login_via"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextViewSmall"
+            android:layout_marginTop="@dimen/layout_margin_16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnLogin"/>
 
-    <TextView
-        android:id="@+id/lbOr"
-        android:text="Or"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLogin"
-        app:layout_constraintBottom_toTopOf="@id/btnFacebook"/>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnFacebook"
+            android:layout_width="@dimen/social_icon_size"
+            android:layout_height="@dimen/social_icon_size"
+            android:src="@drawable/ic_facebook"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            android:layout_marginEnd="@dimen/layout_margin_32dp"
+            android:layout_marginTop="@dimen/layout_margin_16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbOrLoginVia"
+            app:layout_constraintRight_toLeftOf="@id/btnGoogle"/>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/btnFacebook"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_facebook"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lbOr"
-        app:layout_constraintRight_toLeftOf="@id/btnGoogle"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnGoogle"
+            android:src="@drawable/ic_google"
+            android:layout_width="@dimen/social_icon_size"
+            android:layout_height="@dimen/social_icon_size"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnFacebook"
+            app:layout_constraintLeft_toRightOf="@id/btnFacebook"/>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/btnGoogle"
-        android:src="@drawable/ic_google"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btnFacebook"
-        app:layout_constraintLeft_toRightOf="@id/btnFacebook"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

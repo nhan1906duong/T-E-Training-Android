@@ -1,5 +1,8 @@
 package com.example.tetrainingandroid.ui.splash
 
+import android.app.Activity
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -17,6 +20,11 @@ class SplashFragment : Fragment(R.layout.splash_fragment) {
 
     @Inject
     lateinit var permissionHelper: AuthorizePermissionHelper
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (context as Activity).window.statusBarColor = Color.WHITE
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -10,7 +10,7 @@ import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.data.storage.SessionStorage
 import com.example.tetrainingandroid.validate.Validation
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.main_fragment.*
+import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -25,8 +25,8 @@ class LoginFragment: Fragment(R.layout.login_fragment) {
     private fun setEvents() {
         btnLogin.setOnClickListener {
             hideKeyboard()
-            val username = txtFieldUsername.editText?.text?.toString()
-            val password = txtFieldPassword.editText?.text?.toString()
+            val username = edtUsername?.text?.toString()
+            val password = edtPassword?.text?.toString()
             if (validate(username, password)) {
                 login(username!!, password!!)
             }
@@ -39,16 +39,18 @@ class LoginFragment: Fragment(R.layout.login_fragment) {
         btnGoogle.setOnClickListener {
             loginViaGoogle()
         }
+
+        parentLayout?.setOnClickListener { hideKeyboard() }
     }
 
     private fun validate(username: String?, password: String?): Boolean {
         var isValidate = true
         if (username.isNullOrEmpty()) {
-            txtFieldUsername.editText?.error = "Please enter your username"
+            edtUsername?.error = getString(R.string.validate_username)
             isValidate = false
         }
         if (password.isNullOrEmpty()) {
-            txtFieldPassword.editText?.error = "Please enter your password"
+            edtPassword?.error = getString(R.string.validate_password)
             isValidate = false
         }
         return isValidate
@@ -75,6 +77,7 @@ class LoginFragment: Fragment(R.layout.login_fragment) {
         activity?.run {
             val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.hideSoftInputFromWindow(view?.windowToken, 0)
+            currentFocus?.clearFocus()
         }
     }
 }
