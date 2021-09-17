@@ -10,16 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tetrainingandroid.R
-import com.example.tetrainingandroid.deeplink.AuthorizePermissionHelper
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SplashFragment : Fragment(R.layout.splash_fragment) {
     private val viewModel: SplashViewModel by viewModels()
-
-    @Inject
-    lateinit var permissionHelper: AuthorizePermissionHelper
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
