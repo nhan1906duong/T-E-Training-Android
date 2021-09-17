@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
+import com.example.tetrainingandroid.config.Config
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,7 +31,7 @@ object StorageModule {
     @SharePreferencesFileName
     @Singleton
     @Provides
-    fun providerPrefsName(): String = "Netfake"
+    fun providerPrefsName(): String = Config.SHARED_PREFERENCES_NAME
 
     @Singleton
     @Provides

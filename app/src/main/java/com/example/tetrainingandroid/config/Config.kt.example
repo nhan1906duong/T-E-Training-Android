@@ -8,4 +8,6 @@ object Config {
     const val REQUEST_TOKEN_EXPIRES_AT = 60 * 60 * 1000
     const val SESSION_EXPIRES_AT = 7 * 60 * 60 * 1000
     const val APPLICATION_TOKEN_v4 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMWZhYTllM2VlOTAxNTk0OTEwYWQyZGRmYjk0MDYwZSIsInN1YiI6IjYxNDAzYzEwYWFmODk3MDA4YzA4Zjg5ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Iy9ksUAvPTz74qhLYGm3dWhUK0D2cht-LagxuUWuwdc"
+
+    const val SHARED_PREFERENCES_NAME = "Netfake"
 }
