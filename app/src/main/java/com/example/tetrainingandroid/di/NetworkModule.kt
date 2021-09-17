@@ -3,7 +3,7 @@ package com.example.tetrainingandroid.di
 import com.example.tetrainingandroid.config.Config
 import com.example.tetrainingandroid.data.adapter.DateAdapter
 import com.example.tetrainingandroid.data.adapter.SearchableAdapter
-import com.example.tetrainingandroid.data.interceptor.AuthenticationInterceptor
+import com.example.tetrainingandroid.data.interceptor.ApiAuthorizationInterceptor
 import com.example.tetrainingandroid.data.interceptor.ExtraDataInterceptor
 import com.example.tetrainingandroid.data.model.Searchable
 import com.example.tetrainingandroid.data.service.MovieDBOauth2Service
@@ -45,12 +45,12 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideClient(
-        authenticationInterceptor: AuthenticationInterceptor,
+        apiInterceptor: ApiAuthorizationInterceptor,
         extraDataInterceptor: ExtraDataInterceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor,
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(authenticationInterceptor)
+            .addInterceptor(apiInterceptor)
             .addInterceptor(extraDataInterceptor)
             .addInterceptor(httpLoggingInterceptor)
             .readTimeout(Config.READ_TIMEOUT, TimeUnit.MILLISECONDS)
