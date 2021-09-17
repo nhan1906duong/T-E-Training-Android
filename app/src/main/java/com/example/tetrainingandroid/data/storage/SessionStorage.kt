@@ -2,7 +2,6 @@ package com.example.tetrainingandroid.data.storage
 
 import android.content.SharedPreferences
 import com.example.tetrainingandroid.data.model.Session
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,14 +27,14 @@ class SessionStorage @Inject constructor(
         if (value.sessionId == null || value.sessionId.isEmpty()) return
         with(prefs.edit()) {
             putString(SESSION_ID_KEY, value.sessionId)
-            putLong(EXPIRES_SESSION_KEY, Calendar.getInstance().time.time)
+            putLong(EXPIRES_SESSION_KEY, System.currentTimeMillis())
             apply()
         }
     }
 
     fun resetToken() {
         val token = get() ?: return
-        token.expiresAtSinceEpoch = Calendar.getInstance().time.time
+        token.expiresAtSinceEpoch = System.currentTimeMillis()
         save(token)
     }
 }
