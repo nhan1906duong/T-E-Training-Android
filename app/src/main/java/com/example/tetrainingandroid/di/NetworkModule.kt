@@ -1,5 +1,6 @@
 package com.example.tetrainingandroid.di
 
+import com.example.tetrainingandroid.BuildConfig
 import com.example.tetrainingandroid.config.Config
 import com.example.tetrainingandroid.data.adapter.DateAdapter
 import com.example.tetrainingandroid.data.adapter.SearchableAdapter
@@ -40,7 +41,10 @@ object NetworkModule {
     @Singleton
     @Provides
     fun providerHttpLoggingInterceptor() =
-        HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
+        HttpLoggingInterceptor().apply {
+            if (BuildConfig.DEBUG) level = HttpLoggingInterceptor.Level.BODY
+            else HttpLoggingInterceptor.Level.NONE
+        }
 
     @Singleton
     @Provides
