@@ -88,6 +88,7 @@ class LoginFragment: CacheViewFragment(R.layout.login_fragment) {
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
+            .setIsSmartLockEnabled(false)
             .build()
 
         signInLauncher.launch(signInIntent)
