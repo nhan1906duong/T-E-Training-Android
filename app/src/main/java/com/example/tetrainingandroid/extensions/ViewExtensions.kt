@@ -1,4 +1,4 @@
-package com.example.tetrainingandroid
+package com.example.tetrainingandroid.extensions
 
 import android.view.View
 import android.view.ViewGroup

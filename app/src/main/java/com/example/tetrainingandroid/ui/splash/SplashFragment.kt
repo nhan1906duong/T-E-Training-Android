@@ -6,14 +6,14 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tetrainingandroid.R
+import com.example.tetrainingandroid.architecture.CacheViewFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SplashFragment : Fragment(R.layout.splash_fragment) {
+class SplashFragment : CacheViewFragment(R.layout.splash_fragment) {
     private val viewModel: SplashViewModel by viewModels()
 
     override fun onAttach(context: Context) {
@@ -21,8 +21,8 @@ class SplashFragment : Fragment(R.layout.splash_fragment) {
         (context as Activity).window.statusBarColor = Color.WHITE
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreatedFirstTime(view, savedInstanceState)
         observeData()
     }
 
