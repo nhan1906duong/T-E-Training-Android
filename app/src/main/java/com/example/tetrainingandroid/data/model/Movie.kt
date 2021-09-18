@@ -11,7 +11,7 @@ data class Movie(
     @Json(name = "genre_ids") val genreIds: List<Int>?,
     @Json(name = "homepage") val homePage: String?,
     @Json(name = "id") val id: Int?,
-    @Json(name = "images") val images: MovieImageWrapper??,
+    @Json(name = "images") val images: MovieImageWrapper?,
     @Json(name = "imdb_id") val imdbId: String?,
     @Json(name = "original_language") val originalLanguage: String?,
     @Json(name = "original_title") val originalTitle: String?,

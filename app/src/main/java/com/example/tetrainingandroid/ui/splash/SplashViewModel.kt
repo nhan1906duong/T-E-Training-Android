@@ -15,18 +15,23 @@ class SplashViewModel @Inject constructor(
     private val sessionHelper: StorageHelper,
     exceptionHandler: ExceptionHandler
 ): BaseViewModel(exceptionHandler) {
-    private val _data = MediatorLiveData<Boolean>()
-    val data: LiveData<Boolean> = _data
 
-    fun getTokenRequest() {
+    private val _loginData = MediatorLiveData<Boolean>()
+    val loginData: LiveData<Boolean> = _loginData
+
+    init {
+        getTokenRequest()
+    }
+
+    private fun getTokenRequest() {
         viewModelScope.launch(exceptionHandler.handler) {
             repo.getSession()
-            _data.value = true
+            _loginData.value = true
         }
-        _data.addSource(exceptionHandler.errorMessage) {
+        _loginData.addSource(exceptionHandler.errorMessage) {
             sessionHelper.removeAll()
-            _data.value = false
-            _data.removeSource(exceptionHandler.errorMessage)
+            _loginData.value = false
+            _loginData.removeSource(exceptionHandler.errorMessage)
         }
     }
 }

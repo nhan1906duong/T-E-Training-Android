@@ -23,16 +23,11 @@ class SplashFragment : Fragment(R.layout.splash_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fetchData()
-        observer()
+        observeData()
     }
 
-    private fun fetchData() {
-        viewModel.getTokenRequest()
-    }
-
-    private fun observer() {
-        viewModel.data.observe(viewLifecycleOwner, { hasToken ->
+    private fun observeData() {
+        viewModel.loginData.observe(viewLifecycleOwner) { hasToken ->
             when(hasToken) {
                 true -> {
                     findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
@@ -41,6 +36,6 @@ class SplashFragment : Fragment(R.layout.splash_fragment) {
                     Toast.makeText(context, viewModel.exceptionHandler.errorMessage.value, Toast.LENGTH_SHORT).show()
                 }
             }
-        })
+        }
     }
 }
