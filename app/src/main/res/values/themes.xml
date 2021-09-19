@@ -7,25 +7,9 @@
         <item name="colorSecondary">@color/secondaryColor</item>
         <!-- Status bar color. -->
         <!-- Customize your theme here. -->
-        <item name="android:textViewStyle">@style/TextViewNormal</item>
+        <item name="android:textColor">@color/color_text_black</item>
         <item name="buttonStyle">@style/CustomButtonStyle</item>
         <item name="editTextStyle">@style/CustomEdittextStyle</item>
-    </style>
-
-    <style name="TextViewSmall" parent="Widget.AppCompat.TextView">
-        <item name="android:textSize">@dimen/text_size_12sp</item>
-        <item name="color">@color/color_text_black</item>
-    </style>
-
-    <style name="TextViewNormal" parent="Widget.AppCompat.TextView">
-        <item name="android:textSize">14sp</item>
-        <item name="color">@color/color_text_black</item>
-    </style>
-
-    <style name="TextViewBold" parent="Widget.AppCompat.TextView">
-        <item name="android:textSize">@dimen/text_size_14sp</item>
-        <item name="color">@color/color_text_black</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="CustomEdittextStyle" parent="Widget.AppCompat.EditText">
