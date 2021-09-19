@@ -1,0 +1,31 @@
+package com.example.tetrainingandroid.ui.main.home.adapter
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.example.tetrainingandroid.R
+import com.example.tetrainingandroid.data.model.Movie
+import com.example.tetrainingandroid.extensions.load
+import kotlinx.android.synthetic.main.movie_item_layout.view.*
+
+class MovieViewHolder private constructor(private val view: ViewGroup) :
+    RecyclerView.ViewHolder(view) {
+    companion object {
+        fun from(parent: ViewGroup): MovieViewHolder {
+            val inflater = LayoutInflater.from(parent.context)
+            val view = inflater.inflate(R.layout.movie_item_layout, parent, false) as ViewGroup
+            return MovieViewHolder(view)
+        }
+    }
+
+    fun bind(movie: Movie, listener: MovieItemClickListener?) {
+        listener?.let {
+            view.rootLayout?.setOnClickListener {
+                movie.id?.let { movieId -> listener.onClick(movieId) }
+            }
+        }
+        view.imgPoster?.load(movie.posterPath)
+        view.txtTitle?.text= movie.title ?: ""
+        view.txtFirstAirDate?.text = movie.releaseDate ?: ""
+    }
+}
