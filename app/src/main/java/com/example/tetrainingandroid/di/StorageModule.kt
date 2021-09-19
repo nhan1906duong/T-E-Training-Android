@@ -25,17 +25,17 @@ object StorageModule {
     @MainKeyAlias
     @Singleton
     @Provides
-    fun providerMainKeyAlias(): String = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+    fun provideMainKeyAlias(): String = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
 
 
     @SharePreferencesFileName
     @Singleton
     @Provides
-    fun providerPrefsName(): String = Config.SHARED_PREFERENCES_NAME
+    fun providePrefsName(): String = Config.SHARED_PREFERENCES_NAME
 
     @Singleton
     @Provides
-    fun providerSharePreferences(
+    fun provideSharePreferences(
         @SharePreferencesFileName fileName: String,
         @MainKeyAlias mainKeyAlias: String,
         @ApplicationContext applicationContext: Context

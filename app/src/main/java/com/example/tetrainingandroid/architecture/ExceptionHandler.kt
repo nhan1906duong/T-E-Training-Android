@@ -24,6 +24,7 @@ class ExceptionHandler @Inject constructor(private val moshi: Moshi) {
             is HttpException -> {
                 handleErrorRequest(throwable)
             }
+            else -> throw throwable
         }
     }
 

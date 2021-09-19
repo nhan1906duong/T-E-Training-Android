@@ -33,8 +33,14 @@
             android:id="@+id/action_mainFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.tetrainingandroid.ui.detail.DetailFragment"
-        android:label="DetailFragment" />
+        android:label="DetailFragment">
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
+    </fragment>
+
 </navigation>
