@@ -3,8 +3,7 @@
     <style name="Theme.TETrainingAndroid" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColor</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorAccent">@color/secondaryColor</item>
         <!-- Status bar color. -->
         <!-- Customize your theme here. -->
         <item name="android:textColor">@color/color_text_black</item>

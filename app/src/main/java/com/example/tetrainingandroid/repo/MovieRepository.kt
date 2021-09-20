@@ -15,6 +15,14 @@ class MovieRepository @Inject constructor(
     private val movieService: MovieService,
     @DispatchersIO private val coroutineDispatcher: CoroutineDispatcher,
 ) {
+    suspend fun getTrending(): List<Movie> {
+        val result: List<Movie>
+        withContext(coroutineDispatcher) {
+            result = (async { movieService.getTrending("week") }).await().results ?: listOf()
+        }
+        return result
+    }
+
     suspend fun getPopular(): List<Movie> {
         val result: List<Movie>
         withContext(coroutineDispatcher) {

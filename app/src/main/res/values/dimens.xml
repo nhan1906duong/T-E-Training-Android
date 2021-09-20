@@ -29,4 +29,5 @@
 
     <dimen name="movie_item_width">128dp</dimen>
     <dimen name="image_movie_item_corner_radius">8dp</dimen>
+    <dimen name="slider_horizontal_padding">48dp</dimen>
 </resources>

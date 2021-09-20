@@ -9,10 +9,8 @@ data class ImageConfiguration(
     @Json(name = "logo_sizes") val logoSizes: List<String>,
     @Json(name = "poster_sizes") val posterSizes: List<String>,
 ) {
-    enum class PosterSize(val size: String) {
-        REGULAR("w185"),
-        MEDIUM("w342"),
-        LARGE("w500"),
-        ORIGINAL("original")
+    enum class Size(val size: String) {
+        POSTER("w185"),
+        BACKDROP("w780"),
     }
 }

@@ -19,7 +19,7 @@ interface MovieService {
     @GET("/3/movie/now_playing")
     suspend fun getNowPlaying(@Query("page") page: Int = 1): PageResponse<Movie>
 
-    @GET("/3/trending/tv/{time_window}")
+    @GET("/3/trending/movie/{time_window}")
     suspend fun getTrending(@Path("time_window") timeWindow: String): PageResponse<Movie>
 
     @GET("/3/movie/{movie_id}")

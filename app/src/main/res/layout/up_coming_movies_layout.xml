@@ -7,6 +7,8 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:text="@string/up_coming_movies"
         style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:textColor="@color/secondaryColor"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin_16dp"/>

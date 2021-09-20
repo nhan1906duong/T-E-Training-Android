@@ -13,11 +13,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(exceptionHandler: ExceptionHandler, private val repo: MovieRepository): BaseViewModel(exceptionHandler) {
+    private val _trendingMovies = MutableLiveData<List<Movie>>()
     private val _popularMovies = MutableLiveData<List<Movie>>()
     private val _topRatedMovies = MutableLiveData<List<Movie>>()
     private val _nowPlayingMovies = MutableLiveData<List<Movie>>()
     private val _upComingMovies = MutableLiveData<List<Movie>>()
 
+    val trendingMovies = _trendingMovies as LiveData<List<Movie>>
     val popularMovies = _popularMovies as LiveData<List<Movie>>
     val topRatedMovies = _topRatedMovies as LiveData<List<Movie>>
     val nowPlayingMovies = _nowPlayingMovies as LiveData<List<Movie>>
@@ -28,10 +30,17 @@ class HomeViewModel @Inject constructor(exceptionHandler: ExceptionHandler, priv
     }
 
     private fun loadData() {
+        getTrending()
         getPopular()
         getTopRated()
         getNowPlaying()
         getUpComing()
+    }
+
+    private fun getTrending() {
+        viewModelScope.launch(exceptionHandler.handler) {
+            _trendingMovies.value = repo.getTrending()
+        }
     }
 
     private fun getPopular() {
