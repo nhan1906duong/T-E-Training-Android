@@ -31,13 +31,14 @@ class ExceptionHandler @Inject constructor(private val moshi: Moshi) {
 
     private fun handleErrorRequest(exception: HttpException) {
         if (exception.code() == HttpResponseStatusCode.Unauthorized.code) {
-            val message = exception.response()?.errorBody()?.source()
-            if (message == null) {
-                error.value = ErrorResponse.emptyResponse()
-                return
-            }
-            val errorResponse = moshi.adapter(ErrorResponse::class.java).fromJson(message)
-            error.value = errorResponse
+            // TODO back to login
         }
+        val message = exception.response()?.errorBody()?.source()
+        if (message == null) {
+            error.value = ErrorResponse.emptyResponse()
+            return
+        }
+        val errorResponse = moshi.adapter(ErrorResponse::class.java).fromJson(message)
+        error.value = errorResponse
     }
 }
