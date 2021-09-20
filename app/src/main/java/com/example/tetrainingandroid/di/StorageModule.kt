@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
+import com.example.tetrainingandroid.config.Config
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,17 +25,17 @@ object StorageModule {
     @MainKeyAlias
     @Singleton
     @Provides
-    fun providerMainKeyAlias(): String = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+    fun provideMainKeyAlias(): String = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
 
 
     @SharePreferencesFileName
     @Singleton
     @Provides
-    fun providerPrefsName(): String = "Netfake"
+    fun providePrefsName(): String = Config.SHARED_PREFERENCES_NAME
 
     @Singleton
     @Provides
-    fun providerSharePreferences(
+    fun provideSharePreferences(
         @SharePreferencesFileName fileName: String,
         @MainKeyAlias mainKeyAlias: String,
         @ApplicationContext applicationContext: Context

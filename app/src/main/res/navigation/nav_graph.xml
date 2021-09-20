@@ -10,7 +10,14 @@
         android:label="SplashFragment" >
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     
     <fragment
@@ -25,6 +32,20 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.tetrainingandroid.ui.MainFragment"
-        android:label="MainFragment" />
+        android:name="com.example.tetrainingandroid.ui.main.MainFragment"
+        android:label="MainFragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.tetrainingandroid.ui.detail.DetailFragment"
+        android:label="DetailFragment">
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
+    </fragment>
+
 </navigation>

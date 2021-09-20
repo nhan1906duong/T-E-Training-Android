@@ -5,47 +5,39 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tetrainingandroid.R
-import com.example.tetrainingandroid.deeplink.AuthorizePermissionHelper
+import com.example.tetrainingandroid.architecture.CacheViewFragment
+import com.example.tetrainingandroid.extensions.toast
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class SplashFragment : Fragment(R.layout.splash_fragment) {
+class SplashFragment : CacheViewFragment(R.layout.splash_fragment) {
     private val viewModel: SplashViewModel by viewModels()
-
-    @Inject
-    lateinit var permissionHelper: AuthorizePermissionHelper
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (context as Activity).window.statusBarColor = Color.WHITE
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        fetchData()
-        observer()
+    override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreatedFirstTime(view, savedInstanceState)
+        observeData()
     }
 
-    private fun fetchData() {
-        viewModel.getTokenRequest()
-    }
-
-    private fun observer() {
-        viewModel.data.observe(viewLifecycleOwner, { hasToken ->
-            when(hasToken) {
-                true -> {
+    private fun observeData() {
+        viewModel.loginData.observe(viewLifecycleOwner) { state ->
+            when(state) {
+                LoginState.ApiAuthorization -> {
                     findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
                 }
-                false -> {
-                    Toast.makeText(context, viewModel.exceptionHandler.errorMessage.value, Toast.LENGTH_SHORT).show()
+                LoginState.Login -> {
+                    findNavController().navigate(R.id.action_splashFragment_to_mainFragment)
                 }
+                else -> {}
             }
-        })
+        }
+        viewModel.error.observe(viewLifecycleOwner) { message -> toast(message) }
     }
 }

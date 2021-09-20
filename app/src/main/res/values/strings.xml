@@ -14,5 +14,21 @@
     <string name="validate_username">Please enter your username</string>
     <string name="validate_password">Please enter your password</string>
     <string name="login_failed">Login failed</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
+
+    <string name="zero_very_bad">Very bad</string>
+    <string name="one_poor">Poor</string>
+    <string name="two_soso">So-so</string>
+    <string name="three_ok">OK</string>
+    <string name="four_pretty_good">Pretty good</string>
+    <string name="five_excellent">Excellent!</string>
+
+    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="now_playing_movies">Now Playing Movies</string>
+    <string name="up_coming_movies">Up Coming Movies</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="account">Account</string>
+    <string name="setting">Setting</string>
 </resources>
