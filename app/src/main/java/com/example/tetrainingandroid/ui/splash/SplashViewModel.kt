@@ -28,7 +28,7 @@ class SplashViewModel @Inject constructor(
 
         _loginData.addSource(repo.loginState) {
             _loginData.value = it
-            _loginData.removeSource(repo.loginState)
+            if (it != LoginState.Initialize) _loginData.removeSource(repo.loginState)
         }
 
         _loginData.addSource(exceptionHandler.errorMessage) {

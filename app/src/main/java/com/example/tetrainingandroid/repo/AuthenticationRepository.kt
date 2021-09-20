@@ -11,6 +11,7 @@ import com.example.tetrainingandroid.di.DispatchersIO
 import com.example.tetrainingandroid.ui.splash.LoginState
 import com.example.tetrainingandroid.validate.Validation
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -60,7 +61,9 @@ class AuthenticationRepository @Inject constructor(
                     val session = (async { service.createSession(SessionRequestParams(requestToken)) }).await()
                     if (session.success == true && !session.sessionId.isNullOrEmpty()) {
                         sessionStorage.save(session)
-                        loginState.value = LoginState.ApiAuthorization
+                        withContext(Dispatchers.Main) {
+                            loginState.value = LoginState.ApiAuthorization
+                        }
                     } else {
                         throw Exception("Session id is empty")
                     }
