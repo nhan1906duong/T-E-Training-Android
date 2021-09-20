@@ -32,7 +32,7 @@ import kotlin.math.abs
 class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
     companion object {
         private const val SLIDER_INTERVAL = 2000L //millisecond
-        private const val BACKDROP_RATIO = 300 / 169
+        private const val BACKDROP_RATIO = 300.0f / 169
     }
 
     @Inject lateinit var trendingMoviesAdapter: TrendingMovieAdapter
@@ -44,6 +44,7 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
     private var sliderDelayJob: Job? = null
     private val sliderScope = CoroutineScope(Dispatchers.Main)
     private val viewModel: HomeViewModel by viewModels()
+    private var isLayoutVisibleOnce: Boolean = false
 
     private val onItemClickListener = MovieItemClickListener { movieId ->
         val action = MainFragmentDirections.actionMainFragmentToDetailFragment(movieId)
@@ -55,11 +56,11 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
         setupTrendingSlider()
         setupRecyclerView()
         observeData()
+        initEvent()
         Picasso.get().load("https://i.pravatar.cc/300").into(imgAvatar)
     }
 
     private fun setupTrendingSlider() {
-        setViewPagerDimensionRation()
         setViewPagerAnimation()
         makeViewPagerSlide()
         vpSlider?.offscreenPageLimit = 3
@@ -70,7 +71,7 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
         activity?.run {
             val screenWidth = getScreenWidth() ?: return@run
             val padding = resources.getDimension(R.dimen.slider_horizontal_padding)
-            val ratio = BACKDROP_RATIO * screenWidth / (screenWidth - (padding * 2))
+            val ratio = (BACKDROP_RATIO * screenWidth) / (screenWidth - (padding * 2))
             val layoutParam = vpSlider?.layoutParams as? ConstraintLayout.LayoutParams
             layoutParam?.dimensionRatio = "H,$ratio:1"
             vpSlider?.layoutParams = layoutParam
@@ -102,6 +103,19 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
     }
 
     private fun observeData() {
+        viewModel.loading.observe(viewLifecycleOwner, {
+            pbLoading?.visibility = if(it == true) View.VISIBLE else View.GONE
+            if(it == true) {
+            llHome?.visibility = View.INVISIBLE
+            } else {
+                if (!isLayoutVisibleOnce) {
+                    isLayoutVisibleOnce = true
+                    setViewPagerDimensionRation()
+                }
+            llHome?.visibility = View.VISIBLE
+            }
+        })
+
         viewModel.error.observe(viewLifecycleOwner, { errorMessage -> toast(errorMessage) })
 
         viewModel.trendingMovies.observe(viewLifecycleOwner, {
@@ -137,5 +151,12 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
 
         upComingMoviesAdapter.setListener(onItemClickListener)
         rvUpComingMovies?.adapter = upComingMoviesAdapter
+    }
+
+    private fun initEvent() {
+        swipeRefreshLayout?.setOnRefreshListener {
+            swipeRefreshLayout?.isRefreshing = false
+            viewModel.refresh()
+        }
     }
 }

@@ -1,13 +1,14 @@
 package com.example.tetrainingandroid.extensions
 
 import android.app.Activity
-import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.WindowInsets
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.config.Config
 import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.squareup.picasso.Picasso
@@ -17,7 +18,9 @@ fun ImageView.load(
     type: ImageConfiguration.Size = ImageConfiguration.Size.POSTER
 ) {
     if (url.isNullOrEmpty()) return
-    Picasso.get().load(listOf(Config.BASE_IMAGE_URL, type.size, url).joinToString(separator = "/"))
+    Picasso.get()
+        .load(listOf(Config.BASE_IMAGE_URL, type.size, url).joinToString(separator = "/"))
+        .placeholder(R.drawable.image_placeholder_background)
         .into(this)
 }
 
