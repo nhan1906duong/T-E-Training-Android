@@ -5,11 +5,11 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
+import com.example.tetrainingandroid.extensions.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,15 +27,17 @@ class SplashFragment : CacheViewFragment(R.layout.splash_fragment) {
     }
 
     private fun observeData() {
-        viewModel.loginData.observe(viewLifecycleOwner) { hasToken ->
-            when(hasToken) {
-                true -> {
+        viewModel.loginData.observe(viewLifecycleOwner) { state ->
+            when(state) {
+                LoginState.ApiAuthorization -> {
                     findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
                 }
-                false -> {
-                    Toast.makeText(context, viewModel.exceptionHandler.errorMessage.value, Toast.LENGTH_SHORT).show()
+                LoginState.Login -> {
+                    findNavController().navigate(R.id.action_splashFragment_to_mainFragment)
                 }
+                else -> {}
             }
         }
+        viewModel.error.observe(viewLifecycleOwner) { message -> toast(message) }
     }
 }

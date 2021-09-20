@@ -31,10 +31,4 @@ class SessionStorage @Inject constructor(
             apply()
         }
     }
-
-    fun resetToken() {
-        val token = get() ?: return
-        token.expiresAtSinceEpoch = System.currentTimeMillis()
-        save(token)
-    }
 }

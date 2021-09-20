@@ -8,7 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.navigation.fragment.findNavController
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
-import com.example.tetrainingandroid.data.storage.SessionStorage
+import com.example.tetrainingandroid.data.storage.LoginStorage
 import com.example.tetrainingandroid.validate.Validation
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment: CacheViewFragment(R.layout.login_fragment) {
-    @Inject lateinit var sessionStorage: SessionStorage
+    @Inject lateinit var loginStorage: LoginStorage
 
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
@@ -28,10 +28,8 @@ class LoginFragment: CacheViewFragment(R.layout.login_fragment) {
     }
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
-        //val response = result.idpResponse
         if (result.resultCode == RESULT_OK) {
-            //val user = FirebaseAuth.getInstance().currentUser
-            findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+            loginSuccess()
         }
     }
 
@@ -75,8 +73,7 @@ class LoginFragment: CacheViewFragment(R.layout.login_fragment) {
 
     private fun login(username: String, password: String) {
         if (Validation.isValidAccount(username, password)) {
-            findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
-            sessionStorage.resetToken()
+            loginSuccess()
         } else {
             LoginFailedDialog().show(childFragmentManager, "TAG")
         }
@@ -100,5 +97,10 @@ class LoginFragment: CacheViewFragment(R.layout.login_fragment) {
             imm?.hideSoftInputFromWindow(view?.windowToken, 0)
             currentFocus?.clearFocus()
         }
+    }
+
+    private fun loginSuccess() {
+        findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+        loginStorage.save(true)
     }
 }

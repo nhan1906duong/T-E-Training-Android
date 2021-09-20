@@ -9,5 +9,6 @@ data class ErrorResponse(
 ) {
     companion object {
         fun emptyResponse() = ErrorResponse(statusMessage = "Empty response")
+        fun otherError(message: String?) = ErrorResponse(statusMessage = message)
     }
 }
