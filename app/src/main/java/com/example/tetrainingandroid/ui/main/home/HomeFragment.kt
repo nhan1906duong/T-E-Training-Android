@@ -53,11 +53,15 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
 
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
-        setupTrendingSlider()
-        setupRecyclerView()
+        initView()
         observeData()
         initEvent()
         Picasso.get().load("https://i.pravatar.cc/300").into(imgAvatar)
+    }
+
+    private fun initView() {
+        setupTrendingSlider()
+        setupRecyclerView()
     }
 
     private fun setupTrendingSlider() {
@@ -104,15 +108,21 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
 
     private fun observeData() {
         viewModel.loading.observe(viewLifecycleOwner, {
-            pbLoading?.visibility = if(it == true) View.VISIBLE else View.GONE
-            if(it == true) {
-            llHome?.visibility = View.INVISIBLE
+            if (it == true) {
+                pbLoading?.visibility = View.VISIBLE
             } else {
+                pbLoading?.visibility = View.GONE
+            }
+            if (it == false) {
                 if (!isLayoutVisibleOnce) {
                     isLayoutVisibleOnce = true
+                    vpSlider?.visibility = View.VISIBLE
+                    popularBarrier?.visibility = View.VISIBLE
+                    topRatedBarrier?.visibility = View.VISIBLE
+                    nowPlayingBarrier?.visibility = View.VISIBLE
+                    upComingBarier?.visibility = View.VISIBLE
                     setViewPagerDimensionRation()
                 }
-            llHome?.visibility = View.VISIBLE
             }
         })
 

@@ -16,6 +16,7 @@
     <dimen name="layout_padding_8dp">8dp</dimen>
     <dimen name="layout_padding_16dp">16dp</dimen>
     <dimen name="layout_padding_32dp">32dp</dimen>
+    <dimen name="layout_padding_64dp">64dp</dimen>
 
     <dimen name="edittext_padding_bottom">18dp</dimen>
     <dimen name="edittext_padding_horizontal">16dp</dimen>
