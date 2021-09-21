@@ -38,4 +38,7 @@
 
     <dimen name="crew_image_size">48dp</dimen>
     <dimen name="crew_image_corner_radius">24dp</dimen>
+
+    <dimen name="cast_image_width_size">128dp</dimen>
+    <dimen name="cast_image_corner_radius">8dp</dimen>
 </resources>
