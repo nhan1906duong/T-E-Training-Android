@@ -12,5 +12,7 @@ data class ImageConfiguration(
     enum class Size(val size: String) {
         POSTER("w185"),
         BACKDROP("w780"),
+        PROFILE("w185"),
+        SMALL_PROFILE("w45"),
     }
 }

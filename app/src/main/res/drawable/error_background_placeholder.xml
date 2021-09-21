@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/place_holder_image_color"/>
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/ic_image"
+        android:left="@dimen/layout_margin_16dp"
+        android:top="@dimen/layout_margin_16dp"
+        android:right="@dimen/layout_margin_16dp"
+        android:bottom="@dimen/layout_margin_16dp"/>
+</layer-list>

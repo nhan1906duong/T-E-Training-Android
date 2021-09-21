@@ -17,7 +17,7 @@ class MovieRepository @Inject constructor(
     suspend fun getDetail(movieId: Int): Movie {
         val movie: Movie
         withContext(coroutineDispatcher) {
-            movie = (async {movieService.getMovie(movieId, appendToResponse = "videos,images,casts,reviews")}).await()
+            movie = (async {movieService.getMovie(movieId, appendToResponse = "videos,images,casts,reviews,similar")}).await()
         }
         return movie
     }

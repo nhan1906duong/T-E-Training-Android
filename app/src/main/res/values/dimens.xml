@@ -47,4 +47,9 @@
     <dimen name="backdrop_image_item_corner_radius">8dp</dimen>
 
     <dimen name="trailer_image_item_width">160dp</dimen>
+
+    <dimen name="rating_icon_size">18dp</dimen>
+
+    <dimen name="divider_16dp">16dp</dimen>
+    <dimen name="divider_8dp">8dp</dimen>
 </resources>

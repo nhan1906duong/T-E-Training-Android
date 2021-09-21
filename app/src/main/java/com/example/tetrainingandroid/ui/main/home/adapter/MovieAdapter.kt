@@ -5,10 +5,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tetrainingandroid.data.model.Movie
+import com.example.tetrainingandroid.di.DividerHorizontal16
 import javax.inject.Inject
 
 class MovieAdapter @Inject constructor(
-    private val dividerItemDecoration: DividerItemDecoration,
+    @DividerHorizontal16 private val dividerItemDecoration: DividerItemDecoration,
     diffCallback: MovieDiffCallback
 ) : ListAdapter<Movie, MovieViewHolder>(diffCallback) {
     private var listener: MovieItemClickListener? = null
@@ -26,5 +27,4 @@ class MovieAdapter @Inject constructor(
         super.onAttachedToRecyclerView(recyclerView)
         recyclerView.addItemDecoration(dividerItemDecoration)
     }
-
 }

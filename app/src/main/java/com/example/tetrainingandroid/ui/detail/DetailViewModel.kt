@@ -20,14 +20,16 @@ class DetailViewModel @Inject constructor(
 
     private val _movie = MutableLiveData<Movie>()
     val movie = _movie as LiveData<Movie>
+    private var movieId: Int = 0
 
-    init {
+    fun setMovie(movieId: Int) {
+        this.movieId = movieId
         getDetail()
     }
 
     private fun getDetail() {
         viewModelScope.launch(exceptionHandler.handler) {
-            val result = (async { repo.getDetail(3) }).await()
+            val result = (async { repo.getDetail(movieId) }).await()
             _movie.value = result
         }
     }

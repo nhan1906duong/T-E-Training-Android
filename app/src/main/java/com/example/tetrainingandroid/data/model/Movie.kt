@@ -1,5 +1,6 @@
 package com.example.tetrainingandroid.data.model
 
+import com.example.tetrainingandroid.data.response.PageResponse
 import com.squareup.moshi.Json
 
 data class Movie(
@@ -32,5 +33,6 @@ data class Movie(
     @Json(name = "videos") val videos: MovieVideoWrapper?,
     @Json(name = "vote_average") val voteAverage: Float?,
     @Json(name = "vote_count") val voteCount: Int?,
-    @Json(name = "reviews") val reviewResponse: ReviewResponse?
+    @Json(name = "reviews") val reviewResponse: ReviewResponse?,
+    @Json(name = "similar") val similar: PageResponse<Movie>?
 ): Searchable

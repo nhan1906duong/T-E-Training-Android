@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.data.model.Movie
+import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
 import kotlinx.android.synthetic.main.trending_movie_item_layout.view.*
 
@@ -19,6 +20,10 @@ class TrendingMovieViewHolder (private val view: ViewGroup): RecyclerView.ViewHo
     }
 
     fun bind(movie: Movie) {
-        view.imgBackdrop?.load(movie.backdropPath, ImageConfiguration.Size.BACKDROP)
+        view.imgBackdrop?.load(
+            movie.backdropPath,
+            size = ImageConfiguration.Size.BACKDROP,
+            type = ImageType.BACKGROUND
+        )
     }
 }
