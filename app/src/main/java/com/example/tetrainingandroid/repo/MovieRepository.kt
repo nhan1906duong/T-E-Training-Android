@@ -1,6 +1,5 @@
 package com.example.tetrainingandroid.repo
 
-import android.util.Log
 import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.data.service.MovieService
 import com.example.tetrainingandroid.di.DispatchersIO
@@ -15,6 +14,14 @@ class MovieRepository @Inject constructor(
     private val movieService: MovieService,
     @DispatchersIO private val coroutineDispatcher: CoroutineDispatcher,
 ) {
+    suspend fun getDetail(movieId: Int): Movie {
+        val movie: Movie
+        withContext(coroutineDispatcher) {
+            movie = (async {movieService.getMovie(movieId, appendToResponse = "videos,images,casts,reviews")}).await()
+        }
+        return movie
+    }
+
     suspend fun getTrending(): List<Movie> {
         val result: List<Movie>
         withContext(coroutineDispatcher) {
