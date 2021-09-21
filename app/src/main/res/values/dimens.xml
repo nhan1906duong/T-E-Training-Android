@@ -41,4 +41,8 @@
 
     <dimen name="cast_image_width_size">128dp</dimen>
     <dimen name="cast_image_corner_radius">8dp</dimen>
+
+    <dimen name="backdrop_image_item_width">160dp</dimen>
+    <dimen name="backdrop_image_item_height">90dp</dimen>
+    <dimen name="backdrop_image_item_corner_radius">8dp</dimen>
 </resources>
