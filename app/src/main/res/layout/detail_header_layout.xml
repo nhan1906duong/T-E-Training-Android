@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgBackdrop"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="H,2:1"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+        tools:src="@tools:sample/backgrounds/scenic[2]"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLine30Percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/posterCard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideLine30Percent"
+        app:layout_constraintBottom_toBottomOf="@id/imgBackdrop"
+        app:layout_constraintTop_toBottomOf="@id/imgBackdrop"
+        app:layout_constraintDimensionRatio="H,2:3"
+        android:layout_marginStart="@dimen/layout_margin_16dp"
+        android:layout_marginTop="@dimen/layout_margin_16dp"
+        app:cardElevation="0dp"
+        app:cardCornerRadius="8dp">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgPoster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:src="@tools:sample/avatars"
+            tools:scaleType="centerCrop"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_marginTop="@dimen/layout_margin_8dp"
+        android:layout_marginHorizontal="@dimen/layout_margin_16dp"
+        app:layout_constraintStart_toStartOf="@id/guideLine30Percent"
+        app:layout_constraintTop_toBottomOf="@id/imgBackdrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:maxLines="2"
+        tools:text="Shang Chi: The Ten Rings\nMake by Marvels"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtReleaseDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/layout_margin_16dp"
+        android:layout_marginTop="@dimen/layout_margin_8dp"
+        app:layout_constraintStart_toStartOf="@id/guideLine30Percent"
+        app:layout_constraintTop_toBottomOf="@id/txtTitle"
+        style="@style/TextAppearance.AppCompat.Body2"
+        tools:text="19/06/1995"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_24sp"
+        app:layout_constraintEnd_toStartOf="@id/iconRating"
+        app:layout_constraintBaseline_toBaselineOf="@id/txtReleaseDate"
+        tools:text="7.1"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iconRating"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="@dimen/rating_icon_size"
+        android:layout_height="@dimen/rating_icon_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/txtReleaseDate"
+        android:layout_marginEnd="@dimen/layout_margin_16dp"
+        android:layout_marginBottom="2dp"
+        android:src="@drawable/ic_star"
+        android:tint="@android:color/holo_orange_dark"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="posterCard,txtReleaseDate"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tetrainingandroid.R
+import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.data.model.Movie
+import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
 import kotlinx.android.synthetic.main.movie_item_layout.view.*
 
@@ -24,7 +26,11 @@ class MovieViewHolder private constructor(private val view: ViewGroup) :
                 movie.id?.let { movieId -> listener.onClick(movieId) }
             }
         }
-        view.imgPoster?.load(movie.posterPath)
+        view.imgPoster?.load(
+            movie.posterPath,
+            size = ImageConfiguration.Size.POSTER,
+            type = ImageType.BACKGROUND
+        )
         view.txtTitle?.text= movie.title ?: ""
         view.txtFirstAirDate?.text = movie.releaseDate ?: ""
     }

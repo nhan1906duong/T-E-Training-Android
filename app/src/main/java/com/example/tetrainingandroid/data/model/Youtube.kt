@@ -3,7 +3,7 @@ package com.example.tetrainingandroid.data.model
 import com.squareup.moshi.Json
 import java.util.*
 
-data class MovieVideo(
+data class Youtube(
     @Json(name = "iso_3166_1") val iso3166_1: String?,
     @Json(name = "iso_639_1") val iso639_1: String?,
     @Json(name = "name") val name: String?,
