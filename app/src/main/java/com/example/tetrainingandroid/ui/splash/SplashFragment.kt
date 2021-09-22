@@ -16,11 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class SplashFragment : CacheViewFragment(R.layout.splash_fragment) {
     private val viewModel: SplashViewModel by viewModels()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (context as Activity).window.statusBarColor = Color.WHITE
-    }
-
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
         observeData()
