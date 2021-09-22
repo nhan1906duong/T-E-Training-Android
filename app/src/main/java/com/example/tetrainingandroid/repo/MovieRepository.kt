@@ -1,6 +1,7 @@
 package com.example.tetrainingandroid.repo
 
 import com.example.tetrainingandroid.data.model.Movie
+import com.example.tetrainingandroid.data.model.Youtube
 import com.example.tetrainingandroid.data.service.MovieService
 import com.example.tetrainingandroid.di.DispatchersIO
 import kotlinx.coroutines.CoroutineDispatcher
@@ -57,6 +58,14 @@ class MovieRepository @Inject constructor(
         val result: List<Movie>
         withContext(coroutineDispatcher) {
             result = (async { movieService.getUpcoming() }).await().results ?: listOf()
+        }
+        return result
+    }
+
+    suspend fun getTrailers(movieId: Int): List<Youtube> {
+        val result: List<Youtube>
+        withContext(coroutineDispatcher) {
+            result = (async { movieService.getTrailers(movieId) }).await().results ?: listOf()
         }
         return result
     }

@@ -19,7 +19,12 @@ class YoutubeViewHolder @Inject constructor(
             }
         }
 
-    fun bind(youtube: Youtube) {
+    fun bind(youtube: Youtube, listener: YoutubeItemClickListener?) {
+        if (listener != null && !youtube.key.isNullOrEmpty()) {
+            view.rootLayout?.setOnClickListener {
+                listener.onClick(youtube)
+            }
+        }
         view.imgTrailer?.loadTrailer(youtube.key)
     }
 }

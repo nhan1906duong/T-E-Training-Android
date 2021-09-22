@@ -46,6 +46,20 @@
         <argument
             android:name="movieId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_detailFragment_to_youtubeFragment"
+            app:destination="@id/youtubeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/youtubeFragment"
+        android:name="com.example.tetrainingandroid.ui.media.YoutubeFragment"
+        android:label="YoutubeFragment">
+        <argument
+            android:name="youtube"
+            app:argType="com.example.tetrainingandroid.data.model.Youtube" />
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

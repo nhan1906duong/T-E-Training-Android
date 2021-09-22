@@ -50,6 +50,7 @@ dependencies {
 
     // Dependencies injection
     implementation "com.google.dagger:hilt-android:$hilt_version"
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // Coroutine

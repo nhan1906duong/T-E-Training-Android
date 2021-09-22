@@ -1,6 +1,7 @@
 package com.example.tetrainingandroid.data.service
 
 import com.example.tetrainingandroid.data.model.Movie
+import com.example.tetrainingandroid.data.model.MovieVideoWrapper
 import com.example.tetrainingandroid.data.response.PageResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -27,4 +28,7 @@ interface MovieService {
         @Path("movie_id") movieId: Int,
         @Query("append_to_response") appendToResponse: String? = null
     ): Movie
+
+    @GET("/3/movie/{movie_id}/videos")
+    suspend fun getTrailers(@Path("movie_id") movieId: Int): MovieVideoWrapper
 }
