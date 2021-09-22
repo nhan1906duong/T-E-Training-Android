@@ -32,7 +32,9 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
     private lateinit var currentVideo: Youtube
     private val videos = mutableListOf<Youtube>()
 
-    private val listScope = CoroutineScope(Dispatchers.Default)
+    private val heavyWorkScope = CoroutineScope(Dispatchers.Default)
+    private var hasData = false
+    private var isPlayingBeforeInvisible = false
 
     private val onItemClickListener = YoutubeItemClickListener { youtube ->
         if (currentVideo == youtube) return@YoutubeItemClickListener
@@ -80,11 +82,14 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
 
     private fun observerVideos() {
         viewModel.videos.observe(viewLifecycleOwner, { data ->
+            hasData = true
             if (data.isNullOrEmpty()) {
                 nestedScrollView?.visibility = View.GONE
-                player?.loadVideo(currentVideo.key)
+                videos.clear()
+                videos.add(currentVideo)
+                initLoadVideos()
             } else {
-                listScope.launch {
+                heavyWorkScope.launch {
                     filterListVideo(data)
                     withContext(Dispatchers.Main) {
                         submitAdapter()
@@ -106,16 +111,23 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
     private fun submitAdapter() {
         youtubeAdapter.setSelected(0)
         youtubeAdapter.submitList(videos) {
-            player?.loadVideos(videos.map { it.key }, 0, 0)
+            initLoadVideos()
         }
     }
 
-    override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, p1: YouTubePlayer?, p2: Boolean) = setupPlayer(p1)
+    override fun onInitializationSuccess(
+        p0: YouTubePlayer.Provider?,
+        p1: YouTubePlayer?, p2: Boolean
+    ) = setupPlayer(p1)
 
-    override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) = toast("Video play failed")
+    override fun onInitializationFailure(
+        p0: YouTubePlayer.Provider?,
+        p1: YouTubeInitializationResult?
+    ) = toast("Video play failed")
 
     private fun setupPlayer(p1: YouTubePlayer?) {
         player = p1
+        initLoadVideos()
         player?.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION)
         player?.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE)
         player?.setPlayerStateChangeListener(object: YouTubePlayer.PlayerStateChangeListener {
@@ -151,6 +163,36 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
 
     override fun onDestroy() {
         super.onDestroy()
-        listScope.cancel()
+        heavyWorkScope.cancel()
+    }
+
+    private fun initLoadVideos() {
+        if (hasData && player != null) {
+            player?.loadVideos(videos.map { it.key }, 0, 0)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isPlayingBeforeInvisible) {
+            resumePlayer()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (player?.isPlaying == true) {
+            isPlayingBeforeInvisible = true
+        }
+    }
+
+    private fun resumePlayer() {
+        heavyWorkScope.launch {
+            withContext(Dispatchers.Main) {
+                delay(200)
+                player?.play()
+            }
+        }
+        isPlayingBeforeInvisible = false
     }
 }
