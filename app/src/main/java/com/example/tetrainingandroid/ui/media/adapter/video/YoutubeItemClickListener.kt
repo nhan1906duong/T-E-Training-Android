@@ -1,5 +1,7 @@
-package com.example.tetrainingandroid.ui.main.home.adapter
+package com.example.tetrainingandroid.ui.media.adapter.video
 
-class MovieItemClickListener(val listener: (Int) -> Unit) {
-    fun onClick(movieId: Int) = listener(movieId)
+import com.example.tetrainingandroid.data.model.Youtube
+
+class YoutubeItemClickListener(val listener: (Youtube) -> Unit) {
+    fun onClick(youtube: Youtube) = listener(youtube)
 }

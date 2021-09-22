@@ -1,6 +1,7 @@
 package com.example.tetrainingandroid.data.model
 
 import com.squareup.moshi.Json
+import java.io.Serializable
 import java.util.*
 
 data class Youtube(
@@ -14,4 +15,4 @@ data class Youtube(
     @Json(name = "official") val official: Boolean?,
     @Json(name = "published_at") val publishedAt: Date?,
     @Json(name = "id") val id: String?,
-)
+): Serializable

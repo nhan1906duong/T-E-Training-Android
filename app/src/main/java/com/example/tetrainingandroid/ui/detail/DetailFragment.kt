@@ -3,6 +3,7 @@ package com.example.tetrainingandroid.ui.detail
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
@@ -16,6 +17,7 @@ import com.example.tetrainingandroid.ui.genre.adapter.GenreAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.media.adapter.image.BackdropAdapter
 import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeAdapter
+import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.detail_body_layout.*
 import kotlinx.android.synthetic.main.detail_fragment.*
@@ -35,13 +37,33 @@ class DetailFragment : CacheViewFragment(R.layout.detail_fragment) {
 
     private val args: DetailFragmentArgs by navArgs()
 
+    private val onItemClickListener = YoutubeItemClickListener {
+        val action = DetailFragmentDirections.actionDetailFragmentToYoutubeFragment(it, args.movieId)
+        findNavController().navigate(action)
+    }
+
+
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
         val movieId = args.movieId
         viewModel.setMovie(movieId)
         initView()
-        initSwipeRefreshEvent()
         observeMovie()
+    }
+
+    private fun initView() {
+        initSwipeRefreshEvent()
+        initToolbar()
+
+        rvGenre?.adapter = genreAdapter
+        rvCast?.adapter = castAdapter
+        rvCrew?.adapter = crewAdapter
+
+        youtubeAdapter.setListener(onItemClickListener)
+        rvTrailer?.adapter = youtubeAdapter
+
+        rvPhoto?.adapter = backdropAdapter
+        rvRelativeMovie?.adapter = similarAdapter
     }
 
     private fun initSwipeRefreshEvent() {
@@ -51,13 +73,11 @@ class DetailFragment : CacheViewFragment(R.layout.detail_fragment) {
         }
     }
 
-    private fun initView() {
-        rvGenre?.adapter = genreAdapter
-        rvCast?.adapter = castAdapter
-        rvCrew?.adapter = crewAdapter
-        rvTrailer?.adapter = youtubeAdapter
-        rvPhoto?.adapter = backdropAdapter
-        rvRelativeMovie?.adapter = similarAdapter
+    private fun initToolbar() {
+        toolbar?.setNavigationIcon(R.drawable.ic_back)
+        toolbar?.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     private fun observeMovie() {
@@ -127,11 +147,6 @@ class DetailFragment : CacheViewFragment(R.layout.detail_fragment) {
                 }
             }
         })
-
-        toolbar?.setNavigationIcon(R.drawable.ic_back)
-        toolbar?.setNavigationOnClickListener {
-            activity?.onBackPressed()
-        }
 
         viewModel.error.observe(viewLifecycleOwner, { message -> toast(message) })
     }
