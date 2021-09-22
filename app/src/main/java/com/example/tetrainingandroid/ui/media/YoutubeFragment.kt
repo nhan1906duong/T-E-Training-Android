@@ -116,6 +116,8 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
 
     private fun setupPlayer(p1: YouTubePlayer?) {
         player = p1
+        player?.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION)
+        player?.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE)
         player?.setPlayerStateChangeListener(object: YouTubePlayer.PlayerStateChangeListener {
 
             override fun onLoading() {}
