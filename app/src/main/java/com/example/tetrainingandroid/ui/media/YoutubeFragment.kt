@@ -1,6 +1,7 @@
 package com.example.tetrainingandroid.ui.media
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
@@ -17,6 +18,7 @@ import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerCompatFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.youtube_fragment.*
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,6 +32,8 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
 
     private lateinit var currentVideo: Youtube
     private val videos = mutableListOf<Youtube>()
+
+    private val listScope = CoroutineScope(Dispatchers.Default)
 
     private val onItemClickListener = YoutubeItemClickListener { youtube ->
         if (currentVideo == youtube) return@YoutubeItemClickListener
@@ -78,17 +82,24 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
     private fun observerVideos() {
         viewModel.videos.observe(viewLifecycleOwner, { data ->
             if (data.isNullOrEmpty()) {
-                groupMoreVideos?.visibility = View.GONE
+                nestedScrollView?.visibility = View.GONE
                 player?.loadVideo(currentVideo.key)
             } else {
-                videos.apply {
-                    clear()
-                    add(currentVideo)
-                    addAll(data.filter { it.key != currentVideo.key })
-                    youtubeAdapter.submitList(this)
-                    youtubeAdapter.setSelected(0)
-                    player?.loadVideos(videos.map { it.key }, 0, 0)
+                listScope.launch {
+                    videos.apply {
+                        clear()
+                        add(currentVideo)
+                        addAll(data.filter { it.key != currentVideo.key })
+                    }
+                    withContext(Dispatchers.Main) {
+                        youtubeAdapter.setSelected(0)
+                        youtubeAdapter.submitList(videos) {
+                            Log.d("MSG", "YoutubeAdapter ${youtubeAdapter.itemCount}")
+                            player?.loadVideos(videos.map { it.key }, 0, 0)
+                        }
+                    }
                 }
+
             }
         })
     }
@@ -120,10 +131,17 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
 
     private fun playNext() {
         if (player?.hasNext() == true) {
-            val nextIndex = videos.indexOf(currentVideo) + 1
+            val nextIndex = nextIndex()
             youtubeAdapter.setSelected(nextIndex)
             currentVideo = videos[nextIndex]
             player?.next()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        listScope.cancel()
+    }
+
+    private fun nextIndex() = (videos.indexOf(currentVideo) + 1) % videos.size
 }
