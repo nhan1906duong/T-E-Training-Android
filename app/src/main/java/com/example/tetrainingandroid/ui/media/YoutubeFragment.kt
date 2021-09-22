@@ -1,7 +1,6 @@
 package com.example.tetrainingandroid.ui.media
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
@@ -22,7 +21,7 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.OnInitializedListener, YouTubePlayer.PlayerStateChangeListener {
+class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.OnInitializedListener {
 
     @Inject lateinit var youtubeAdapter: YoutubeHorizontalAdapter
 
@@ -86,17 +85,9 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
                 player?.loadVideo(currentVideo.key)
             } else {
                 listScope.launch {
-                    videos.apply {
-                        clear()
-                        add(currentVideo)
-                        addAll(data.filter { it.key != currentVideo.key })
-                    }
+                    filterListVideo(data)
                     withContext(Dispatchers.Main) {
-                        youtubeAdapter.setSelected(0)
-                        youtubeAdapter.submitList(videos) {
-                            Log.d("MSG", "YoutubeAdapter ${youtubeAdapter.itemCount}")
-                            player?.loadVideos(videos.map { it.key }, 0, 0)
-                        }
+                        submitAdapter()
                     }
                 }
 
@@ -104,26 +95,42 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
         })
     }
 
-    override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, p1: YouTubePlayer?, p2: Boolean) {
+    private fun filterListVideo(data: List<Youtube>) {
+        videos.apply {
+            clear()
+            add(currentVideo)
+            addAll(data.filter { it.key != currentVideo.key })
+        }
+    }
+
+    private fun submitAdapter() {
+        youtubeAdapter.setSelected(0)
+        youtubeAdapter.submitList(videos) {
+            player?.loadVideos(videos.map { it.key }, 0, 0)
+        }
+    }
+
+    override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, p1: YouTubePlayer?, p2: Boolean) = setupPlayer(p1)
+
+    override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) = toast("Video play failed")
+
+    private fun setupPlayer(p1: YouTubePlayer?) {
         player = p1
-        player?.setPlayerStateChangeListener(this)
+        player?.setPlayerStateChangeListener(object: YouTubePlayer.PlayerStateChangeListener {
+
+            override fun onLoading() {}
+
+            override fun onLoaded(p0: String?) {}
+
+            override fun onAdStarted() {}
+
+            override fun onVideoStarted() = setTitle()
+
+            override fun onVideoEnded() = playNext()
+
+            override fun onError(p0: YouTubePlayer.ErrorReason?) = playNext()
+        })
     }
-
-    override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
-        toast("Video play failed")
-    }
-
-    override fun onLoading() {}
-
-    override fun onLoaded(p0: String?) {}
-
-    override fun onAdStarted() {}
-
-    override fun onVideoStarted() = setTitle()
-
-    override fun onVideoEnded() = playNext()
-
-    override fun onError(p0: YouTubePlayer.ErrorReason?) = playNext()
 
     private fun setTitle() {
         toolbar?.title = currentVideo.name
@@ -138,10 +145,10 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
         }
     }
 
+    private fun nextIndex() = (videos.indexOf(currentVideo) + 1) % videos.size
+
     override fun onDestroy() {
         super.onDestroy()
         listScope.cancel()
     }
-
-    private fun nextIndex() = (videos.indexOf(currentVideo) + 1) % videos.size
 }
