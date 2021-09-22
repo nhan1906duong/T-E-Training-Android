@@ -1,228 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-            <include layout="@layout/detail_header_layout"/>
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentScrim="@color/white"
+            app:titleCollapseMode="scale"
+            app:collapsedTitleTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:expandedTitleTextAppearance="@style/TransparentTitleAppBar"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+            <include layout="@layout/detail_header_layout" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"/>
+                android:layout_height="?attr/actionBarSize"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_collapseMode="pin"/>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvGenre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/layout_margin_16dp"
-                android:paddingHorizontal="@dimen/layout_padding_16dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/barrierHeader"
-                tools:itemCount="8"
-                tools:listitem="@layout/genre_item_layout" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtTagLine"
-                style="@style/TextAppearance.MaterialComponents.Subtitle2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/layout_margin_16dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvGenre"
-                tools:text="You can't outrun your destiny."/>
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/groupOverview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="llOverview,txtOverview"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/llOverview"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/layout_margin_16dp"
-                android:layout_marginTop="@dimen/layout_margin_8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtTagLine"
-                android:text="@string/overview"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtOverview"
-                style="@style/TextAppearance.MaterialComponents.Body1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/layout_margin_8dp"
-                android:layout_marginHorizontal="@dimen/layout_margin_16dp"
-                app:layout_constraintTop_toBottomOf="@id/llOverview"
-                tools:text="@tools:sample/lorem/random"
-                tools:maxLines="6"/>
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/groupTrailer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="llTrailer,rvTrailer"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/llTrailer"
-                android:text="@string/trailer"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/layout_margin_16dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtOverview"
-                tools:text="Trailer: "/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvTrailer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/layout_margin_8dp"
-                android:paddingHorizontal="@dimen/layout_padding_16dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/llTrailer"
-                tools:itemCount="8"
-                tools:listitem="@layout/trailer_item_layout"/>
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/groupPhoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="llPhotos,rvPhoto"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/llPhotos"
-                android:text="@string/more_photos"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/layout_margin_16dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvTrailer" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvPhoto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/layout_margin_8dp"
-                android:paddingHorizontal="@dimen/layout_padding_16dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/llPhotos"
-                tools:itemCount="8"
-                tools:listitem="@layout/backdrop_item_layout"/>
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/groupCast"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="llCast,rvCast"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/llCast"
-                android:text="@string/cast"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/layout_margin_16dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvPhoto"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCast"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/layout_margin_8dp"
-                android:paddingHorizontal="@dimen/layout_padding_16dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/llCast"
-                tools:itemCount="8"
-                tools:listitem="@layout/cast_item_layout"/>
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/groupCrew"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="llCrew,rvCrew"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/llCrew"
-                android:text="@string/crew"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/layout_margin_16dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvCast"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCrew"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:layout_marginTop="@dimen/layout_margin_8dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/llCrew"
-                tools:itemCount="8"
-                tools:listitem="@layout/crew_item_layout"/>
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/groupRelateMovies"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="llRelativeMovies,rvRelativeMovie"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/llRelativeMovies"
-                android:text="@string/relative_movies"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/layout_margin_16dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvCrew"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvRelativeMovie"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/layout_margin_8dp"
-                android:paddingHorizontal="@dimen/layout_padding_16dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/llRelativeMovies"
-                tools:itemCount="8"
-                tools:listitem="@layout/movie_item_layout"/>
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/rvRelativeMovie"
-                android:layout_marginTop="@dimen/layout_margin_32dp"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        <include layout="@layout/detail_body_layout"/>
     </androidx.core.widget.NestedScrollView>
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

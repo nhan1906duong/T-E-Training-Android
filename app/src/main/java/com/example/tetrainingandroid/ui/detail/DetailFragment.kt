@@ -17,6 +17,7 @@ import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.media.adapter.image.BackdropAdapter
 import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.detail_body_layout.*
 import kotlinx.android.synthetic.main.detail_fragment.*
 import kotlinx.android.synthetic.main.detail_header_layout.*
 import javax.inject.Inject
@@ -64,6 +65,7 @@ class DetailFragment : CacheViewFragment(R.layout.detail_fragment) {
                     size = ImageConfiguration.Size.POSTER,
                     type = ImageType.BACKGROUND
                 )
+                collapsingToolbarLayout?.title = movie.title ?: ""
                 txtTitle?.text = movie.title ?: ""
                 txtReleaseDate?.text = movie.releaseDate ?: ""
                 txtRating?.text = String.format("%.1f", movie.voteAverage ?: 0.0f)
