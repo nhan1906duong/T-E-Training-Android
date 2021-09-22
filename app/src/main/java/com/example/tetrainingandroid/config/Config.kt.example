@@ -2,12 +2,17 @@ package com.example.tetrainingandroid.config
 
 object Config {
     const val BASE_URL = "https://api.themoviedb.org"
+    const val BASE_IMAGE_URL = "https://image.tmdb.org/t/p"
     const val READ_TIMEOUT = 3000L
     const val CONNECTION_TIMEOUT = 3000L
 
     const val REQUEST_TOKEN_EXPIRES_AT = 60 * 60 * 1000
     const val SESSION_EXPIRES_AT = 7 * 60 * 60 * 1000
-    const val APPLICATION_TOKEN_v4 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMWZhYTllM2VlOTAxNTk0OTEwYWQyZGRmYjk0MDYwZSIsInN1YiI6IjYxNDAzYzEwYWFmODk3MDA4YzA4Zjg5ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Iy9ksUAvPTz74qhLYGm3dWhUK0D2cht-LagxuUWuwdc"
+    const val APPLICATION_TOKEN_v4 =
+        "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMWZhYTllM2VlOTAxNTk0OTEwYWQyZGRmYjk0MDYwZSIsInN1YiI6IjYxNDAzYzEwYWFmODk3MDA4YzA4Zjg5ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Iy9ksUAvPTz74qhLYGm3dWhUK0D2cht-LagxuUWuwdc"
 
     const val SHARED_PREFERENCES_NAME = "Netfake"
+
+    const val YOUTUBE_LINK = "https://img.youtube.com/vi/%s/mqdefault.jpg"
+    const val YOUTUBE_API_KEY = "AIzaSyDEmENwih73Hpb2Wbvrl_8RQ1qGeCBPCBo"
 }
