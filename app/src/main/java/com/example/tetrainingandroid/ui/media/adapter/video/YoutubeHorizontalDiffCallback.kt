@@ -12,5 +12,5 @@ class YoutubeHorizontalDiffCallback @Inject constructor() : DiffUtil.ItemCallbac
         newItem: Youtube
     ) = oldItem.key == newItem.key
                 && oldItem.name == newItem.name
-                && oldItem.publishedAt == newItem.publishedAt
+                && oldItem.type == newItem.type
 }

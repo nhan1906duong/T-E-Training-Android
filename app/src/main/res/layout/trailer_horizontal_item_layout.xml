@@ -25,14 +25,14 @@
         style="@style/TextAppearance.MaterialComponents.Subtitle2"
         android:layout_marginStart="@dimen/layout_margin_8dp"
         app:layout_constraintTop_toTopOf="@id/imgTrailer"
-        app:layout_constraintBottom_toTopOf="@id/txtTime"
+        app:layout_constraintBottom_toTopOf="@id/txtType"
         app:layout_constraintStart_toEndOf="@id/imgTrailer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="Shang Chi, the lengend"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/txtTime"
+        android:id="@+id/txtType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         style="@style/TextAppearance.MaterialComponents.Body2"

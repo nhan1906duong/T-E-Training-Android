@@ -8,8 +8,6 @@ import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.data.model.Youtube
 import com.example.tetrainingandroid.extensions.loadTrailer
 import kotlinx.android.synthetic.main.trailer_horizontal_item_layout.view.*
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 class YoutubeHorizontalViewHolder @Inject constructor(
@@ -33,9 +31,7 @@ class YoutubeHorizontalViewHolder @Inject constructor(
             listener?.onClick(youtube)
         }
         view.imgTrailer?.loadTrailer(youtube.key)
-        view.txtName?.text = youtube.name
-        youtube.publishedAt?.let {
-            view.txtTime?.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it)
-        }
+        view.txtName?.text = youtube.name ?: ""
+        view.txtType?.text = youtube.type ?: ""
     }
 }
