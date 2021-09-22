@@ -27,6 +27,10 @@ class DetailViewModel @Inject constructor(
         getDetail()
     }
 
+    fun refresh() {
+        getDetail()
+    }
+
     private fun getDetail() {
         viewModelScope.launch(exceptionHandler.handler) {
             val result = (async { repo.getDetail(movieId) }).await()

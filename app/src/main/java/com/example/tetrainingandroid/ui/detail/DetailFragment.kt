@@ -39,8 +39,16 @@ class DetailFragment : CacheViewFragment(R.layout.detail_fragment) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
         val movieId = args.movieId
         viewModel.setMovie(movieId)
-        observeMovie()
         initView()
+        initSwipeRefreshEvent()
+        observeMovie()
+    }
+
+    private fun initSwipeRefreshEvent() {
+        swipeRefreshLayout?.setOnRefreshListener {
+            swipeRefreshLayout?.isRefreshing = false
+            viewModel.refresh()
+        }
     }
 
     private fun initView() {
