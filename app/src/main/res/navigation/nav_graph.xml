@@ -74,6 +74,12 @@
         <argument
             android:name="castId"
             app:argType="integer" />
+        <argument
+            android:name="isCast"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_castFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
 
 </navigation>

@@ -56,4 +56,6 @@
 
     <dimen name="divider_16dp">16dp</dimen>
     <dimen name="divider_8dp">8dp</dimen>
+    <dimen name="profile_image_item_width">138dp</dimen>
+    <dimen name="profile_image_item_height">175dp</dimen>
 </resources>

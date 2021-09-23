@@ -37,7 +37,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/llOverview"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/layout_margin_16dp"
@@ -66,7 +66,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/llTrailer"
         android:text="@string/trailer"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin_16dp"
@@ -96,7 +96,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/llPhotos"
         android:text="@string/more_photos"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin_16dp"
@@ -125,7 +125,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/llCast"
         android:text="@string/cast"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin_16dp"
@@ -154,7 +154,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/llCrew"
         android:text="@string/crew"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin_16dp"
@@ -182,7 +182,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/llRelativeMovies"
         android:text="@string/relative_movies"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin_16dp"

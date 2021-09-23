@@ -1,93 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:orientation="vertical">
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_height="match_parent">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imgAvatar"
-            android:layout_width="@dimen/cast_image_width_size"
-            android:layout_height="@dimen/cast_image_width_size"
-            app:cardElevation="0dp"
-            app:shapeAppearanceOverlay="@style/border_radius_8dp"
-            android:layout_marginTop="@dimen/layout_margin_16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            tools:srcCompat="@tools:sample/avatars">
-        </com.google.android.material.imageview.ShapeableImageView>
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="@dimen/cast_image_width_size"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="H,138:175"
+                android:layout_marginTop="@dimen/layout_margin_16dp"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/border_radius_8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars">
+            </com.google.android.material.imageview.ShapeableImageView>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txtName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.MaterialComponents.Headline5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:gravity="center"
-            android:layout_marginHorizontal="@dimen/layout_margin_32dp"
-            android:layout_marginTop="@dimen/layout_margin_16dp"
-            app:layout_constraintTop_toBottomOf="@id/imgAvatar"
-            tools:text="@tools:sample/full_names"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center"
+                android:layout_marginHorizontal="@dimen/layout_margin_32dp"
+                android:layout_marginTop="@dimen/layout_margin_16dp"
+                app:layout_constraintTop_toBottomOf="@id/imgAvatar"
+                tools:text="@tools:sample/full_names"/>
 
-        <include layout="@layout/personal_info_layout"/>
+            <include layout="@layout/personal_info_layout"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/llBiography"
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/biography"
-            android:layout_marginTop="@dimen/layout_margin_32dp"
-            android:layout_marginStart="@dimen/layout_margin_16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtPlaceBirth"/>
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupBiography"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="llBiography,txtBiography"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txtBiography"
-            style="@style/TextAppearance.MaterialComponents.Body2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/layout_margin_16dp"
-            android:layout_marginStart="@dimen/layout_margin_16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/llBiography"
-            tools:text="@tools:sample/lorem"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/llBiography"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/biography"
+                android:layout_marginTop="@dimen/layout_margin_32dp"
+                android:layout_marginStart="@dimen/layout_margin_16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtPlaceBirth"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/llKnownForMovie"
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/known_for"
-            android:layout_marginTop="@dimen/layout_margin_32dp"
-            android:layout_marginStart="@dimen/layout_margin_16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtBiography"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtBiography"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_margin_16dp"
+                android:layout_marginHorizontal="@dimen/layout_margin_16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llBiography"
+                tools:text="@tools:sample/lorem"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvKnownFor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/layout_margin_16dp"
-            app:layout_constraintTop_toBottomOf="@id/llKnownForMovie"
-            android:paddingHorizontal="@dimen/layout_padding_16dp"
-            android:clipToPadding="false"
-            tools:listitem="@layout/movie_item_layout"/>
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupMorePhotos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="llMorePhotos,rvMorePhotos"/>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/llMorePhotos"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/more_photos"
+                android:layout_marginTop="@dimen/layout_margin_32dp"
+                android:layout_marginStart="@dimen/layout_margin_16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtBiography"/>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMorePhotos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/layout_margin_16dp"
+                app:layout_constraintTop_toBottomOf="@id/llMorePhotos"
+                android:paddingHorizontal="@dimen/layout_padding_16dp"
+                android:clipToPadding="false"
+                tools:listitem="@layout/movie_item_layout"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupKnownForMovie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="llKnownForMovie,rvKnownFor"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/llKnownForMovie"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/known_for"
+                android:layout_marginTop="@dimen/layout_margin_32dp"
+                android:layout_marginStart="@dimen/layout_margin_16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvMorePhotos"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvKnownFor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/layout_margin_16dp"
+                app:layout_constraintTop_toBottomOf="@id/llKnownForMovie"
+                android:paddingHorizontal="@dimen/layout_padding_16dp"
+                android:clipToPadding="false"
+                tools:listitem="@layout/movie_item_layout"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.appcompat.widget.LinearLayoutCompat>

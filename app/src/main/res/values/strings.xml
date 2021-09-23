@@ -47,4 +47,7 @@
     <string name="birthday">Birthday</string>
     <string name="place_of_birth">Place of Birth</string>
     <string name="biography">Biography</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="unknown">Unknown</string>
 </resources>

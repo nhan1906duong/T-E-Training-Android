@@ -44,7 +44,12 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
     }
 
     private val onCastItemClickListener = CastItemClickListener {
-        val action = DetailFragmentDirections.actionDetailFragmentToCastFragment(it)
+        val action = DetailFragmentDirections.actionDetailFragmentToCastFragment(it, true)
+        findNavController().navigate(action)
+    }
+
+    private val onCrewItemClickListener = CastItemClickListener {
+        val action = DetailFragmentDirections.actionDetailFragmentToCastFragment(it, false)
         findNavController().navigate(action)
     }
 
@@ -70,6 +75,7 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
         castAdapter.setListener(onCastItemClickListener)
         rvCast?.adapter = castAdapter
 
+        crewAdapter.setListener(onCrewItemClickListener)
         rvCrew?.adapter = crewAdapter
 
         youtubeAdapter.setListener(onVideoItemClickListener)
