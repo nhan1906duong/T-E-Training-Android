@@ -64,7 +64,6 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
 
     private fun initView() {
         initSwipeRefreshEvent()
-        initToolbar()
 
         rvGenre?.adapter = genreAdapter
 
@@ -86,13 +85,6 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
         swipeRefreshLayout?.setOnRefreshListener {
             swipeRefreshLayout?.isRefreshing = false
             viewModel.refresh()
-        }
-    }
-
-    private fun initToolbar() {
-        toolbar?.setNavigationIcon(R.drawable.ic_back)
-        toolbar?.setNavigationOnClickListener {
-            activity?.onBackPressed()
         }
     }
 

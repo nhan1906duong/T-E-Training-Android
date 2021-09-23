@@ -70,10 +70,6 @@ class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fr
     }
 
     private fun initToolbar() {
-        toolbar?.setNavigationIcon(R.drawable.ic_back)
-        toolbar?.setNavigationOnClickListener {
-            activity?.onBackPressed()
-        }
         toolbar?.title = currentVideo.name ?: ""
     }
 
