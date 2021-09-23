@@ -14,9 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class YoutubeViewModel @Inject constructor(
-    exceptionHandler: ExceptionHandler,
     private val repo: MovieRepository,
-): BaseViewModel(exceptionHandler) {
+): BaseViewModel() {
     private val _videos = MutableLiveData<List<Youtube>>()
     val videos = _videos as LiveData<List<Youtube>>
     private var movieId: Int = 0
@@ -27,7 +26,7 @@ class YoutubeViewModel @Inject constructor(
     }
 
     private fun getTrailers() {
-        viewModelScope.launch(exceptionHandler.handler) {
+        viewModelScope.launch(getHandler()) {
             val result = (async { repo.getTrailers(movieId) }).await()
             _videos.value = result
         }

@@ -1,20 +1,16 @@
 package com.example.tetrainingandroid.ui.splash
 
-import android.app.Activity
-import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
-import com.example.tetrainingandroid.extensions.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SplashFragment : CacheViewFragment(R.layout.splash_fragment) {
-    private val viewModel: SplashViewModel by viewModels()
+class SplashFragment : CacheViewFragment<SplashViewModel>(R.layout.splash_fragment) {
+    override val viewModel: SplashViewModel by viewModels()
 
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
@@ -33,6 +29,5 @@ class SplashFragment : CacheViewFragment(R.layout.splash_fragment) {
                 else -> {}
             }
         }
-        viewModel.error.observe(viewLifecycleOwner) { message -> toast(message) }
     }
 }

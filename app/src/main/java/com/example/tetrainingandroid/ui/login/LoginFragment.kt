@@ -7,7 +7,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.navigation.fragment.findNavController
 import com.example.tetrainingandroid.R
-import com.example.tetrainingandroid.architecture.CacheViewFragment
+import com.example.tetrainingandroid.architecture.BaseFragment
 import com.example.tetrainingandroid.data.storage.LoginStorage
 import com.example.tetrainingandroid.validate.Validation
 import com.firebase.ui.auth.AuthUI
@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginFragment: CacheViewFragment(R.layout.login_fragment) {
+class LoginFragment: BaseFragment(R.layout.login_fragment) {
     @Inject lateinit var loginStorage: LoginStorage
 
     private val signInLauncher = registerForActivityResult(
@@ -33,7 +33,8 @@ class LoginFragment: CacheViewFragment(R.layout.login_fragment) {
         }
     }
 
-    override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setEvents()
     }
 

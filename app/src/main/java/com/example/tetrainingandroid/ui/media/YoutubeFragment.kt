@@ -6,7 +6,7 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.tetrainingandroid.R
-import com.example.tetrainingandroid.architecture.BaseFragment
+import com.example.tetrainingandroid.architecture.LoadingDataFragment
 import com.example.tetrainingandroid.config.Config
 import com.example.tetrainingandroid.data.model.Youtube
 import com.example.tetrainingandroid.extensions.toast
@@ -21,12 +21,12 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.OnInitializedListener {
+class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fragment), YouTubePlayer.OnInitializedListener {
 
     @Inject lateinit var youtubeAdapter: YoutubeHorizontalAdapter
 
     private val args: YoutubeFragmentArgs by navArgs()
-    private val viewModel: YoutubeViewModel by viewModels()
+    override val viewModel: YoutubeViewModel by viewModels()
     private var player: YouTubePlayer? = null
 
     private lateinit var currentVideo: Youtube

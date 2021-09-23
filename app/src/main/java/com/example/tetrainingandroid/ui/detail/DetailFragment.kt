@@ -10,7 +10,6 @@ import com.example.tetrainingandroid.architecture.CacheViewFragment
 import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
-import com.example.tetrainingandroid.extensions.toast
 import com.example.tetrainingandroid.ui.cast.adapter.CastAdapter
 import com.example.tetrainingandroid.ui.crew.adapter.CrewAdapter
 import com.example.tetrainingandroid.ui.genre.adapter.GenreAdapter
@@ -26,8 +25,8 @@ import kotlinx.android.synthetic.main.detail_header_layout.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DetailFragment : CacheViewFragment(R.layout.detail_fragment) {
-    private val viewModel: DetailViewModel by viewModels()
+class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragment) {
+    override val viewModel: DetailViewModel by viewModels()
 
     @Inject lateinit var genreAdapter: GenreAdapter
     @Inject lateinit var castAdapter: CastAdapter
@@ -155,7 +154,5 @@ class DetailFragment : CacheViewFragment(R.layout.detail_fragment) {
                 }
             }
         })
-
-        viewModel.error.observe(viewLifecycleOwner, { message -> toast(message) })
     }
 }

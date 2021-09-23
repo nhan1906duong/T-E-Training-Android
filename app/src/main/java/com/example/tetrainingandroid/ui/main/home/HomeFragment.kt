@@ -11,7 +11,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
 import com.example.tetrainingandroid.extensions.getScreenWidth
-import com.example.tetrainingandroid.extensions.toast
 import com.example.tetrainingandroid.ui.main.MainFragmentDirections
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieItemClickListener
@@ -29,7 +28,7 @@ import javax.inject.Inject
 import kotlin.math.abs
 
 @AndroidEntryPoint
-class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
+class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
     companion object {
         private const val SLIDER_INTERVAL = 2000L //millisecond
         private const val BACKDROP_RATIO = 300.0f / 169
@@ -41,9 +40,10 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
     @Inject lateinit var nowPlayingMoviesAdapter: MovieAdapter
     @Inject lateinit var upComingMoviesAdapter: MovieAdapter
 
+    override val viewModel: HomeViewModel by viewModels()
+
     private var sliderDelayJob: Job? = null
     private val sliderScope = CoroutineScope(Dispatchers.Main)
-    private val viewModel: HomeViewModel by viewModels()
     private var isLayoutVisibleOnce: Boolean = false
 
     private val onItemClickListener = MovieItemClickListener { movieId ->
@@ -126,8 +126,6 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
                 }
             }
         })
-
-        viewModel.error.observe(viewLifecycleOwner, { errorMessage -> toast(errorMessage) })
 
         viewModel.trendingMovies.observe(viewLifecycleOwner, {
             trendingMoviesAdapter.submitList(it)
