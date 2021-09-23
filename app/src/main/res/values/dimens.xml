@@ -41,10 +41,14 @@
 
     <dimen name="cast_image_width_size">128dp</dimen>
     <dimen name="cast_image_corner_radius">8dp</dimen>
+    <dimen name="home_logo_height">36dp</dimen>
 
     <dimen name="backdrop_image_item_width">160dp</dimen>
     <dimen name="backdrop_image_item_height">90dp</dimen>
     <dimen name="backdrop_image_item_corner_radius">8dp</dimen>
+
+    <dimen name="avatar_image_size">36dp</dimen>
+    <dimen name="notification_icon_size">24dp</dimen>
 
     <dimen name="trailer_image_item_width">160dp</dimen>
 

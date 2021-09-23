@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    android:id="@+id/rootLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.imageview.ShapeableImageView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:src="@tools:sample/backgrounds/scenic"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:elevation="0dp"
-    app:cardCornerRadius="@dimen/image_movie_item_corner_radius">
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imgBackdrop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:src="@tools:sample/backgrounds/scenic"
-        android:adjustViewBounds="true"/>
-
-</androidx.cardview.widget.CardView>
+    android:adjustViewBounds="true"
+    app:shapeAppearanceOverlay="@style/border_radius_8dp" />

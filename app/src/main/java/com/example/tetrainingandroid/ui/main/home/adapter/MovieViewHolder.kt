@@ -21,15 +21,17 @@ class MovieViewHolder private constructor(private val view: ViewGroup) :
     }
 
     fun bind(movie: Movie, listener: MovieItemClickListener?) {
-        view.rootLayout?.setOnClickListener {
-            movie.id?.let { movieId -> listener?.onClick(movieId) }
+        view.apply {
+            rootLayout?.setOnClickListener {
+                movie.id?.let { movieId -> listener?.onClick(movieId) }
+            }
+            imgPoster?.load(
+                movie.posterPath,
+                size = ImageConfiguration.Size.POSTER,
+                type = ImageType.BACKGROUND
+            )
+            txtTitle?.text= movie.title ?: ""
+            txtFirstAirDate?.text = movie.releaseDate ?: ""
         }
-        view.imgPoster?.load(
-            movie.posterPath,
-            size = ImageConfiguration.Size.POSTER,
-            type = ImageType.BACKGROUND
-        )
-        view.txtTitle?.text= movie.title ?: ""
-        view.txtFirstAirDate?.text = movie.releaseDate ?: ""
     }
 }
