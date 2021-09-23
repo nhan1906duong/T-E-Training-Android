@@ -24,7 +24,6 @@ class YoutubeHorizontalAdapter @Inject constructor(
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = YoutubeHorizontalViewHolder.from(parent)
 
     override fun onBindViewHolder(holder: YoutubeHorizontalViewHolder, position: Int) = holder.bind(getItem(position), listener, selectedIndex == position)

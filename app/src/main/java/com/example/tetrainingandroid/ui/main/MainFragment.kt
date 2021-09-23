@@ -12,13 +12,9 @@ import javax.inject.Inject
 class MainFragment: BaseFragment(R.layout.main_fragment) {
     @Inject lateinit var viewPagerAdapter: MainFragmentStateAdapter
 
-    override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreatedFirstTime(view, savedInstanceState)
-        setUpViewPager()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpViewPager()
         setupBottomNavigationBar()
     }
 

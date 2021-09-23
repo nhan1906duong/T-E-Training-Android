@@ -53,8 +53,12 @@ class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
 
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
-        initView()
         observeData()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
         initEvent()
         Picasso.get().load("https://i.pravatar.cc/300").into(imgAvatar)
     }

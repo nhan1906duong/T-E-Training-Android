@@ -20,4 +20,9 @@ class GenreAdapter @Inject constructor(
         super.onAttachedToRecyclerView(recyclerView)
         recyclerView.addItemDecoration(dividerItemDecoration)
     }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        recyclerView.removeItemDecoration(dividerItemDecoration)
+    }
 }

@@ -22,4 +22,9 @@ class CrewAdapter @Inject constructor(
             setOrientation(DividerItemDecoration.VERTICAL)
         })
     }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        recyclerView.removeItemDecoration(dividerItemDecoration)
+    }
 }
