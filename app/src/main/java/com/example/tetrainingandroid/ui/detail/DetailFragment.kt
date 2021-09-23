@@ -15,6 +15,7 @@ import com.example.tetrainingandroid.ui.cast.adapter.CastAdapter
 import com.example.tetrainingandroid.ui.crew.adapter.CrewAdapter
 import com.example.tetrainingandroid.ui.genre.adapter.GenreAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
+import com.example.tetrainingandroid.ui.main.home.adapter.MovieItemClickListener
 import com.example.tetrainingandroid.ui.media.adapter.image.BackdropAdapter
 import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeAdapter
 import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeItemClickListener
@@ -42,6 +43,11 @@ class DetailFragment : CacheViewFragment(R.layout.detail_fragment) {
         findNavController().navigate(action)
     }
 
+    private val onMovieItemClickListener = MovieItemClickListener {movieId ->
+        val action = DetailFragmentDirections.actionDetailFragmentSelf(movieId)
+        findNavController().navigate(action)
+    }
+
 
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
@@ -63,6 +69,8 @@ class DetailFragment : CacheViewFragment(R.layout.detail_fragment) {
         rvTrailer?.adapter = youtubeAdapter
 
         rvPhoto?.adapter = backdropAdapter
+
+        similarAdapter.setListener(onMovieItemClickListener)
         rvRelativeMovie?.adapter = similarAdapter
     }
 
