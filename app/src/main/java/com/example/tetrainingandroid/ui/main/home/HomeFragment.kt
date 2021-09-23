@@ -68,6 +68,7 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
         setViewPagerAnimation()
         makeViewPagerSlide()
         vpSlider?.offscreenPageLimit = 3
+        trendingMoviesAdapter.setListener(onItemClickListener)
         vpSlider?.adapter = trendingMoviesAdapter
     }
 

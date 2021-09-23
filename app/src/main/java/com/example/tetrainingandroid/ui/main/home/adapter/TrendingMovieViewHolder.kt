@@ -19,7 +19,10 @@ class TrendingMovieViewHolder (private val view: ViewGroup): RecyclerView.ViewHo
         }
     }
 
-    fun bind(movie: Movie) {
+    fun bind(movie: Movie, listener: MovieItemClickListener?) {
+        view.rootLayout?.setOnClickListener {
+            movie.id?.let { movieId -> listener?.onClick(movieId) }
+        }
         view.imgBackdrop?.load(
             movie.backdropPath,
             size = ImageConfiguration.Size.BACKDROP,
