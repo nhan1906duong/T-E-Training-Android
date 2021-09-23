@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.BaseFragment
 import com.example.tetrainingandroid.data.model.Image
@@ -38,7 +39,6 @@ class PhotoViewerFragment : BaseFragment(R.layout.photo_viewer_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initArgs()
-        setupRecyclerView()
         observeImage()
     }
 
@@ -58,6 +58,7 @@ class PhotoViewerFragment : BaseFragment(R.layout.photo_viewer_fragment) {
             }
         }
         photoAdapter.setType(args.type)
+        setupRecyclerView()
         photoAdapter.submitList(args.images.data)
         image.value = args.current
     }
@@ -65,6 +66,16 @@ class PhotoViewerFragment : BaseFragment(R.layout.photo_viewer_fragment) {
     private fun setupRecyclerView() {
         photoAdapter.setListener(onPhotoItemClickListener)
         rvPhoto?.adapter = photoAdapter
+
+        photoAdapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(
+                positionStart: Int,
+                itemCount: Int
+            ) {
+                rvPhoto.scrollToPosition(args.images.data.indexOf(args.current))
+                photoAdapter.unregisterAdapterDataObserver(this)
+            }
+        })
     }
 
     private fun observeImage() {
