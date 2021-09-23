@@ -51,7 +51,7 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
         val movieId = args.movieId
-        viewModel.setMovie(movieId)
+        savedInstanceState?.putInt("movieId", movieId)
         initView()
         observeMovie()
     }

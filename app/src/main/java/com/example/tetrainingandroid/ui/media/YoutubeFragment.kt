@@ -41,10 +41,10 @@ class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fr
         playAt(videos.indexOf(youtube))
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreatedFirstTime(view, savedInstanceState)
         currentVideo = args.youtube
-        viewModel.setMovie(args.movieId)
+        savedInstanceState?.putInt("movieId", args.movieId)
         initView()
         initYouTubePlayer()
         observerVideos()
