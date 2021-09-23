@@ -16,7 +16,9 @@
         android:id="@+id/imgPhoto"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="@dimen/layout_margin_16dp"/>
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -27,5 +29,5 @@
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/layout_padding_16dp"
         android:clipToPadding="false"
-        android:layout_marginBottom="@dimen/layout_margin_16dp"/>
+        android:layout_marginVertical="@dimen/layout_margin_16dp"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

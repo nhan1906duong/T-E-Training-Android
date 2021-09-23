@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
+import com.example.tetrainingandroid.data.model.Image
 import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.data.model.People
 import com.example.tetrainingandroid.extensions.ImageType
@@ -14,6 +15,9 @@ import com.example.tetrainingandroid.extensions.load
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieItemClickListener
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
+import com.example.tetrainingandroid.ui.media.adapter.image.PhotoItemClickListener
+import com.example.tetrainingandroid.ui.media.adapter.image.PhotoViewHolderType
+import com.example.tetrainingandroid.ui.media.adapter.model.Images
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.cast_fragment.*
 import kotlinx.android.synthetic.main.cast_fragment.collapsingToolbarLayout
@@ -27,10 +31,22 @@ class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
 
     @Inject lateinit var knownForAdapter: MovieAdapter
     @Inject lateinit var profileAdapter: PhotoAdapter
+    private val profilePhotos = mutableListOf<Image>()
 
     private val onMovieItemClickListener = MovieItemClickListener {movieId ->
         val action = CastFragmentDirections.actionCastFragmentToDetailFragment(movieId)
         findNavController().navigate(action)
+    }
+
+    private val onPhotoItemClickListener = object : PhotoItemClickListener {
+        override fun onClick(data: Image) {
+            val action = CastFragmentDirections.actionCastFragmentToPhotoViewerFragment(
+                images = Images(profilePhotos),
+                type = PhotoViewHolderType.PROFILE,
+                current = data
+            )
+            findNavController().navigate(action)
+        }
     }
 
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
@@ -46,6 +62,7 @@ class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
         rvKnownFor?.adapter = knownForAdapter
 
         profileAdapter.setProfileType()
+        profileAdapter.setListener(onPhotoItemClickListener)
         rvMorePhotos?.adapter = profileAdapter
     }
 
@@ -70,7 +87,6 @@ class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
             groupBiography?.visibility = View.VISIBLE
             txtBiography?.text = cast.biography
         }
-
         imgAvatar?.load(
             cast.profilePath,
             size = ImageConfiguration.Size.PROFILE,
@@ -100,6 +116,8 @@ class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
         if (images.isNullOrEmpty()) {
             groupMorePhotos?.visibility = View.GONE
         } else {
+            profilePhotos.clear()
+            profilePhotos.addAll(images)
             groupMorePhotos?.visibility = View.VISIBLE
             profileAdapter.submitList(images)
         }
