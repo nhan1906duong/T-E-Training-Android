@@ -52,6 +52,9 @@
         <action
             android:id="@+id/action_detailFragment_self"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_detailFragment_to_castFragment"
+            app:destination="@id/castFragment" />
     </fragment>
     <fragment
         android:id="@+id/youtubeFragment"
@@ -62,6 +65,14 @@
             app:argType="com.example.tetrainingandroid.data.model.Youtube" />
         <argument
             android:name="movieId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/castFragment"
+        android:name="com.example.tetrainingandroid.ui.cast.CastFragment"
+        android:label="CastFragment" >
+        <argument
+            android:name="castId"
             app:argType="integer" />
     </fragment>
 

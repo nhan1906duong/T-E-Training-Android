@@ -11,6 +11,7 @@ import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
 import com.example.tetrainingandroid.ui.cast.adapter.CastAdapter
+import com.example.tetrainingandroid.ui.cast.adapter.CastItemClickListener
 import com.example.tetrainingandroid.ui.crew.adapter.CrewAdapter
 import com.example.tetrainingandroid.ui.genre.adapter.GenreAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
@@ -37,8 +38,13 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
 
     private val args: DetailFragmentArgs by navArgs()
 
-    private val onItemClickListener = YoutubeItemClickListener {
+    private val onVideoItemClickListener = YoutubeItemClickListener {
         val action = DetailFragmentDirections.actionDetailFragmentToYoutubeFragment(it, args.movieId)
+        findNavController().navigate(action)
+    }
+
+    private val onCastItemClickListener = CastItemClickListener {
+        val action = DetailFragmentDirections.actionDetailFragmentToCastFragment(it)
         findNavController().navigate(action)
     }
 
@@ -61,10 +67,13 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
         initToolbar()
 
         rvGenre?.adapter = genreAdapter
+
+        castAdapter.setListener(onCastItemClickListener)
         rvCast?.adapter = castAdapter
+
         rvCrew?.adapter = crewAdapter
 
-        youtubeAdapter.setListener(onItemClickListener)
+        youtubeAdapter.setListener(onVideoItemClickListener)
         rvTrailer?.adapter = youtubeAdapter
 
         rvPhoto?.adapter = backdropAdapter

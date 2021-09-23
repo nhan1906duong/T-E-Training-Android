@@ -21,8 +21,9 @@ class CastViewHolder @Inject constructor(
             }
         }
 
-    fun bind(cast: People) {
+    fun bind(cast: People, listener: CastItemClickListener?) {
         view.apply {
+            rootLayout?.setOnClickListener { cast.id?.let { listener?.onClick(it) } }
             imgCast?.load(
                 cast.profilePath,
                 size = ImageConfiguration.Size.PROFILE,
