@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
+import com.example.tetrainingandroid.data.model.Image
 import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
@@ -17,6 +18,9 @@ import com.example.tetrainingandroid.ui.genre.adapter.GenreAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieItemClickListener
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
+import com.example.tetrainingandroid.ui.media.adapter.image.PhotoItemClickListener
+import com.example.tetrainingandroid.ui.media.adapter.image.PhotoViewHolderType
+import com.example.tetrainingandroid.ui.media.adapter.model.Images
 import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeAdapter
 import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,17 +33,25 @@ import javax.inject.Inject
 class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragment) {
     override val viewModel: DetailViewModel by viewModels()
 
-    @Inject lateinit var genreAdapter: GenreAdapter
-    @Inject lateinit var castAdapter: CastAdapter
-    @Inject lateinit var crewAdapter: CrewAdapter
-    @Inject lateinit var backdropAdapter: PhotoAdapter
-    @Inject lateinit var youtubeAdapter: YoutubeAdapter
-    @Inject lateinit var similarAdapter: MovieAdapter
+    @Inject
+    lateinit var genreAdapter: GenreAdapter
+    @Inject
+    lateinit var castAdapter: CastAdapter
+    @Inject
+    lateinit var crewAdapter: CrewAdapter
+    @Inject
+    lateinit var backdropAdapter: PhotoAdapter
+    @Inject
+    lateinit var youtubeAdapter: YoutubeAdapter
+    @Inject
+    lateinit var similarAdapter: MovieAdapter
 
     private val args: DetailFragmentArgs by navArgs()
+    private val backdropPhotos = mutableListOf<Image>()
 
     private val onVideoItemClickListener = YoutubeItemClickListener {
-        val action = DetailFragmentDirections.actionDetailFragmentToYoutubeFragment(it, args.movieId)
+        val action =
+            DetailFragmentDirections.actionDetailFragmentToYoutubeFragment(it, args.movieId)
         findNavController().navigate(action)
     }
 
@@ -53,7 +65,18 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
         findNavController().navigate(action)
     }
 
-    private val onMovieItemClickListener = MovieItemClickListener {movieId ->
+    private val onPhotoItemClickListener = object : PhotoItemClickListener {
+        override fun onClick(data: Image) {
+            val action = DetailFragmentDirections.actionDetailFragmentToPhotoViewerFragment(
+                images = Images(backdropPhotos),
+                type = PhotoViewHolderType.BACKDROP,
+                current = data
+            )
+            findNavController().navigate(action)
+        }
+    }
+
+    private val onMovieItemClickListener = MovieItemClickListener { movieId ->
         val action = DetailFragmentDirections.actionDetailFragmentSelf(movieId)
         findNavController().navigate(action)
     }
@@ -81,6 +104,7 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
         youtubeAdapter.setListener(onVideoItemClickListener)
         rvTrailer?.adapter = youtubeAdapter
 
+        backdropAdapter.setListener(onPhotoItemClickListener)
         rvPhoto?.adapter = backdropAdapter
 
         similarAdapter.setListener(onMovieItemClickListener)
@@ -145,7 +169,9 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
                 if (movie.images?.backdrops.isNullOrEmpty()) {
                     groupPhoto?.visibility = View.GONE
                 } else {
-                    backdropAdapter.submitList(movie.images?.backdrops)
+                    backdropPhotos.clear()
+                    backdropPhotos.addAll(movie.images?.backdrops!!)
+                    backdropAdapter.submitList(movie.images.backdrops)
                 }
 
                 if (movie.videos?.results.isNullOrEmpty()) {
