@@ -40,4 +40,11 @@
     <string name="cast">Cast:</string>
     <string name="crew">Crew:</string>
     <string name="more_videos">More videos</string>
+    <string name="personal_info">Personal Info</string>
+    <string name="known_for">Known for</string>
+    <string name="known_credits">Known Credits</string>
+    <string name="gender">Gender</string>
+    <string name="birthday">Birthday</string>
+    <string name="place_of_birth">Place of Birth</string>
+    <string name="biography">Biography</string>
 </resources>

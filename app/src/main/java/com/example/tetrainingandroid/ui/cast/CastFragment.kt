@@ -22,7 +22,7 @@ class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
 
     private fun observerData() {
         viewModel.people.observe(viewLifecycleOwner, { cast ->
-            txtCastName?.text = cast?.name ?: ""
+            txtName?.text = cast?.name ?: ""
         })
     }
 
