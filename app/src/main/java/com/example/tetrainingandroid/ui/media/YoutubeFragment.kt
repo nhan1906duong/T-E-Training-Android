@@ -38,10 +38,7 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
 
     private val onItemClickListener = YoutubeItemClickListener { youtube ->
         if (currentVideo == youtube) return@YoutubeItemClickListener
-        val index = videos.indexOf(youtube)
-        youtubeAdapter.setSelected(index)
-        currentVideo = youtube
-        player?.loadVideos(videos.map { it.key }, index, 0)
+        playAt(videos.indexOf(youtube))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -130,36 +127,40 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
         initLoadVideos()
         player?.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION)
         player?.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE)
-        player?.setPlayerStateChangeListener(object: YouTubePlayer.PlayerStateChangeListener {
+        player?.setPlaylistEventListener(object: YouTubePlayer.PlaylistEventListener {
+            override fun onPrevious() = playPrevious()
 
-            override fun onLoading() {}
+            override fun onNext() = playNext()
 
-            override fun onLoaded(p0: String?) {}
-
-            override fun onAdStarted() {}
-
-            override fun onVideoStarted() = setTitle()
-
-            override fun onVideoEnded() = playNext()
-
-            override fun onError(p0: YouTubePlayer.ErrorReason?) = playNext()
+            override fun onPlaylistEnded() {}
         })
+    }
+
+    private fun onCurrentVideoChanged(index: Int) {
+        currentVideo = videos[index]
+        youtubeAdapter.setSelected(index)
+        setTitle()
+        player?.loadVideos(videos.map { it.key }, index, 0)
     }
 
     private fun setTitle() {
         toolbar?.title = currentVideo.name
     }
 
-    private fun playNext() {
-        if (player?.hasNext() == true) {
-            val nextIndex = nextIndex()
-            youtubeAdapter.setSelected(nextIndex)
-            currentVideo = videos[nextIndex]
-            player?.next()
-        }
-    }
+    private fun playNext() = onCurrentVideoChanged(nextIndex())
+    private fun playPrevious() = onCurrentVideoChanged(previousIndex())
+    private fun playAt(index: Int) = onCurrentVideoChanged(index)
 
     private fun nextIndex() = (videos.indexOf(currentVideo) + 1) % videos.size
+
+    private fun previousIndex(): Int {
+        val currentIndex = videos.indexOf(currentVideo)
+        return if (currentIndex > 0)  {
+            currentIndex - 1
+        } else {
+            videos.size -1
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
