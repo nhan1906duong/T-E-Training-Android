@@ -16,7 +16,7 @@ import com.example.tetrainingandroid.ui.crew.adapter.CrewAdapter
 import com.example.tetrainingandroid.ui.genre.adapter.GenreAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieItemClickListener
-import com.example.tetrainingandroid.ui.media.adapter.image.BackdropAdapter
+import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
 import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeAdapter
 import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +32,7 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
     @Inject lateinit var genreAdapter: GenreAdapter
     @Inject lateinit var castAdapter: CastAdapter
     @Inject lateinit var crewAdapter: CrewAdapter
-    @Inject lateinit var backdropAdapter: BackdropAdapter
+    @Inject lateinit var backdropAdapter: PhotoAdapter
     @Inject lateinit var youtubeAdapter: YoutubeAdapter
     @Inject lateinit var similarAdapter: MovieAdapter
 

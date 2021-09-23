@@ -13,7 +13,7 @@ import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieItemClickListener
-import com.example.tetrainingandroid.ui.media.adapter.image.ProfileAdapter
+import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.cast_fragment.*
 import kotlinx.android.synthetic.main.cast_fragment.collapsingToolbarLayout
@@ -26,7 +26,7 @@ class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
     private val args: CastFragmentArgs by navArgs()
 
     @Inject lateinit var knownForAdapter: MovieAdapter
-    @Inject lateinit var profileAdapter: ProfileAdapter
+    @Inject lateinit var profileAdapter: PhotoAdapter
 
     private val onMovieItemClickListener = MovieItemClickListener {movieId ->
         val action = CastFragmentDirections.actionCastFragmentToDetailFragment(movieId)
@@ -45,6 +45,7 @@ class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
         knownForAdapter.setListener(onMovieItemClickListener)
         rvKnownFor?.adapter = knownForAdapter
 
+        profileAdapter.setProfileType()
         rvMorePhotos?.adapter = profileAdapter
     }
 
@@ -58,7 +59,6 @@ class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
 
     private fun initView(cast: People) {
         collapsingToolbarLayout?.title = cast.name ?: getString(R.string.unknown)
-        //txtName?.text = cast.name ?: getString(R.string.unknown)
         txtKnownFor?.text = cast.knownForDepartment ?: getString(R.string.unknown)
         txtKnownCredits?.text = "18"
         txtGender?.text = cast.getGenre(this)
