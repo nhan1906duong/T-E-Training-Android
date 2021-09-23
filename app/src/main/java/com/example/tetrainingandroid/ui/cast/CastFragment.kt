@@ -16,6 +16,7 @@ import com.example.tetrainingandroid.ui.main.home.adapter.MovieItemClickListener
 import com.example.tetrainingandroid.ui.media.adapter.image.ProfileAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.cast_fragment.*
+import kotlinx.android.synthetic.main.cast_fragment.collapsingToolbarLayout
 import kotlinx.android.synthetic.main.personal_info_layout.*
 import javax.inject.Inject
 
@@ -56,13 +57,13 @@ class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
     }
 
     private fun initView(cast: People) {
-        txtName?.text = cast.name ?: getString(R.string.unknown)
+        collapsingToolbarLayout?.title = cast.name ?: getString(R.string.unknown)
+        //txtName?.text = cast.name ?: getString(R.string.unknown)
         txtKnownFor?.text = cast.knownForDepartment ?: getString(R.string.unknown)
         txtKnownCredits?.text = "18"
         txtGender?.text = cast.getGenre(this)
         txtBirthday?.text = cast.birthday ?: getString(R.string.unknown)
         txtPlaceBirth?.text = cast.placeOfBirth ?: getString(R.string.unknown)
-
         if (cast.biography.isNullOrEmpty()) {
             groupBiography?.visibility = View.GONE
         } else {
