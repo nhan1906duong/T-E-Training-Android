@@ -10,8 +10,7 @@ import com.example.tetrainingandroid.architecture.LoadingDataFragment
 import com.example.tetrainingandroid.config.Config
 import com.example.tetrainingandroid.data.model.Youtube
 import com.example.tetrainingandroid.extensions.toast
-import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeHorizontalAdapter
-import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeItemClickListener
+import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeSelectableAdapter
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerCompatFragment
@@ -23,7 +22,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fragment), YouTubePlayer.OnInitializedListener {
 
-    @Inject lateinit var youtubeAdapter: YoutubeHorizontalAdapter
+    @Inject lateinit var youtubeAdapter: YoutubeSelectableAdapter
 
     private val args: YoutubeFragmentArgs by navArgs()
     override val viewModel: YoutubeViewModel by viewModels()
@@ -35,11 +34,6 @@ class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fr
     private val heavyWorkScope = CoroutineScope(Dispatchers.Default)
     private var hasData = false
     private var isPlayingBeforeInvisible = false
-
-    private val onItemClickListener = YoutubeItemClickListener { youtube ->
-        if (currentVideo == youtube) return@YoutubeItemClickListener
-        playAt(videos.indexOf(youtube))
-    }
 
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
@@ -56,7 +50,10 @@ class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fr
     }
 
     private fun setupRvTrailer() {
-        youtubeAdapter.setListener(onItemClickListener)
+        youtubeAdapter.setListener { youtube ->
+            if (currentVideo == youtube) return@setListener
+            playAt(videos.indexOf(youtube))
+        }
         rvTrailer?.adapter = youtubeAdapter
     }
 

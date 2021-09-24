@@ -9,6 +9,7 @@ import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
 import com.example.tetrainingandroid.data.model.Image
 import com.example.tetrainingandroid.data.model.ImageConfiguration
+import com.example.tetrainingandroid.data.model.Youtube
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
 import com.example.tetrainingandroid.ui.cast.adapter.CastAdapter
@@ -21,7 +22,6 @@ import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoViewHolderType
 import com.example.tetrainingandroid.ui.media.adapter.model.Images
 import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeAdapter
-import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.detail_body_layout.*
 import kotlinx.android.synthetic.main.detail_fragment.*
@@ -47,12 +47,6 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
 
     private val args: DetailFragmentArgs by navArgs()
     private val backdropPhotos = mutableListOf<Image>()
-
-    private val onVideoItemClickListener = YoutubeItemClickListener {
-        val action =
-            DetailFragmentDirections.actionDetailFragmentToYoutubeFragment(it, args.movieId)
-        findNavController().navigate(action)
-    }
 
     private val onCastItemClickListener = CastItemClickListener {
         val action = DetailFragmentDirections.actionDetailFragmentToCastFragment(it, true)
@@ -89,7 +83,7 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
         crewAdapter.setListener(onCrewItemClickListener)
         rvCrew?.adapter = crewAdapter
 
-        youtubeAdapter.setListener(onVideoItemClickListener)
+        youtubeAdapter.setListener(::navigateToYoutubePlayer)
         rvTrailer?.adapter = youtubeAdapter
 
         backdropAdapter.setListener(::navigateToPhotoViewer)
@@ -183,6 +177,12 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
             type = PhotoViewHolderType.BACKDROP,
             current = image
         )
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToYoutubePlayer(youtube: Youtube) {
+        val action =
+            DetailFragmentDirections.actionDetailFragmentToYoutubeFragment(youtube, args.movieId)
         findNavController().navigate(action)
     }
 }

@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.tetrainingandroid.data.model.Youtube
 import javax.inject.Inject
 
-class YoutubeHorizontalDiffCallback @Inject constructor() : DiffUtil.ItemCallback<Youtube>() {
+class YoutubeSelectableDiffCallback @Inject constructor() : DiffUtil.ItemCallback<Youtube>() {
     override fun areItemsTheSame(oldItem: Youtube, newItem: Youtube) = oldItem.id == newItem.id
 
     override fun areContentsTheSame(
