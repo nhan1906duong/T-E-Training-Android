@@ -20,8 +20,10 @@ class ExceptionHandler @Inject constructor(
     private val storageHelper: StorageHelper,
 ) {
     private val error = MutableLiveData<ErrorResponse?>()
+    private val _authorizeState = MutableLiveData<Boolean>(true)
 
     val errorMessage: LiveData<String?> = Transformations.map(error) { it?.statusMessage }
+    val authorizeState: LiveData<Boolean> = _authorizeState
 
     val handler = CoroutineExceptionHandler { _, throwable ->
         when (throwable) {
@@ -36,7 +38,7 @@ class ExceptionHandler @Inject constructor(
     private fun handleErrorRequest(exception: HttpException) {
         if (exception.code() == HttpResponseStatusCode.Unauthorized.code) {
             storageHelper.removeUserCache()
-            // TODO Restart app
+            _authorizeState.value = false
         }
         val message = exception.response()?.errorBody()?.source()
         if (message == null) {

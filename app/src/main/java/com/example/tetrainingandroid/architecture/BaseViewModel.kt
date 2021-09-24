@@ -10,6 +10,7 @@ abstract class BaseViewModel : ViewModel() {
     @Inject protected lateinit var exceptionHandler: ExceptionHandler
 
     fun getError() = exceptionHandler.errorMessage
+    fun authorizeState() = exceptionHandler.authorizeState
     protected fun getHandler() = exceptionHandler.handler
 
     override fun onCleared() {
