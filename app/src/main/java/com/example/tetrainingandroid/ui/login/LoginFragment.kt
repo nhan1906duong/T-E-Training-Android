@@ -92,14 +92,6 @@ class LoginFragment: BaseFragment(R.layout.login_fragment) {
         signInLauncher.launch(signInIntent)
     }
 
-    private fun hideKeyboard() {
-        activity?.run {
-            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            imm?.hideSoftInputFromWindow(view?.windowToken, 0)
-            currentFocus?.clearFocus()
-        }
-    }
-
     private fun loginSuccess() {
         findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
         loginStorage.save(true)

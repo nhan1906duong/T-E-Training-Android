@@ -15,6 +15,7 @@ import com.example.tetrainingandroid.di.CastAdapter
 import com.example.tetrainingandroid.di.CrewAdapter
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
+import com.example.tetrainingandroid.extensions.toast
 import com.example.tetrainingandroid.ui.people.adapter.PeopleAdapter
 import com.example.tetrainingandroid.ui.genre.adapter.GenreAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
@@ -27,6 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.detail_body_layout.*
 import kotlinx.android.synthetic.main.detail_fragment.*
 import kotlinx.android.synthetic.main.detail_header_layout.*
+import kotlinx.android.synthetic.main.post_review_layout.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -61,6 +63,9 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
 
     private fun initView() {
         initSwipeRefreshEvent()
+
+        rootLayout?.setOnClickListener { hideKeyboard() }
+        btnSend?.setOnClickListener { sendReview() }
 
         rvGenre?.adapter = genreAdapter
 
@@ -206,5 +211,13 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
     private fun navigateToDetailFragment(movie: Movie) {
         val action = DetailFragmentDirections.actionDetailFragmentSelf(movie.id!!)
         findNavController().navigate(action)
+    }
+
+    private fun sendReview() {
+        val rating = ratingBar?.rating ?: 0.0f
+        val content = edtContent?.text?.toString()
+        viewModel.postComment(rating, content).observe(viewLifecycleOwner, {
+            toast(it.statusMessage)
+        })
     }
 }

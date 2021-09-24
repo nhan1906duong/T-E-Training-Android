@@ -54,4 +54,6 @@
 
     <string name="by_author">by &lt;b>%s&lt;/b></string>
     <string name="reviews">Reviews</string>
+    <string name="send">Send</string>
+    <string name="content_hint_text">Enter your comment</string>
 </resources>

@@ -91,6 +91,6 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideGlobalService(retrofit: Retrofit): GlobalService =
-        retrofit.create(GlobalService::class.java)
+    fun provideUserService(retrofit: Retrofit): UserService =
+        retrofit.create(UserService::class.java)
 }

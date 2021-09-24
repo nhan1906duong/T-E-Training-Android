@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.tetrainingandroid.architecture.BaseViewModel
 import com.example.tetrainingandroid.data.model.Movie
+import com.example.tetrainingandroid.data.response.PostResponse
 import com.example.tetrainingandroid.repo.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -37,5 +38,14 @@ class DetailViewModel @Inject constructor(
             val result = (async { repo.getDetail(movieId) }).await()
             _movie.value = result
         }
+    }
+
+    fun postComment(rating: Float?, content: String?): LiveData<PostResponse> {
+        val result = MutableLiveData<PostResponse>()
+        viewModelScope.launch(getHandler()) {
+            val response = (async { repo.postReview(rating, content) }).await()
+            result.value = response
+        }
+        return result
     }
 }
