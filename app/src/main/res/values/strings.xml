@@ -51,4 +51,7 @@
     <string name="female">Female</string>
     <string name="unknown">Unknown</string>
     <string name="more_poster">Poster</string>
+
+    <string name="by_author">by &lt;b>%s&lt;/b></string>
+    <string name="reviews">Reviews</string>
 </resources>

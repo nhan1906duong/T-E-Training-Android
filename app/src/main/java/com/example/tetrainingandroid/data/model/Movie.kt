@@ -33,6 +33,6 @@ data class Movie(
     @Json(name = "videos") val videos: MovieVideoWrapper?,
     @Json(name = "vote_average") val voteAverage: Float?,
     @Json(name = "vote_count") val voteCount: Int?,
-    @Json(name = "reviews") val reviewResponse: ReviewResponse?,
+    @Json(name = "reviews") val reviews: PageResponse<Review>?,
     @Json(name = "similar") val similar: PageResponse<Movie>?
 ): Searchable

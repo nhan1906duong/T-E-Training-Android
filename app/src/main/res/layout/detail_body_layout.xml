@@ -231,11 +231,39 @@
         tools:itemCount="8"
         tools:listitem="@layout/movie_item_layout"/>
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupReview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="llReview,rvReview"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/llReview"
+        android:text="@string/reviews"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin_16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvRelativeMovie"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/layout_margin_8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/llReview"
+        tools:itemCount="3"
+        tools:listitem="@layout/review_item_layout"/>
+
     <View
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/rvRelativeMovie"
-        android:layout_marginTop="@dimen/layout_margin_32dp"
+        android:layout_marginTop="@dimen/layout_margin_16dp"
         app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

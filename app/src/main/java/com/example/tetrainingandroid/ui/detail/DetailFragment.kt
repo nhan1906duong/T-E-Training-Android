@@ -18,11 +18,11 @@ import com.example.tetrainingandroid.extensions.load
 import com.example.tetrainingandroid.ui.people.adapter.PeopleAdapter
 import com.example.tetrainingandroid.ui.genre.adapter.GenreAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
-import com.example.tetrainingandroid.ui.main.home.adapter.MovieItemClickListener
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoViewHolderType
 import com.example.tetrainingandroid.ui.media.adapter.model.Images
 import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeAdapter
+import com.example.tetrainingandroid.ui.review.ReviewAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.detail_body_layout.*
 import kotlinx.android.synthetic.main.detail_fragment.*
@@ -33,28 +33,19 @@ import javax.inject.Inject
 class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragment) {
     override val viewModel: DetailViewModel by viewModels()
 
-    @Inject
-    lateinit var genreAdapter: GenreAdapter
 
     @CastAdapter
-    @Inject
-    lateinit var peopleAdapter: PeopleAdapter
+    @Inject lateinit var peopleAdapter: PeopleAdapter
 
     @CrewAdapter
-    @Inject
-    lateinit var crewAdapter: PeopleAdapter
+    @Inject lateinit var crewAdapter: PeopleAdapter
 
-    @Inject
-    lateinit var backdropAdapter: PhotoAdapter
-
-    @Inject
-    lateinit var posterAdapter: PhotoAdapter
-
-    @Inject
-    lateinit var youtubeAdapter: YoutubeAdapter
-
-    @Inject
-    lateinit var similarAdapter: MovieAdapter
+    @Inject lateinit var genreAdapter: GenreAdapter
+    @Inject lateinit var backdropAdapter: PhotoAdapter
+    @Inject lateinit var posterAdapter: PhotoAdapter
+    @Inject lateinit var youtubeAdapter: YoutubeAdapter
+    @Inject lateinit var similarAdapter: MovieAdapter
+    @Inject lateinit var reviewAdapter: ReviewAdapter
 
     private val args: DetailFragmentArgs by navArgs()
     private val backdropPhotos = mutableListOf<Image>()
@@ -95,6 +86,8 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
 
         similarAdapter.setListener(::navigateToDetailFragment)
         rvRelativeMovie?.adapter = similarAdapter
+
+        rvReview?.adapter = reviewAdapter
     }
 
     private fun initSwipeRefreshEvent() {
@@ -178,6 +171,12 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
                     groupRelateMovies?.visibility = View.GONE
                 } else {
                     similarAdapter.submitList(movie.similar?.results)
+                }
+
+                if (movie.reviews?.results.isNullOrEmpty()) {
+                    groupReview?.visibility = View.GONE
+                } else {
+                    reviewAdapter.submitList(movie.reviews?.results?.take(3))
                 }
             }
         })
