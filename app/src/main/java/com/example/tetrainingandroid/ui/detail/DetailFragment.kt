@@ -87,8 +87,12 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
         youtubeAdapter.setListener(::navigateToYoutubePlayer)
         rvTrailer?.adapter = youtubeAdapter
 
+        imgBackdrop?.setOnClickListener { backdropPhotos.firstOrNull()?.let { navigateToPhotoViewer(it) } }
+
         backdropAdapter.setListener { image, _ -> navigateToPhotoViewer(image) }
         rvBackdrop?.adapter = backdropAdapter
+
+        imgPoster?.setOnClickListener { posterPhotos.firstOrNull()?.let { navigateToPhotoViewer(it, isPoster = true) } }
 
         posterAdapter.setPosterType()
         posterAdapter.setListener { image, _ -> navigateToPhotoViewer(image, isPoster = true) }

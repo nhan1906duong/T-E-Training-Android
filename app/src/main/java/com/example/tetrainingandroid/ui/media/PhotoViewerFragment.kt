@@ -3,6 +3,7 @@ package com.example.tetrainingandroid.ui.media
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -31,8 +32,16 @@ class PhotoViewerFragment : BaseFragment(R.layout.photo_viewer_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initEvent()
         initArgs()
         observeImage()
+    }
+
+    private fun initEvent() {
+        toolbar?.setNavigationOnClickListener {
+            activity?.onBackPressed()
+            toolbar?.setNavigationIconTint(ContextCompat.getColor(requireContext(), R.color.black))
+        }
     }
 
     private fun initArgs() {
@@ -42,11 +51,9 @@ class PhotoViewerFragment : BaseFragment(R.layout.photo_viewer_fragment) {
                 ImageType.BACKGROUND
             }
             PhotoViewHolderType.POSTER -> {
-                imgPhoto?.scaleType = ImageView.ScaleType.CENTER_INSIDE
                 ImageType.BACKGROUND
             }
             PhotoViewHolderType.PROFILE -> {
-                imgPhoto?.scaleType = ImageView.ScaleType.CENTER_INSIDE
                 ImageType.AVATAR
             }
         }
