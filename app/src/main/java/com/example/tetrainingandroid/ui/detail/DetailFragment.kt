@@ -7,76 +7,98 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
+import com.example.tetrainingandroid.data.model.Image
 import com.example.tetrainingandroid.data.model.ImageConfiguration
+import com.example.tetrainingandroid.data.model.Movie
+import com.example.tetrainingandroid.data.model.Youtube
+import com.example.tetrainingandroid.di.CastAdapter
+import com.example.tetrainingandroid.di.CrewAdapter
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
 import com.example.tetrainingandroid.extensions.toast
-import com.example.tetrainingandroid.ui.cast.adapter.CastAdapter
-import com.example.tetrainingandroid.ui.crew.adapter.CrewAdapter
+import com.example.tetrainingandroid.ui.people.adapter.PeopleAdapter
 import com.example.tetrainingandroid.ui.genre.adapter.GenreAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
-import com.example.tetrainingandroid.ui.media.adapter.image.BackdropAdapter
+import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
+import com.example.tetrainingandroid.ui.media.adapter.image.PhotoViewHolderType
+import com.example.tetrainingandroid.ui.media.adapter.model.Images
 import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeAdapter
-import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeItemClickListener
+import com.example.tetrainingandroid.ui.review.ReviewAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.detail_body_layout.*
 import kotlinx.android.synthetic.main.detail_fragment.*
 import kotlinx.android.synthetic.main.detail_header_layout.*
+import kotlinx.android.synthetic.main.post_review_layout.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DetailFragment : CacheViewFragment(R.layout.detail_fragment) {
-    private val viewModel: DetailViewModel by viewModels()
+class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragment) {
+    override val viewModel: DetailViewModel by viewModels()
+
+
+    @CastAdapter
+    @Inject lateinit var peopleAdapter: PeopleAdapter
+
+    @CrewAdapter
+    @Inject lateinit var crewAdapter: PeopleAdapter
 
     @Inject lateinit var genreAdapter: GenreAdapter
-    @Inject lateinit var castAdapter: CastAdapter
-    @Inject lateinit var crewAdapter: CrewAdapter
-    @Inject lateinit var backdropAdapter: BackdropAdapter
+    @Inject lateinit var backdropAdapter: PhotoAdapter
+    @Inject lateinit var posterAdapter: PhotoAdapter
     @Inject lateinit var youtubeAdapter: YoutubeAdapter
     @Inject lateinit var similarAdapter: MovieAdapter
+    @Inject lateinit var reviewAdapter: ReviewAdapter
 
     private val args: DetailFragmentArgs by navArgs()
-
-    private val onItemClickListener = YoutubeItemClickListener {
-        val action = DetailFragmentDirections.actionDetailFragmentToYoutubeFragment(it, args.movieId)
-        findNavController().navigate(action)
-    }
-
+    private val backdropPhotos = mutableListOf<Image>()
+    private val posterPhotos = mutableListOf<Image>()
 
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
         val movieId = args.movieId
-        viewModel.setMovie(movieId)
+        savedInstanceState?.putInt("movieId", movieId)
         initView()
         observeMovie()
     }
 
     private fun initView() {
         initSwipeRefreshEvent()
-        initToolbar()
+
+        rootLayout?.setOnClickListener { hideKeyboard() }
+        btnSend?.setOnClickListener { sendReview() }
 
         rvGenre?.adapter = genreAdapter
-        rvCast?.adapter = castAdapter
+
+        peopleAdapter.setListener { people -> navigateToPeopleFragment(people.id!!, isCast = true) }
+        rvCast?.adapter = peopleAdapter
+
+        crewAdapter.setListener { people -> navigateToPeopleFragment(people.id!!, isCast = false)}
         rvCrew?.adapter = crewAdapter
 
-        youtubeAdapter.setListener(onItemClickListener)
+        youtubeAdapter.setListener(::navigateToYoutubePlayer)
         rvTrailer?.adapter = youtubeAdapter
 
-        rvPhoto?.adapter = backdropAdapter
+        imgBackdrop?.setOnClickListener { backdropPhotos.firstOrNull()?.let { navigateToPhotoViewer(it) } }
+
+        backdropAdapter.setListener { image, _ -> navigateToPhotoViewer(image) }
+        rvBackdrop?.adapter = backdropAdapter
+
+        imgPoster?.setOnClickListener { posterPhotos.firstOrNull()?.let { navigateToPhotoViewer(it, isPoster = true) } }
+
+        posterAdapter.setPosterType()
+        posterAdapter.setListener { image, _ -> navigateToPhotoViewer(image, isPoster = true) }
+        rvPoster?.adapter = posterAdapter
+
+        similarAdapter.setListener(::navigateToDetailFragment)
         rvRelativeMovie?.adapter = similarAdapter
+
+        rvReview?.adapter = reviewAdapter
     }
 
     private fun initSwipeRefreshEvent() {
         swipeRefreshLayout?.setOnRefreshListener {
             swipeRefreshLayout?.isRefreshing = false
             viewModel.refresh()
-        }
-    }
-
-    private fun initToolbar() {
-        toolbar?.setNavigationIcon(R.drawable.ic_back)
-        toolbar?.setNavigationOnClickListener {
-            activity?.onBackPressed()
         }
     }
 
@@ -119,7 +141,7 @@ class DetailFragment : CacheViewFragment(R.layout.detail_fragment) {
                 if (movie.casts?.cast.isNullOrEmpty()) {
                     groupCast?.visibility = View.GONE
                 } else {
-                    castAdapter.submitList(movie.casts?.cast)
+                    peopleAdapter.submitList(movie.casts?.cast)
                 }
 
                 if (movie.casts?.crew.isNullOrEmpty()) {
@@ -129,9 +151,19 @@ class DetailFragment : CacheViewFragment(R.layout.detail_fragment) {
                 }
 
                 if (movie.images?.backdrops.isNullOrEmpty()) {
-                    groupPhoto?.visibility = View.GONE
+                    groupBackdrop?.visibility = View.GONE
                 } else {
-                    backdropAdapter.submitList(movie.images?.backdrops)
+                    backdropPhotos.clear()
+                    backdropPhotos.addAll(movie.images?.backdrops!!)
+                    backdropAdapter.submitList(movie.images.backdrops)
+                }
+
+                if (movie.images?.posters.isNullOrEmpty()) {
+                    groupPoster?.visibility = View.GONE
+                } else {
+                    posterPhotos.clear()
+                    posterPhotos.addAll(movie.images?.posters!!)
+                    posterAdapter.submitList(movie.images.posters)
                 }
 
                 if (movie.videos?.results.isNullOrEmpty()) {
@@ -145,9 +177,57 @@ class DetailFragment : CacheViewFragment(R.layout.detail_fragment) {
                 } else {
                     similarAdapter.submitList(movie.similar?.results)
                 }
+
+                if (movie.reviews?.results.isNullOrEmpty()) {
+                    groupReview?.visibility = View.GONE
+                } else {
+                    reviewAdapter.submitList(movie.reviews?.results?.take(3))
+                }
             }
         })
-
-        viewModel.error.observe(viewLifecycleOwner, { message -> toast(message) })
     }
+
+    private fun navigateToPhotoViewer(image: Image, isPoster: Boolean = false) {
+        val action = DetailFragmentDirections.actionDetailFragmentToPhotoViewerFragment(
+            images = Images(if (isPoster) posterPhotos else backdropPhotos),
+            type = if (isPoster) PhotoViewHolderType.POSTER else PhotoViewHolderType.BACKDROP,
+            current = image
+        )
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToYoutubePlayer(youtube: Youtube) {
+        val action =
+            DetailFragmentDirections.actionDetailFragmentToYoutubeFragment(youtube, args.movieId)
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToPeopleFragment(peopleId: Int, isCast: Boolean) {
+        val action =
+            DetailFragmentDirections.actionDetailFragmentToPeopleFragment(peopleId, isCast)
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToDetailFragment(movie: Movie) {
+        val action = DetailFragmentDirections.actionDetailFragmentSelf(movie.id!!)
+        findNavController().navigate(action)
+    }
+
+    private fun sendReview() {
+        showLoading()
+        val rating = ratingBar?.rating ?: 0.0f
+        val content = edtContent?.text?.toString()
+        viewModel.postComment(rating, content).observe(viewLifecycleOwner, {
+            it?.let { hideLoading() }
+            toast(it?.statusMessage)
+        })
+    }
+
+    override fun onLoadingDataError(message: String?) {
+        super.onLoadingDataError(message)
+        hideLoading()
+    }
+
+    private fun showLoading() = View.VISIBLE.also { linearProgress?.visibility = it }
+    private fun hideLoading() = View.GONE.also { linearProgress?.visibility = it }
 }

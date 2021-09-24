@@ -30,7 +30,8 @@ fun ImageView.loadTrailer(key: String?) {
 fun ImageView.load(
     path: String?,
     size: ImageConfiguration.Size = ImageConfiguration.Size.PROFILE,
-    type: ImageType
+    type: ImageType,
+    removePlaceholder: Boolean = false
 ) {
     val newPath: String = if (path?.startsWith("/") == true) {
         path.substring(1)
@@ -39,10 +40,10 @@ fun ImageView.load(
     }
     val url = listOf(Config.BASE_IMAGE_URL, size.size, newPath).joinToString(separator = "/")
     Picasso.get()
-        .load(url)
-        .placeholder(R.drawable.image_placeholder_background)
-        .error(if (type == ImageType.AVATAR) R.drawable.error_avatar_placeholder else R.drawable.error_background_placeholder)
-        .into(this)
+        .load(url).apply {
+            if (!removePlaceholder) placeholder(R.drawable.image_placeholder_background)
+            error(if (type == ImageType.AVATAR) R.drawable.error_avatar_placeholder else R.drawable.error_background_placeholder)
+        }.into(this)
 }
 
 fun Fragment.toast(message: String?) {

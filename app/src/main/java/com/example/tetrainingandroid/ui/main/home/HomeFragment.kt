@@ -10,8 +10,8 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
+import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.extensions.getScreenWidth
-import com.example.tetrainingandroid.extensions.toast
 import com.example.tetrainingandroid.ui.main.MainFragmentDirections
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieItemClickListener
@@ -29,7 +29,7 @@ import javax.inject.Inject
 import kotlin.math.abs
 
 @AndroidEntryPoint
-class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
+class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
     companion object {
         private const val SLIDER_INTERVAL = 2000L //millisecond
         private const val BACKDROP_RATIO = 300.0f / 169
@@ -41,20 +41,16 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
     @Inject lateinit var nowPlayingMoviesAdapter: MovieAdapter
     @Inject lateinit var upComingMoviesAdapter: MovieAdapter
 
+    override val viewModel: HomeViewModel by viewModels()
+
     private var sliderDelayJob: Job? = null
     private val sliderScope = CoroutineScope(Dispatchers.Main)
-    private val viewModel: HomeViewModel by viewModels()
     private var isLayoutVisibleOnce: Boolean = false
-
-    private val onItemClickListener = MovieItemClickListener { movieId ->
-        val action = MainFragmentDirections.actionMainFragmentToDetailFragment(movieId)
-        parentFragment?.findNavController()?.navigate(action)
-    }
 
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
-        initView()
         observeData()
+        initView()
         initEvent()
         Picasso.get().load("https://i.pravatar.cc/300").into(imgAvatar)
     }
@@ -68,6 +64,7 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
         setViewPagerAnimation()
         makeViewPagerSlide()
         vpSlider?.offscreenPageLimit = 3
+        trendingMoviesAdapter.setListener(::navigateToDetailFragment)
         vpSlider?.adapter = trendingMoviesAdapter
     }
 
@@ -126,8 +123,6 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
             }
         })
 
-        viewModel.error.observe(viewLifecycleOwner, { errorMessage -> toast(errorMessage) })
-
         viewModel.trendingMovies.observe(viewLifecycleOwner, {
             trendingMoviesAdapter.submitList(it)
         })
@@ -150,16 +145,16 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
     }
 
     private fun setupRecyclerView() {
-        popularMoviesAdapter.setListener(onItemClickListener)
+        popularMoviesAdapter.setListener(::navigateToDetailFragment)
         rvPopularMovies?.adapter = popularMoviesAdapter
 
-        topRatedMoviesAdapter.setListener(onItemClickListener)
+        topRatedMoviesAdapter.setListener(::navigateToDetailFragment)
         rvTopRatedMovies?.adapter = topRatedMoviesAdapter
 
-        nowPlayingMoviesAdapter.setListener(onItemClickListener)
+        nowPlayingMoviesAdapter.setListener(::navigateToDetailFragment)
         rvNowPlayingMovies?.adapter = nowPlayingMoviesAdapter
 
-        upComingMoviesAdapter.setListener(onItemClickListener)
+        upComingMoviesAdapter.setListener(::navigateToDetailFragment)
         rvUpComingMovies?.adapter = upComingMoviesAdapter
     }
 
@@ -168,5 +163,10 @@ class HomeFragment : CacheViewFragment(R.layout.home_fragment) {
             swipeRefreshLayout?.isRefreshing = false
             viewModel.refresh()
         }
+    }
+
+    private fun navigateToDetailFragment(movie: Movie) {
+        val action = MainFragmentDirections.actionMainFragmentToDetailFragment(movie.id!!)
+        parentFragment?.findNavController()?.navigate(action)
     }
 }

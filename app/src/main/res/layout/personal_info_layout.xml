@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/llPersonalInfo"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/personal_info"
+        android:layout_marginTop="@dimen/layout_margin_32dp"
+        android:layout_marginStart="@dimen/layout_margin_16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtName"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupKnownFor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="llKnownFor,txtKnownFor"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierKnownFor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="llKnownFor,txtKnownFor"
+        app:barrierDirection="end"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/llKnownFor"
+        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_margin_16dp"
+        android:layout_marginStart="@dimen/layout_margin_16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llPersonalInfo"
+        android:text="@string/known_for"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtKnownFor"
+        style="@style/TextAppearance.MaterialComponents.Body2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_margin_4dp"
+        android:layout_marginStart="@dimen/layout_margin_16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llKnownFor"
+        tools:text="Acting"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupKnownCredits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="llKnownCredits,txtKnownCredits"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/llKnownCredits"
+        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_margin_16dp"
+        android:layout_marginStart="@dimen/layout_margin_16dp"
+        app:layout_constraintStart_toStartOf="@id/barrierKnownFor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llPersonalInfo"
+        android:text="@string/known_credits"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtKnownCredits"
+        style="@style/TextAppearance.MaterialComponents.Body2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_margin_4dp"
+        app:layout_constraintStart_toStartOf="@id/llKnownCredits"
+        app:layout_constraintTop_toBottomOf="@id/llKnownFor"
+        tools:text="18"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="llGender,txtGender"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/llGender"
+        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_margin_8dp"
+        android:layout_marginStart="@dimen/layout_margin_16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtKnownCredits"
+        android:text="@string/gender"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtGender"
+        style="@style/TextAppearance.MaterialComponents.Body2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_margin_4dp"
+        android:layout_marginStart="@dimen/layout_margin_16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llGender"
+        tools:text="Male"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupBirthday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="llBirthday,txtBirthday"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/llBirthday"
+        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_margin_8dp"
+        android:layout_marginStart="@dimen/layout_margin_16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtGender"
+        android:text="@string/birthday"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtBirthday"
+        style="@style/TextAppearance.MaterialComponents.Body2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_margin_4dp"
+        android:layout_marginStart="@dimen/layout_margin_16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llBirthday"
+        tools:text="1989-04-19 (32 years old)"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupPlaceBirthday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="llPlaceBirth,txtPlaceBirth"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/llPlaceBirth"
+        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_margin_8dp"
+        android:layout_marginStart="@dimen/layout_margin_16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtBirthday"
+        android:text="@string/place_of_birth"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtPlaceBirth"
+        style="@style/TextAppearance.MaterialComponents.Body2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_margin_4dp"
+        android:layout_marginStart="@dimen/layout_margin_16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llPlaceBirth"
+        tools:text="Harbin, Heilongjiang, China"/>
+
+</merge>

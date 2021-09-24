@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <com.google.android.material.appbar.AppBarLayout
+        app:elevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentScrim="@color/white"
+            app:titleCollapseMode="scale"
+            app:expandedTitleGravity="center|bottom"
+            app:collapsedTitleTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:expandedTitleTextAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="?attr/actionBarSize">
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgAvatar"
+                    android:layout_width="@dimen/cast_image_width_size"
+                    android:layout_height="@dimen/cast_image_height_size"
+                    app:layout_constraintDimensionRatio="H,138:175"
+                    android:layout_marginTop="@dimen/layout_margin_16dp"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/border_radius_8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars">
+                </com.google.android.material.imageview.ShapeableImageView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.MaterialComponents.Headline5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="@dimen/layout_margin_32dp"
+                    android:layout_marginVertical="@dimen/layout_margin_16dp"
+                    app:layout_constraintTop_toBottomOf="@id/imgAvatar"
+                    tools:text="@tools:sample/full_names"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_collapseMode="pin"/>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/personal_info_layout"/>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupBiography"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="llBiography,txtBiography"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/llBiography"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/biography"
+                android:layout_margin="@dimen/layout_margin_16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtPlaceBirth"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtBiography"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_margin_16dp"
+                android:layout_marginHorizontal="@dimen/layout_margin_16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llBiography"
+                tools:text="@tools:sample/lorem"/>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/llCareer"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/career"
+                android:layout_margin="@dimen/layout_margin_16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtBiography"/>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupCareerAsCast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="llCareerAsCast,rvCareerAsCast"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/llCareerAsCast"
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cast"
+                android:layout_margin="@dimen/layout_margin_16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llCareer"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCareerAsCast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/llCareerAsCast"
+                tools:listitem="@layout/career_as_cast_item_layout"/>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupCareerAsCrew"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="llCareerAsCrew,rvCareerAsCrew"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/llCareerAsCrew"
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/crew"
+                android:layout_margin="@dimen/layout_margin_8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvCareerAsCast"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCareerAsCrew"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/llCareerAsCrew"
+                tools:listitem="@layout/career_as_cast_item_layout"/>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupMorePhotos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="llMorePhotos,rvMorePhotos"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/llMorePhotos"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/more_photos"
+                android:layout_margin="@dimen/layout_margin_16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvCareerAsCrew"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMorePhotos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/layout_margin_16dp"
+                app:layout_constraintTop_toBottomOf="@id/llMorePhotos"
+                android:paddingHorizontal="@dimen/layout_padding_16dp"
+                android:clipToPadding="false"
+                tools:listitem="@layout/movie_item_layout"/>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupKnownForMovie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="llKnownForMovie,rvKnownFor"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/llKnownForMovie"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/known_for"
+                android:layout_margin="@dimen/layout_margin_16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvMorePhotos"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvKnownFor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"
+                android:layout_marginVertical="@dimen/layout_margin_16dp"
+                app:layout_constraintTop_toBottomOf="@id/llKnownForMovie"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:paddingHorizontal="@dimen/layout_padding_16dp"
+                android:clipToPadding="false"
+                tools:listitem="@layout/movie_item_layout"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -49,6 +49,15 @@
         <action
             android:id="@+id/action_detailFragment_to_youtubeFragment"
             app:destination="@id/youtubeFragment" />
+        <action
+            android:id="@+id/action_detailFragment_self"
+            app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_detailFragment_to_peopleFragment"
+            app:destination="@id/castFragment" />
+        <action
+            android:id="@+id/action_detailFragment_to_photoViewerFragment"
+            app:destination="@id/photoViewerFragment" />
     </fragment>
     <fragment
         android:id="@+id/youtubeFragment"
@@ -60,6 +69,37 @@
         <argument
             android:name="movieId"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/castFragment"
+        android:name="com.example.tetrainingandroid.ui.people.PeopleFragment"
+        android:label="CastFragment" >
+        <argument
+            android:name="peopleId"
+            app:argType="integer" />
+        <argument
+            android:name="isCast"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_castFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_castFragment_to_photoViewerFragment"
+            app:destination="@id/photoViewerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/photoViewerFragment"
+        android:name="com.example.tetrainingandroid.ui.media.PhotoViewerFragment"
+        android:label="PhotoViewerFragment" >
+        <argument
+            android:name="images"
+            app:argType="com.example.tetrainingandroid.ui.media.adapter.model.Images" />
+        <argument
+            android:name="type"
+            app:argType="com.example.tetrainingandroid.ui.media.adapter.image.PhotoViewHolderType" />
+        <argument
+            android:name="current"
+            app:argType="com.example.tetrainingandroid.data.model.Image" />
     </fragment>
 
 </navigation>

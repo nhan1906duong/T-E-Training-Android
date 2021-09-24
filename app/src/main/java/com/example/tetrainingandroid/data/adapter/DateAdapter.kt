@@ -9,12 +9,10 @@ import javax.inject.Singleton
 @Singleton
 class DateAdapter @Inject constructor(): JsonAdapter<Date>() {
     companion object {
-        const val ISO_DATE_TIME_FORMAT: String = "yyyy-MM-dd HH:mm:ss"
+        const val ISO_DATE_TIME_FORMAT: String = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'"
     }
 
-    private val formatter: SimpleDateFormat = SimpleDateFormat(ISO_DATE_TIME_FORMAT, Locale.getDefault()).apply {
-        timeZone = TimeZone.getTimeZone("UTC")
-    }
+    private val formatter: SimpleDateFormat = SimpleDateFormat(ISO_DATE_TIME_FORMAT, Locale.getDefault())
 
     override fun fromJson(reader: JsonReader): Date? {
         try {

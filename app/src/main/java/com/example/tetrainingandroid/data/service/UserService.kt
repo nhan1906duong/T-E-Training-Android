@@ -2,18 +2,18 @@ package com.example.tetrainingandroid.data.service
 
 import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.data.request.FavoriteRequestParams
+import com.example.tetrainingandroid.data.request.ReviewRequestParams
 import com.example.tetrainingandroid.data.request.WatchListRequestParams
 import com.example.tetrainingandroid.data.response.PageResponse
 import com.example.tetrainingandroid.data.response.PostResponse
 import retrofit2.http.*
 
 interface UserService {
-    @POST("movie/{movie_id}/rating")
+    @POST("/3/movie/{movie_id}/rating")
     suspend fun postRating(
-        @Query("guest_session_id") guestSessionId: String? = null,
-        @Query("session_id") sessionId: String? = null,
-        @Body body: Map<String, Any>
-    )
+        @Path("movie_id") movieId: Int,
+        @Body body: ReviewRequestParams
+    ): PostResponse
 
     @POST("/account/{account_id}/favorite")
     suspend fun changeFavorite(

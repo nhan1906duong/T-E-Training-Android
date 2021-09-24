@@ -2,10 +2,11 @@ package com.example.tetrainingandroid.ui.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.tetrainingandroid.architecture.BaseViewModel
-import com.example.tetrainingandroid.architecture.ExceptionHandler
 import com.example.tetrainingandroid.data.model.Movie
+import com.example.tetrainingandroid.data.response.PostResponse
 import com.example.tetrainingandroid.repo.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -14,16 +15,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    exceptionHandler: ExceptionHandler,
+    savedStateHandle: SavedStateHandle,
     private val repo: MovieRepository,
-) : BaseViewModel(exceptionHandler) {
+) : BaseViewModel() {
+
+    private val movieId: Int = savedStateHandle["movieId"] ?: throw IllegalArgumentException("missing movieId")
 
     private val _movie = MutableLiveData<Movie>()
     val movie = _movie as LiveData<Movie>
-    private var movieId: Int = 0
 
-    fun setMovie(movieId: Int) {
-        this.movieId = movieId
+    override fun loadData() {
+        super.loadData()
         getDetail()
     }
 
@@ -32,9 +34,18 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun getDetail() {
-        viewModelScope.launch(exceptionHandler.handler) {
+        viewModelScope.launch(getHandler()) {
             val result = (async { repo.getDetail(movieId) }).await()
             _movie.value = result
         }
+    }
+
+    fun postComment(rating: Float?, content: String?): LiveData<PostResponse> {
+        val result = MutableLiveData<PostResponse>()
+        viewModelScope.launch(getHandler()) {
+            val response = (async { repo.postReview(movieId, rating, content) }).await()
+            result.value = response
+        }
+        return result
     }
 }

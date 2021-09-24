@@ -5,6 +5,7 @@ import com.example.tetrainingandroid.config.Config
 import com.example.tetrainingandroid.data.adapter.DateAdapter
 import com.example.tetrainingandroid.data.adapter.SearchableAdapter
 import com.example.tetrainingandroid.data.interceptor.ApiAuthorizationInterceptor
+import com.example.tetrainingandroid.data.interceptor.AuthenticationInterceptor
 import com.example.tetrainingandroid.data.interceptor.ExtraDataInterceptor
 import com.example.tetrainingandroid.data.model.Searchable
 import com.example.tetrainingandroid.data.service.*
@@ -39,7 +40,7 @@ object NetworkModule {
     @Provides
     fun provideHttpLoggingInterceptor() =
         HttpLoggingInterceptor().apply {
-            if(BuildConfig.DEBUG) level = HttpLoggingInterceptor.Level.BODY
+            if (BuildConfig.DEBUG) level = HttpLoggingInterceptor.Level.BODY
             else HttpLoggingInterceptor.Level.NONE
         }
 
@@ -91,6 +92,13 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideGlobalService(retrofit: Retrofit): GlobalService =
-        retrofit.create(GlobalService::class.java)
+    fun provideUserService(
+        retrofit: Retrofit,
+        okHttpClient: OkHttpClient,
+        authenticationInterceptor: AuthenticationInterceptor
+    ): UserService {
+        val newClient = okHttpClient.newBuilder().addInterceptor(authenticationInterceptor).build()
+        val authenticationRetrofit = retrofit.newBuilder().client(newClient).build()
+        return authenticationRetrofit.create(UserService::class.java)
+    }
 }

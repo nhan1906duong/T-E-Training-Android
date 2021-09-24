@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 
-open class CacheViewFragment(@LayoutRes contentLayoutId: Int): BaseFragment(contentLayoutId)  {
+abstract class CacheViewFragment<VM: BaseViewModel>(@LayoutRes contentLayoutId: Int): LoadingDataFragment<VM>(contentLayoutId)  {
     private var rootView: View? = null
 
     override fun onCreateView(

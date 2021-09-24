@@ -1,5 +1,7 @@
 package com.example.tetrainingandroid.data.model
 
+import androidx.fragment.app.Fragment
+import com.example.tetrainingandroid.R
 import com.squareup.moshi.Json
 
 data class People(
@@ -9,12 +11,12 @@ data class People(
     @Json(name = "birthday") val birthday: String?,
     @Json(name = "deathday") val deathDay: String?,
     @Json(name = "gender") val gender: Int?,
-    @Json(name = "homepage") val homePage: Int?,
+    @Json(name = "homepage") val homePage: String?,
     @Json(name = "id") val id: Int?,
     @Json(name = "images") val images: PeopleImageWrapper?,
     @Json(name = "imdb_id") val imdbId: String?,
-    @Json(name = "known_for_department") val acting: String?,
-    @Json(name = "movie_credits") val movieCredits: PeopleWrapper?,
+    @Json(name = "known_for_department") val knownForDepartment: String?,
+    @Json(name = "movie_credits") val movieCredits: MovieWrapper?,
     @Json(name = "name") val name: String?,
     @Json(name = "place_of_birth") val placeOfBirth: String?,
     @Json(name = "original_name") val originalName: String?,
@@ -26,4 +28,13 @@ data class People(
     @Json(name = "order") val order: Int?,
     @Json(name = "department") val department: String?,
     @Json(name = "job") val job: String?,
-): Searchable
+    @Json(name = "combined_credits") val career: CareerWrapper?,
+): Searchable {
+    fun getGenre(fragment: Fragment): String {
+        return when(gender) {
+            1 -> fragment.getString(R.string.male)
+            2 -> fragment.getString(R.string.female)
+            else -> fragment.getString(R.string.unknown)
+        }
+    }
+}

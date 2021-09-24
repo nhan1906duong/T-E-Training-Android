@@ -1,6 +1,7 @@
 package com.example.tetrainingandroid.data.model
 
 import com.squareup.moshi.Json
+import java.io.Serializable
 
 data class Image(
     @Json(name = "aspect_ratio") val aspectRatio: Float?,
@@ -10,4 +11,4 @@ data class Image(
     @Json(name = "vote_average") val voteAverage: Float?,
     @Json(name = "vote_count") val voteCount: Int?,
     @Json(name = "width") val width: Int?,
-)
+): Serializable

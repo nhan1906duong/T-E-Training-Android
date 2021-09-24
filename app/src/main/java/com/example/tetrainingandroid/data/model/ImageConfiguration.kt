@@ -14,5 +14,6 @@ data class ImageConfiguration(
         BACKDROP("w780"),
         PROFILE("w185"),
         SMALL_PROFILE("w45"),
+        ORIGINAL("original"),
     }
 }

@@ -6,12 +6,11 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.tetrainingandroid.R
-import com.example.tetrainingandroid.architecture.BaseFragment
+import com.example.tetrainingandroid.architecture.LoadingDataFragment
 import com.example.tetrainingandroid.config.Config
 import com.example.tetrainingandroid.data.model.Youtube
 import com.example.tetrainingandroid.extensions.toast
-import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeHorizontalAdapter
-import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeItemClickListener
+import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeSelectableAdapter
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerCompatFragment
@@ -21,12 +20,12 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.OnInitializedListener {
+class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fragment), YouTubePlayer.OnInitializedListener {
 
-    @Inject lateinit var youtubeAdapter: YoutubeHorizontalAdapter
+    @Inject lateinit var youtubeAdapter: YoutubeSelectableAdapter
 
     private val args: YoutubeFragmentArgs by navArgs()
-    private val viewModel: YoutubeViewModel by viewModels()
+    override val viewModel: YoutubeViewModel by viewModels()
     private var player: YouTubePlayer? = null
 
     private lateinit var currentVideo: Youtube
@@ -36,18 +35,10 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
     private var hasData = false
     private var isPlayingBeforeInvisible = false
 
-    private val onItemClickListener = YoutubeItemClickListener { youtube ->
-        if (currentVideo == youtube) return@YoutubeItemClickListener
-        val index = videos.indexOf(youtube)
-        youtubeAdapter.setSelected(index)
-        currentVideo = youtube
-        player?.loadVideos(videos.map { it.key }, index, 0)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreatedFirstTime(view, savedInstanceState)
         currentVideo = args.youtube
-        viewModel.setMovie(args.movieId)
+        savedInstanceState?.putInt("movieId", args.movieId)
         initView()
         initYouTubePlayer()
         observerVideos()
@@ -59,7 +50,10 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
     }
 
     private fun setupRvTrailer() {
-        youtubeAdapter.setListener(onItemClickListener)
+        youtubeAdapter.setListener { youtube ->
+            if (currentVideo == youtube) return@setListener
+            playAt(videos.indexOf(youtube))
+        }
         rvTrailer?.adapter = youtubeAdapter
     }
 
@@ -73,10 +67,6 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
     }
 
     private fun initToolbar() {
-        toolbar?.setNavigationIcon(R.drawable.ic_back)
-        toolbar?.setNavigationOnClickListener {
-            activity?.onBackPressed()
-        }
         toolbar?.title = currentVideo.name ?: ""
     }
 
@@ -130,36 +120,40 @@ class YoutubeFragment: BaseFragment(R.layout.youtube_fragment), YouTubePlayer.On
         initLoadVideos()
         player?.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION)
         player?.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE)
-        player?.setPlayerStateChangeListener(object: YouTubePlayer.PlayerStateChangeListener {
+        player?.setPlaylistEventListener(object: YouTubePlayer.PlaylistEventListener {
+            override fun onPrevious() = playPrevious()
 
-            override fun onLoading() {}
+            override fun onNext() = playNext()
 
-            override fun onLoaded(p0: String?) {}
-
-            override fun onAdStarted() {}
-
-            override fun onVideoStarted() = setTitle()
-
-            override fun onVideoEnded() = playNext()
-
-            override fun onError(p0: YouTubePlayer.ErrorReason?) = playNext()
+            override fun onPlaylistEnded() {}
         })
+    }
+
+    private fun onCurrentVideoChanged(index: Int) {
+        currentVideo = videos[index]
+        youtubeAdapter.setSelected(index)
+        setTitle()
+        player?.loadVideos(videos.map { it.key }, index, 0)
     }
 
     private fun setTitle() {
         toolbar?.title = currentVideo.name
     }
 
-    private fun playNext() {
-        if (player?.hasNext() == true) {
-            val nextIndex = nextIndex()
-            youtubeAdapter.setSelected(nextIndex)
-            currentVideo = videos[nextIndex]
-            player?.next()
-        }
-    }
+    private fun playNext() = onCurrentVideoChanged(nextIndex())
+    private fun playPrevious() = onCurrentVideoChanged(previousIndex())
+    private fun playAt(index: Int) = onCurrentVideoChanged(index)
 
     private fun nextIndex() = (videos.indexOf(currentVideo) + 1) % videos.size
+
+    private fun previousIndex(): Int {
+        val currentIndex = videos.indexOf(currentVideo)
+        return if (currentIndex > 0)  {
+            currentIndex - 1
+        } else {
+            videos.size -1
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()

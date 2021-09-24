@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="border_radius_18dp">
+        <item name="cornerSize">18dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="border_radius_8dp">
+        <item name="cornerSize">8dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="border_radius_24dp">
+        <item name="cornerSize">24dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+</resources>

@@ -7,7 +7,13 @@ import javax.inject.Inject
 
 class TrendingMovieAdapter @Inject constructor(diffCallback: MovieDiffCallback):
     ListAdapter<Movie, TrendingMovieViewHolder>(diffCallback) {
+    private var listener: MovieItemClickListener? = null
+
+    fun setListener(listener: MovieItemClickListener) {
+        this.listener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TrendingMovieViewHolder.from(parent)
 
-    override fun onBindViewHolder(holder: TrendingMovieViewHolder, position: Int) = holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: TrendingMovieViewHolder, position: Int) = holder.bind(getItem(position), listener)
 }
