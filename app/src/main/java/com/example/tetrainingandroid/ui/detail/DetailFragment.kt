@@ -214,10 +214,20 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
     }
 
     private fun sendReview() {
+        showLoading()
         val rating = ratingBar?.rating ?: 0.0f
         val content = edtContent?.text?.toString()
         viewModel.postComment(rating, content).observe(viewLifecycleOwner, {
-            toast(it.statusMessage)
+            it?.let { hideLoading() }
+            toast(it?.statusMessage)
         })
     }
+
+    override fun onLoadingDataError(message: String?) {
+        super.onLoadingDataError(message)
+        hideLoading()
+    }
+
+    private fun showLoading() = View.VISIBLE.also { linearProgress?.visibility = it }
+    private fun hideLoading() = View.GONE.also { linearProgress?.visibility = it }
 }
