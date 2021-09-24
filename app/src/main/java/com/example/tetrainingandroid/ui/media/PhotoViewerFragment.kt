@@ -2,6 +2,7 @@ package com.example.tetrainingandroid.ui.media
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +27,6 @@ class PhotoViewerFragment : BaseFragment(R.layout.photo_viewer_fragment) {
 
     private val image = MutableLiveData<Image>()
 
-    lateinit var size: ImageConfiguration.Size
     lateinit var type: ImageType
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,18 +36,18 @@ class PhotoViewerFragment : BaseFragment(R.layout.photo_viewer_fragment) {
     }
 
     private fun initArgs() {
-        when (args.type) {
+        type = when (args.type) {
             PhotoViewHolderType.BACKDROP -> {
-                size = ImageConfiguration.Size.BACKDROP
-                type = ImageType.BACKGROUND
+                imgPhoto?.scaleType = ImageView.ScaleType.FIT_CENTER
+                ImageType.BACKGROUND
             }
             PhotoViewHolderType.POSTER -> {
-                size = ImageConfiguration.Size.POSTER
-                type = ImageType.BACKGROUND
+                imgPhoto?.scaleType = ImageView.ScaleType.CENTER_INSIDE
+                ImageType.BACKGROUND
             }
             PhotoViewHolderType.PROFILE -> {
-                size = ImageConfiguration.Size.PROFILE
-                type = ImageType.AVATAR
+                imgPhoto?.scaleType = ImageView.ScaleType.CENTER_INSIDE
+                ImageType.AVATAR
             }
         }
         photoAdapter.setType(args.type)
@@ -78,8 +78,9 @@ class PhotoViewerFragment : BaseFragment(R.layout.photo_viewer_fragment) {
         image.observe(viewLifecycleOwner, {
             imgPhoto?.load(
                 it?.filePath,
-                size = size,
-                type = type
+                size = ImageConfiguration.Size.ORIGINAL,
+                type = type,
+                removePlaceholder = true
             )
         })
     }

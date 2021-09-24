@@ -32,21 +32,17 @@ import javax.inject.Inject
 class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragment) {
     override val viewModel: DetailViewModel by viewModels()
 
-    @Inject
-    lateinit var genreAdapter: GenreAdapter
-    @Inject
-    lateinit var castAdapter: CastAdapter
-    @Inject
-    lateinit var crewAdapter: CrewAdapter
-    @Inject
-    lateinit var backdropAdapter: PhotoAdapter
-    @Inject
-    lateinit var youtubeAdapter: YoutubeAdapter
-    @Inject
-    lateinit var similarAdapter: MovieAdapter
+    @Inject lateinit var genreAdapter: GenreAdapter
+    @Inject lateinit var castAdapter: CastAdapter
+    @Inject lateinit var crewAdapter: CrewAdapter
+    @Inject lateinit var backdropAdapter: PhotoAdapter
+    @Inject lateinit var posterAdapter: PhotoAdapter
+    @Inject lateinit var youtubeAdapter: YoutubeAdapter
+    @Inject lateinit var similarAdapter: MovieAdapter
 
     private val args: DetailFragmentArgs by navArgs()
     private val backdropPhotos = mutableListOf<Image>()
+    private val posterPhotos = mutableListOf<Image>()
 
     private val onCastItemClickListener = CastItemClickListener {
         val action = DetailFragmentDirections.actionDetailFragmentToCastFragment(it, true)
@@ -86,8 +82,12 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
         youtubeAdapter.setListener(::navigateToYoutubePlayer)
         rvTrailer?.adapter = youtubeAdapter
 
-        backdropAdapter.setListener(::navigateToPhotoViewer)
-        rvPhoto?.adapter = backdropAdapter
+        backdropAdapter.setListener { image, _ -> navigateToPhotoViewer(image) }
+        rvBackdrop?.adapter = backdropAdapter
+
+        posterAdapter.setPosterType()
+        posterAdapter.setListener { image, _ -> navigateToPhotoViewer(image, isPoster = true) }
+        rvPoster?.adapter = posterAdapter
 
         similarAdapter.setListener(onMovieItemClickListener)
         rvRelativeMovie?.adapter = similarAdapter
@@ -149,11 +149,19 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
                 }
 
                 if (movie.images?.backdrops.isNullOrEmpty()) {
-                    groupPhoto?.visibility = View.GONE
+                    groupBackdrop?.visibility = View.GONE
                 } else {
                     backdropPhotos.clear()
                     backdropPhotos.addAll(movie.images?.backdrops!!)
                     backdropAdapter.submitList(movie.images.backdrops)
+                }
+
+                if (movie.images?.posters.isNullOrEmpty()) {
+                    groupPoster?.visibility = View.GONE
+                } else {
+                    posterPhotos.clear()
+                    posterPhotos.addAll(movie.images?.posters!!)
+                    posterAdapter.submitList(movie.images.posters)
                 }
 
                 if (movie.videos?.results.isNullOrEmpty()) {
@@ -171,10 +179,10 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
         })
     }
 
-    private fun navigateToPhotoViewer(image: Image, position: Int) {
+    private fun navigateToPhotoViewer(image: Image, isPoster: Boolean = false) {
         val action = DetailFragmentDirections.actionDetailFragmentToPhotoViewerFragment(
-            images = Images(backdropPhotos),
-            type = PhotoViewHolderType.BACKDROP,
+            images = Images(if (isPoster) posterPhotos else backdropPhotos),
+            type = if (isPoster) PhotoViewHolderType.POSTER else PhotoViewHolderType.BACKDROP,
             current = image
         )
         findNavController().navigate(action)

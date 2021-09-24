@@ -7,5 +7,6 @@ import javax.inject.Inject
 class ImageDiffCallback @Inject constructor() : DiffUtil.ItemCallback<Image>() {
     override fun areItemsTheSame(oldItem: Image, newItem: Image) = oldItem == newItem
 
-    override fun areContentsTheSame(oldItem: Image, newItem: Image) = oldItem.filePath == newItem.filePath
+    override fun areContentsTheSame(oldItem: Image, newItem: Image) =
+        oldItem.filePath == newItem.filePath
 }
