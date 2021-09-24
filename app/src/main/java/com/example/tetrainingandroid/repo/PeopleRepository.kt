@@ -17,7 +17,7 @@ class PeopleRepository  @Inject constructor(
     suspend fun getPeople(peopleId: Int): People {
         val people: People
         withContext(coroutineDispatcher) {
-            people = (async { service.getPeople(peopleId, "images,movie_credits") }).await()
+            people = (async { service.getPeople(peopleId, "images,movie_credits,combined_credits") }).await()
         }
         return people
     }

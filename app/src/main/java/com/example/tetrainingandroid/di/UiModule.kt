@@ -9,6 +9,9 @@ import com.example.tetrainingandroid.ui.people.adapter.CastDiffCallback
 import com.example.tetrainingandroid.ui.people.adapter.CrewDiffCallback
 import com.example.tetrainingandroid.ui.people.adapter.PeopleAdapter
 import com.example.tetrainingandroid.ui.people.adapter.PeopleViewHolderType
+import com.example.tetrainingandroid.ui.people.adapter.career.CareerAdapter
+import com.example.tetrainingandroid.ui.people.adapter.career.CareerDiffCallback
+import com.example.tetrainingandroid.ui.people.adapter.career.CareerViewHolderType
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,6 +33,12 @@ annotation class CrewAdapter
 
 @Qualifier
 annotation class CastAdapter
+
+@Qualifier
+annotation class CareerAsCrewAdapter
+
+@Qualifier
+annotation class CareerAsCastAdapter
 
 @InstallIn(ActivityComponent::class)
 @Module
@@ -97,6 +106,28 @@ object UiModule {
             type = PeopleViewHolderType.CAST,
             diffCallback = diffCallback,
             dividerItemDecoration = decoration
+        )
+    }
+
+    @CareerAsCastAdapter
+    @Provides
+    fun provideCareerAsCastAdapter(
+        diffCallback: CareerDiffCallback,
+    ): CareerAdapter {
+        return CareerAdapter(
+            CareerViewHolderType.Cast,
+            diffCallback = diffCallback,
+        )
+    }
+
+    @CareerAsCrewAdapter
+    @Provides
+    fun provideCareerAsCrewAdapter(
+        diffCallback: CareerDiffCallback,
+    ): CareerAdapter {
+        return CareerAdapter(
+            CareerViewHolderType.Crew,
+            diffCallback = diffCallback,
         )
     }
 }

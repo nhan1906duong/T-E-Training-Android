@@ -1,6 +1,5 @@
 package com.example.tetrainingandroid.data.model
 
-import android.content.Context
 import androidx.fragment.app.Fragment
 import com.example.tetrainingandroid.R
 import com.squareup.moshi.Json
@@ -29,6 +28,7 @@ data class People(
     @Json(name = "order") val order: Int?,
     @Json(name = "department") val department: String?,
     @Json(name = "job") val job: String?,
+    @Json(name = "combined_credits") val career: CareerWrapper?,
 ): Searchable {
     fun getGenre(fragment: Fragment): String {
         return when(gender) {

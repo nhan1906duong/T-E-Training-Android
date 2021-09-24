@@ -7,17 +7,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
-import com.example.tetrainingandroid.data.model.Image
-import com.example.tetrainingandroid.data.model.ImageConfiguration
-import com.example.tetrainingandroid.data.model.Movie
-import com.example.tetrainingandroid.data.model.People
+import com.example.tetrainingandroid.data.model.*
+import com.example.tetrainingandroid.di.CareerAsCastAdapter
+import com.example.tetrainingandroid.di.CareerAsCrewAdapter
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
-import com.example.tetrainingandroid.ui.main.home.adapter.MovieItemClickListener
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoViewHolderType
 import com.example.tetrainingandroid.ui.media.adapter.model.Images
+import com.example.tetrainingandroid.ui.people.adapter.career.CareerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.people_fragment.*
 import kotlinx.android.synthetic.main.people_fragment.collapsingToolbarLayout
@@ -31,6 +30,9 @@ class PeopleFragment: CacheViewFragment<PeopleViewModel>(R.layout.people_fragmen
 
     @Inject lateinit var knownForAdapter: MovieAdapter
     @Inject lateinit var profileAdapter: PhotoAdapter
+    @CareerAsCastAdapter @Inject lateinit var careerAsCastAdapter: CareerAdapter
+    @CareerAsCrewAdapter @Inject lateinit var careerAsCrewAdapter: CareerAdapter
+
     private val profilePhotos = mutableListOf<Image>()
 
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
@@ -48,6 +50,9 @@ class PeopleFragment: CacheViewFragment<PeopleViewModel>(R.layout.people_fragmen
         profileAdapter.setProfileType()
         profileAdapter.setListener { image, _ -> navigateToPhotoViewer(image) }
         rvMorePhotos?.adapter = profileAdapter
+
+        rvCareerAsCast?.adapter = careerAsCastAdapter
+        rvCareerAsCrew?.adapter = careerAsCrewAdapter
     }
 
     private fun observerData() {
@@ -58,33 +63,33 @@ class PeopleFragment: CacheViewFragment<PeopleViewModel>(R.layout.people_fragmen
         })
     }
 
-    private fun initView(cast: People) {
-        collapsingToolbarLayout?.title = cast.name ?: getString(R.string.unknown)
-        txtKnownFor?.text = cast.knownForDepartment ?: getString(R.string.unknown)
-        txtKnownCredits?.text = "18"
-        txtGender?.text = cast.getGenre(this)
-        txtBirthday?.text = cast.birthday ?: getString(R.string.unknown)
-        txtPlaceBirth?.text = cast.placeOfBirth ?: getString(R.string.unknown)
-        if (cast.biography.isNullOrEmpty()) {
+    private fun initView(people: People) {
+        collapsingToolbarLayout?.title = people.name ?: getString(R.string.unknown)
+        txtKnownFor?.text = people.knownForDepartment ?: getString(R.string.unknown)
+        txtGender?.text = people.getGenre(this)
+        txtBirthday?.text = people.birthday ?: getString(R.string.unknown)
+        txtPlaceBirth?.text = people.placeOfBirth ?: getString(R.string.unknown)
+        if (people.biography.isNullOrEmpty()) {
             groupBiography?.visibility = View.GONE
         } else {
             groupBiography?.visibility = View.VISIBLE
-            txtBiography?.text = cast.biography
+            txtBiography?.text = people.biography
         }
         imgAvatar?.load(
-            cast.profilePath,
+            people.profilePath,
             size = ImageConfiguration.Size.PROFILE,
             type = ImageType.AVATAR
         )
-        setupKnownForMovie(cast)
-        setupMorePhotos(cast)
+        setupKnownForMovie(people.movieCredits)
+        setupMorePhotos(people.images?.profiles)
+        setupCareer(people.career)
     }
 
-    private fun setupKnownForMovie(cast: People) {
+    private fun setupKnownForMovie(movies: MovieWrapper?) {
         val knownForList = if (args.isCast) {
-            cast.movieCredits?.cast
+            movies?.cast
         } else {
-            cast.movieCredits?.crew
+            movies?.crew
         }
 
         if (knownForList.isNullOrEmpty()) {
@@ -95,8 +100,7 @@ class PeopleFragment: CacheViewFragment<PeopleViewModel>(R.layout.people_fragmen
         }
     }
 
-    private fun setupMorePhotos(cast: People) {
-        val images = cast.images?.profiles
+    private fun setupMorePhotos(images: List<Image>?) {
         if (images.isNullOrEmpty()) {
             groupMorePhotos?.visibility = View.GONE
         } else {
@@ -104,6 +108,30 @@ class PeopleFragment: CacheViewFragment<PeopleViewModel>(R.layout.people_fragmen
             profilePhotos.addAll(images)
             groupMorePhotos?.visibility = View.VISIBLE
             profileAdapter.submitList(images)
+        }
+    }
+
+    private fun setupCareer(career: CareerWrapper?) {
+        val careerAsCast = career?.cast?.filter { !it.releaseDate.isNullOrEmpty() && !it.title.isNullOrEmpty() } ?: listOf()
+        if (careerAsCast.isEmpty()) {
+            groupCareerAsCast?.visibility = View.GONE
+        } else {
+            groupCareerAsCast?.visibility = View.VISIBLE
+            careerAsCastAdapter.submitList(careerAsCast)
+        }
+        val careerAsCrew = career?.crew?.filter { !it.releaseDate.isNullOrEmpty() && !it.title.isNullOrEmpty() } ?: listOf()
+        if (careerAsCast.isEmpty()) {
+            groupCareerAsCrew?.visibility = View.GONE
+        } else {
+            groupCareerAsCrew?.visibility = View.VISIBLE
+            careerAsCrewAdapter.submitList(careerAsCrew)
+        }
+        val knownForCredits = careerAsCast.size + careerAsCrew.size
+        if (knownForCredits == 0) {
+            groupKnownCredits?.visibility = View.GONE
+        } else {
+            groupKnownCredits?.visibility = View.VISIBLE
+            txtKnownCredits?.text = knownForCredits.toString()
         }
     }
 
