@@ -15,7 +15,6 @@ import com.example.tetrainingandroid.extensions.load
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieItemClickListener
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
-import com.example.tetrainingandroid.ui.media.adapter.image.PhotoItemClickListener
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoViewHolderType
 import com.example.tetrainingandroid.ui.media.adapter.model.Images
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,17 +37,6 @@ class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
         findNavController().navigate(action)
     }
 
-    private val onPhotoItemClickListener = object : PhotoItemClickListener {
-        override fun onClick(data: Image) {
-            val action = CastFragmentDirections.actionCastFragmentToPhotoViewerFragment(
-                images = Images(profilePhotos),
-                type = PhotoViewHolderType.PROFILE,
-                current = data
-            )
-            findNavController().navigate(action)
-        }
-    }
-
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
         savedInstanceState?.putInt("castId", args.castId)
@@ -62,7 +50,7 @@ class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
         rvKnownFor?.adapter = knownForAdapter
 
         profileAdapter.setProfileType()
-        profileAdapter.setListener(onPhotoItemClickListener)
+        profileAdapter.setListener(::navigateToPhotoViewer)
         rvMorePhotos?.adapter = profileAdapter
     }
 
@@ -123,4 +111,12 @@ class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
         }
     }
 
+    private fun navigateToPhotoViewer(image: Image, position: Int) {
+        val action = CastFragmentDirections.actionCastFragmentToPhotoViewerFragment(
+            images = Images(profilePhotos),
+            type = PhotoViewHolderType.PROFILE,
+            current = image
+        )
+        findNavController().navigate(action)
+    }
 }

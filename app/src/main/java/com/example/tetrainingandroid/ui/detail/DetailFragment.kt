@@ -18,7 +18,6 @@ import com.example.tetrainingandroid.ui.genre.adapter.GenreAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieItemClickListener
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
-import com.example.tetrainingandroid.ui.media.adapter.image.PhotoItemClickListener
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoViewHolderType
 import com.example.tetrainingandroid.ui.media.adapter.model.Images
 import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeAdapter
@@ -65,17 +64,6 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
         findNavController().navigate(action)
     }
 
-    private val onPhotoItemClickListener = object : PhotoItemClickListener {
-        override fun onClick(data: Image) {
-            val action = DetailFragmentDirections.actionDetailFragmentToPhotoViewerFragment(
-                images = Images(backdropPhotos),
-                type = PhotoViewHolderType.BACKDROP,
-                current = data
-            )
-            findNavController().navigate(action)
-        }
-    }
-
     private val onMovieItemClickListener = MovieItemClickListener { movieId ->
         val action = DetailFragmentDirections.actionDetailFragmentSelf(movieId)
         findNavController().navigate(action)
@@ -104,7 +92,7 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
         youtubeAdapter.setListener(onVideoItemClickListener)
         rvTrailer?.adapter = youtubeAdapter
 
-        backdropAdapter.setListener(onPhotoItemClickListener)
+        backdropAdapter.setListener(::navigateToPhotoViewer)
         rvPhoto?.adapter = backdropAdapter
 
         similarAdapter.setListener(onMovieItemClickListener)
@@ -187,5 +175,14 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
                 }
             }
         })
+    }
+
+    private fun navigateToPhotoViewer(image: Image, position: Int) {
+        val action = DetailFragmentDirections.actionDetailFragmentToPhotoViewerFragment(
+            images = Images(backdropPhotos),
+            type = PhotoViewHolderType.BACKDROP,
+            current = image
+        )
+        findNavController().navigate(action)
     }
 }
