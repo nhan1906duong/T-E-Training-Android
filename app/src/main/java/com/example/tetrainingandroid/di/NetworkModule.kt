@@ -28,11 +28,12 @@ import javax.inject.Singleton
 object NetworkModule {
     @Singleton
     @Provides
-    fun provideMoshi(dateAdapter: DateAdapter, searchableAdapter: SearchableAdapter): Moshi {
+    fun provideMoshi(
+        dateAdapter: DateAdapter,
+    ): Moshi {
         return Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .add(Date::class.java, dateAdapter)
-            .add(Searchable::class.java, searchableAdapter)
             .build()
     }
 
@@ -62,10 +63,15 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(moshi: Moshi, client: OkHttpClient): Retrofit {
+    fun provideRetrofit(
+        moshi: Moshi,
+        client: OkHttpClient,
+        searchableAdapter: SearchableAdapter
+    ): Retrofit {
+        val newMoshi = moshi.newBuilder().add(Searchable::class.java, searchableAdapter).build()
         return Retrofit.Builder()
             .client(client)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addConverterFactory(MoshiConverterFactory.create(newMoshi))
             .baseUrl(Config.BASE_URL)
             .build()
     }

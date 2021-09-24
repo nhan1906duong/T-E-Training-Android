@@ -1,3 +1,5 @@
 package com.example.tetrainingandroid.data.model
 
-interface Searchable
+import java.io.Serializable
+
+interface Searchable: Serializable
