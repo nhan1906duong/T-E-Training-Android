@@ -9,6 +9,7 @@ import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
 import com.example.tetrainingandroid.data.model.Image
 import com.example.tetrainingandroid.data.model.ImageConfiguration
+import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.data.model.Youtube
 import com.example.tetrainingandroid.di.CastAdapter
 import com.example.tetrainingandroid.di.CrewAdapter
@@ -59,12 +60,6 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
     private val backdropPhotos = mutableListOf<Image>()
     private val posterPhotos = mutableListOf<Image>()
 
-    private val onMovieItemClickListener = MovieItemClickListener { movieId ->
-        val action = DetailFragmentDirections.actionDetailFragmentSelf(movieId)
-        findNavController().navigate(action)
-    }
-
-
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
         val movieId = args.movieId
@@ -98,7 +93,7 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
         posterAdapter.setListener { image, _ -> navigateToPhotoViewer(image, isPoster = true) }
         rvPoster?.adapter = posterAdapter
 
-        similarAdapter.setListener(onMovieItemClickListener)
+        similarAdapter.setListener(::navigateToDetailFragment)
         rvRelativeMovie?.adapter = similarAdapter
     }
 
@@ -206,6 +201,11 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
     private fun navigateToPeopleFragment(peopleId: Int, isCast: Boolean) {
         val action =
             DetailFragmentDirections.actionDetailFragmentToPeopleFragment(peopleId, isCast)
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToDetailFragment(movie: Movie) {
+        val action = DetailFragmentDirections.actionDetailFragmentSelf(movie.id!!)
         findNavController().navigate(action)
     }
 }

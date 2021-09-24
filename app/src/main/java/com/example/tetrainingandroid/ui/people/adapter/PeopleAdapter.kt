@@ -20,7 +20,7 @@ class PeopleAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (type) {
         PeopleViewHolderType.CAST -> CastViewHolder.from(parent)
-        PeopleViewHolderType.CREW -> CastViewHolder.from(parent)
+        PeopleViewHolderType.CREW -> CrewViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: PeopleViewHolder, position: Int) =

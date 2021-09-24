@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
+import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.extensions.getScreenWidth
 import com.example.tetrainingandroid.ui.main.MainFragmentDirections
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
@@ -46,11 +47,6 @@ class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
     private val sliderScope = CoroutineScope(Dispatchers.Main)
     private var isLayoutVisibleOnce: Boolean = false
 
-    private val onItemClickListener = MovieItemClickListener { movieId ->
-        val action = MainFragmentDirections.actionMainFragmentToDetailFragment(movieId)
-        parentFragment?.findNavController()?.navigate(action)
-    }
-
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
         observeData()
@@ -68,7 +64,7 @@ class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
         setViewPagerAnimation()
         makeViewPagerSlide()
         vpSlider?.offscreenPageLimit = 3
-        trendingMoviesAdapter.setListener(onItemClickListener)
+        trendingMoviesAdapter.setListener(::navigateToDetailFragment)
         vpSlider?.adapter = trendingMoviesAdapter
     }
 
@@ -149,16 +145,16 @@ class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
     }
 
     private fun setupRecyclerView() {
-        popularMoviesAdapter.setListener(onItemClickListener)
+        popularMoviesAdapter.setListener(::navigateToDetailFragment)
         rvPopularMovies?.adapter = popularMoviesAdapter
 
-        topRatedMoviesAdapter.setListener(onItemClickListener)
+        topRatedMoviesAdapter.setListener(::navigateToDetailFragment)
         rvTopRatedMovies?.adapter = topRatedMoviesAdapter
 
-        nowPlayingMoviesAdapter.setListener(onItemClickListener)
+        nowPlayingMoviesAdapter.setListener(::navigateToDetailFragment)
         rvNowPlayingMovies?.adapter = nowPlayingMoviesAdapter
 
-        upComingMoviesAdapter.setListener(onItemClickListener)
+        upComingMoviesAdapter.setListener(::navigateToDetailFragment)
         rvUpComingMovies?.adapter = upComingMoviesAdapter
     }
 
@@ -167,5 +163,10 @@ class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
             swipeRefreshLayout?.isRefreshing = false
             viewModel.refresh()
         }
+    }
+
+    private fun navigateToDetailFragment(movie: Movie) {
+        val action = MainFragmentDirections.actionMainFragmentToDetailFragment(movie.id!!)
+        parentFragment?.findNavController()?.navigate(action)
     }
 }

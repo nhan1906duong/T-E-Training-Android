@@ -23,7 +23,7 @@ class MovieViewHolder private constructor(private val view: ViewGroup) :
     fun bind(movie: Movie, listener: MovieItemClickListener?) {
         view.apply {
             rootLayout?.setOnClickListener {
-                movie.id?.let { movieId -> listener?.onClick(movieId) }
+                movie.id?.let { listener?.invoke(movie) }
             }
             imgPoster?.load(
                 movie.posterPath,

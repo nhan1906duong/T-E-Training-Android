@@ -22,7 +22,7 @@ class TrendingMovieViewHolder (private val imageView: AppCompatImageView): Recyc
     fun bind(movie: Movie, listener: MovieItemClickListener?) {
         imageView.apply {
             setOnClickListener {
-                movie.id?.let { movieId -> listener?.onClick(movieId) }
+                movie.id?.let { listener?.invoke(movie) }
             }
             load(
                 movie.backdropPath,

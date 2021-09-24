@@ -9,6 +9,7 @@ import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
 import com.example.tetrainingandroid.data.model.Image
 import com.example.tetrainingandroid.data.model.ImageConfiguration
+import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.data.model.People
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
@@ -32,11 +33,6 @@ class PeopleFragment: CacheViewFragment<PeopleViewModel>(R.layout.people_fragmen
     @Inject lateinit var profileAdapter: PhotoAdapter
     private val profilePhotos = mutableListOf<Image>()
 
-    private val onMovieItemClickListener = MovieItemClickListener {movieId ->
-        val action = PeopleFragmentDirections.actionCastFragmentToDetailFragment(movieId)
-        findNavController().navigate(action)
-    }
-
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
         savedInstanceState?.putInt("peopleId", args.peopleId)
@@ -46,7 +42,7 @@ class PeopleFragment: CacheViewFragment<PeopleViewModel>(R.layout.people_fragmen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        knownForAdapter.setListener(onMovieItemClickListener)
+        knownForAdapter.setListener(::navigateToDetailFragment)
         rvKnownFor?.adapter = knownForAdapter
 
         profileAdapter.setProfileType()
@@ -117,6 +113,11 @@ class PeopleFragment: CacheViewFragment<PeopleViewModel>(R.layout.people_fragmen
             type = PhotoViewHolderType.PROFILE,
             current = image
         )
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToDetailFragment(movie: Movie) {
+        val action = PeopleFragmentDirections.actionCastFragmentToDetailFragment(movie.id!!)
         findNavController().navigate(action)
     }
 }
