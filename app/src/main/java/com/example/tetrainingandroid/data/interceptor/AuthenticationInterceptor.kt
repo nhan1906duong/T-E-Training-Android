@@ -8,14 +8,23 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ExtraDataInterceptor @Inject constructor(
+class AuthenticationInterceptor @Inject constructor(
     private val sessionStorage: SessionStorage
 ) : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
-        val builder = original.newBuilder()
-        builder.addHeader("Content-type", "application/json;charset=utf-8")
+
+        val originalUrl = original.url
+        val newUrl = originalUrl.newBuilder().apply {
+            addQueryParameter("language", "en")
+            val sessionId = sessionStorage.get()?.sessionId
+            if (!sessionId.isNullOrEmpty()) {
+                addQueryParameter("session_id", sessionId)
+            }
+        }.build()
+
+        val builder = original.newBuilder().url(newUrl)
         val request = builder.build()
         return chain.proceed(request)
     }

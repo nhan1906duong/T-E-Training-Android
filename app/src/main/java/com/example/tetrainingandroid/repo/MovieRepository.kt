@@ -32,11 +32,12 @@ class MovieRepository @Inject constructor(
         return movie
     }
 
-    suspend fun postReview(rating: Float?, content: String?): PostResponse {
+    suspend fun postReview(movieId: Int, rating: Float?, content: String?): PostResponse {
         val result: PostResponse
         withContext(coroutineDispatcher) {
             result = (async {
                 userService.postRating(
+                    movieId,
                     ReviewRequestParams(
                         value = rating,
                         content = content,

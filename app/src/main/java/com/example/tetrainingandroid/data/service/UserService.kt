@@ -11,6 +11,7 @@ import retrofit2.http.*
 interface UserService {
     @POST("/3/movie/{movie_id}/rating")
     suspend fun postRating(
+        @Path("movie_id") movieId: Int,
         @Body body: ReviewRequestParams
     ): PostResponse
 
