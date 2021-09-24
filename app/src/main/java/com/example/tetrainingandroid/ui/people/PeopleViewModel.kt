@@ -1,4 +1,4 @@
-package com.example.tetrainingandroid.ui.cast
+package com.example.tetrainingandroid.ui.people
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,11 +13,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CastViewModel @Inject constructor(
+class PeopleViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val repo: PeopleRepository
 ): BaseViewModel() {
-    private val castId: Int = savedStateHandle["castId"] ?: throw IllegalArgumentException("Missing cast id")
+    private val castId: Int = savedStateHandle["peopleId"] ?: throw IllegalArgumentException("Missing people id")
     private val _people = MutableLiveData<People>()
 
     val people = _people as LiveData<People>

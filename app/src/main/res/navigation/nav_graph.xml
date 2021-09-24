@@ -53,7 +53,7 @@
             android:id="@+id/action_detailFragment_self"
             app:destination="@id/detailFragment" />
         <action
-            android:id="@+id/action_detailFragment_to_castFragment"
+            android:id="@+id/action_detailFragment_to_peopleFragment"
             app:destination="@id/castFragment" />
         <action
             android:id="@+id/action_detailFragment_to_photoViewerFragment"
@@ -72,10 +72,10 @@
     </fragment>
     <fragment
         android:id="@+id/castFragment"
-        android:name="com.example.tetrainingandroid.ui.cast.CastFragment"
+        android:name="com.example.tetrainingandroid.ui.people.PeopleFragment"
         android:label="CastFragment" >
         <argument
-            android:name="castId"
+            android:name="peopleId"
             app:argType="integer" />
         <argument
             android:name="isCast"

@@ -1,20 +1,16 @@
-package com.example.tetrainingandroid.ui.crew.adapter
+package com.example.tetrainingandroid.ui.people.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.data.model.People
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
-import com.example.tetrainingandroid.ui.cast.adapter.CastItemClickListener
 import kotlinx.android.synthetic.main.crew_item_layout.view.*
 import kotlinx.android.synthetic.main.crew_item_layout.view.txtName
-import javax.inject.Inject
 
-class CrewViewHolder @Inject constructor(
-    private val view: ViewGroup): RecyclerView.ViewHolder(view) {
+class CrewViewHolder (view: ViewGroup): PeopleViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup): CrewViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
@@ -23,16 +19,16 @@ class CrewViewHolder @Inject constructor(
             }
         }
 
-    fun bind(cast: People, listener: CastItemClickListener?) {
+    override fun bind(people: People, listener: PeopleItemClickListener?) {
         view.apply {
-            rootLayout?.setOnClickListener { cast.id?.let { listener?.onClick(it) } }
+            rootLayout?.setOnClickListener { people.id?.let { listener?.invoke(people) } }
             imgCrew?.load(
-                cast.profilePath,
+                people.profilePath,
                 size = ImageConfiguration.Size.PROFILE,
                 type = ImageType.AVATAR
             )
-            txtName?.text = cast.name ?: ""
-            txtJob?.text = cast.job ?: ""
+            txtName?.text = people.name ?: ""
+            txtJob?.text = people.job ?: ""
         }
     }
 }

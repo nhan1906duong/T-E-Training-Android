@@ -10,11 +10,11 @@ import com.example.tetrainingandroid.architecture.CacheViewFragment
 import com.example.tetrainingandroid.data.model.Image
 import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.data.model.Youtube
+import com.example.tetrainingandroid.di.CastAdapter
+import com.example.tetrainingandroid.di.CrewAdapter
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
-import com.example.tetrainingandroid.ui.cast.adapter.CastAdapter
-import com.example.tetrainingandroid.ui.cast.adapter.CastItemClickListener
-import com.example.tetrainingandroid.ui.crew.adapter.CrewAdapter
+import com.example.tetrainingandroid.ui.people.adapter.PeopleAdapter
 import com.example.tetrainingandroid.ui.genre.adapter.GenreAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieItemClickListener
@@ -32,27 +32,32 @@ import javax.inject.Inject
 class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragment) {
     override val viewModel: DetailViewModel by viewModels()
 
-    @Inject lateinit var genreAdapter: GenreAdapter
-    @Inject lateinit var castAdapter: CastAdapter
-    @Inject lateinit var crewAdapter: CrewAdapter
-    @Inject lateinit var backdropAdapter: PhotoAdapter
-    @Inject lateinit var posterAdapter: PhotoAdapter
-    @Inject lateinit var youtubeAdapter: YoutubeAdapter
-    @Inject lateinit var similarAdapter: MovieAdapter
+    @Inject
+    lateinit var genreAdapter: GenreAdapter
+
+    @CastAdapter
+    @Inject
+    lateinit var peopleAdapter: PeopleAdapter
+
+    @CrewAdapter
+    @Inject
+    lateinit var crewAdapter: PeopleAdapter
+
+    @Inject
+    lateinit var backdropAdapter: PhotoAdapter
+
+    @Inject
+    lateinit var posterAdapter: PhotoAdapter
+
+    @Inject
+    lateinit var youtubeAdapter: YoutubeAdapter
+
+    @Inject
+    lateinit var similarAdapter: MovieAdapter
 
     private val args: DetailFragmentArgs by navArgs()
     private val backdropPhotos = mutableListOf<Image>()
     private val posterPhotos = mutableListOf<Image>()
-
-    private val onCastItemClickListener = CastItemClickListener {
-        val action = DetailFragmentDirections.actionDetailFragmentToCastFragment(it, true)
-        findNavController().navigate(action)
-    }
-
-    private val onCrewItemClickListener = CastItemClickListener {
-        val action = DetailFragmentDirections.actionDetailFragmentToCastFragment(it, false)
-        findNavController().navigate(action)
-    }
 
     private val onMovieItemClickListener = MovieItemClickListener { movieId ->
         val action = DetailFragmentDirections.actionDetailFragmentSelf(movieId)
@@ -73,10 +78,10 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
 
         rvGenre?.adapter = genreAdapter
 
-        castAdapter.setListener(onCastItemClickListener)
-        rvCast?.adapter = castAdapter
+        peopleAdapter.setListener { people -> navigateToPeopleFragment(people.id!!, isCast = true) }
+        rvCast?.adapter = peopleAdapter
 
-        crewAdapter.setListener(onCrewItemClickListener)
+        crewAdapter.setListener { people -> navigateToPeopleFragment(people.id!!, isCast = false)}
         rvCrew?.adapter = crewAdapter
 
         youtubeAdapter.setListener(::navigateToYoutubePlayer)
@@ -139,7 +144,7 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
                 if (movie.casts?.cast.isNullOrEmpty()) {
                     groupCast?.visibility = View.GONE
                 } else {
-                    castAdapter.submitList(movie.casts?.cast)
+                    peopleAdapter.submitList(movie.casts?.cast)
                 }
 
                 if (movie.casts?.crew.isNullOrEmpty()) {
@@ -191,6 +196,12 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
     private fun navigateToYoutubePlayer(youtube: Youtube) {
         val action =
             DetailFragmentDirections.actionDetailFragmentToYoutubeFragment(youtube, args.movieId)
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToPeopleFragment(peopleId: Int, isCast: Boolean) {
+        val action =
+            DetailFragmentDirections.actionDetailFragmentToPeopleFragment(peopleId, isCast)
         findNavController().navigate(action)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.tetrainingandroid.ui.cast.adapter
+package com.example.tetrainingandroid.ui.people.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.tetrainingandroid.data.model.People

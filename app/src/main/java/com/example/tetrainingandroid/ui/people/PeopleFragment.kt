@@ -1,4 +1,4 @@
-package com.example.tetrainingandroid.ui.cast
+package com.example.tetrainingandroid.ui.people
 
 import android.os.Bundle
 import android.view.View
@@ -18,28 +18,28 @@ import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoViewHolderType
 import com.example.tetrainingandroid.ui.media.adapter.model.Images
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.cast_fragment.*
-import kotlinx.android.synthetic.main.cast_fragment.collapsingToolbarLayout
+import kotlinx.android.synthetic.main.people_fragment.*
+import kotlinx.android.synthetic.main.people_fragment.collapsingToolbarLayout
 import kotlinx.android.synthetic.main.personal_info_layout.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
-    override val viewModel: CastViewModel by viewModels()
-    private val args: CastFragmentArgs by navArgs()
+class PeopleFragment: CacheViewFragment<PeopleViewModel>(R.layout.people_fragment) {
+    override val viewModel: PeopleViewModel by viewModels()
+    private val args: PeopleFragmentArgs by navArgs()
 
     @Inject lateinit var knownForAdapter: MovieAdapter
     @Inject lateinit var profileAdapter: PhotoAdapter
     private val profilePhotos = mutableListOf<Image>()
 
     private val onMovieItemClickListener = MovieItemClickListener {movieId ->
-        val action = CastFragmentDirections.actionCastFragmentToDetailFragment(movieId)
+        val action = PeopleFragmentDirections.actionCastFragmentToDetailFragment(movieId)
         findNavController().navigate(action)
     }
 
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
-        savedInstanceState?.putInt("castId", args.castId)
+        savedInstanceState?.putInt("peopleId", args.peopleId)
         observerData()
     }
 
@@ -50,7 +50,7 @@ class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
         rvKnownFor?.adapter = knownForAdapter
 
         profileAdapter.setProfileType()
-        profileAdapter.setListener(::navigateToPhotoViewer)
+        profileAdapter.setListener { image, _ -> navigateToPhotoViewer(image) }
         rvMorePhotos?.adapter = profileAdapter
     }
 
@@ -111,8 +111,8 @@ class CastFragment: CacheViewFragment<CastViewModel>(R.layout.cast_fragment) {
         }
     }
 
-    private fun navigateToPhotoViewer(image: Image, position: Int) {
-        val action = CastFragmentDirections.actionCastFragmentToPhotoViewerFragment(
+    private fun navigateToPhotoViewer(image: Image) {
+        val action = PeopleFragmentDirections.actionCastFragmentToPhotoViewerFragment(
             images = Images(profilePhotos),
             type = PhotoViewHolderType.PROFILE,
             current = image
