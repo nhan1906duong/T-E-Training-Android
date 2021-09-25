@@ -13,6 +13,7 @@ class SearchAdapter @Inject constructor(
     companion object {
         private const val PEOPLE_TYPE = 1
         private const val MOVIE_TYPE = 2
+        private const val LOAD_MORE_TYPE = 3
     }
 
     private var listener: SearchItemClickListener? = null
@@ -24,7 +25,7 @@ class SearchAdapter @Inject constructor(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when(viewType) {
         MOVIE_TYPE -> MovieSearchViewHolder.from(parent)
         PEOPLE_TYPE -> PeopleSearchViewHolder.from(parent)
-        else -> throw Exception("Missing type of Searchable")
+        else -> LoadMoreViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) = holder.bind(getItem(position), listener)
@@ -33,8 +34,7 @@ class SearchAdapter @Inject constructor(
         return when(getItem(position)) {
             is People -> PEOPLE_TYPE
             is Movie -> MOVIE_TYPE
-            else -> throw Exception("Missing type of Searchable")
+            else -> LOAD_MORE_TYPE
         }
     }
-
 }
