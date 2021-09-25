@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.LoadingDataFragment
@@ -31,7 +32,6 @@ class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fr
     private lateinit var currentVideo: Youtube
     private val videos = mutableListOf<Youtube>()
 
-    private val heavyWorkScope = CoroutineScope(Dispatchers.Default)
     private var hasData = false
     private var isPlayingBeforeInvisible = false
 
@@ -79,7 +79,7 @@ class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fr
                 videos.add(currentVideo)
                 initLoadVideos()
             } else {
-                heavyWorkScope.launch {
+                lifecycleScope.launch(Dispatchers.Default) {
                     filterListVideo(data)
                     withContext(Dispatchers.Main) {
                         submitAdapter()
@@ -155,11 +155,6 @@ class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fr
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        heavyWorkScope.cancel()
-    }
-
     private fun initLoadVideos() {
         if (hasData && player != null) {
             player?.loadVideos(videos.map { it.key }, 0, 0)
@@ -181,9 +176,9 @@ class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fr
     }
 
     private fun resumePlayer() {
-        heavyWorkScope.launch {
+        lifecycleScope.launch(Dispatchers.Default) {
+            delay(200)
             withContext(Dispatchers.Main) {
-                delay(200)
                 player?.play()
             }
         }
