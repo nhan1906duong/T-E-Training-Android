@@ -21,15 +21,13 @@ interface UserService {
 
     @POST("/3/account/{account_id}/favorite")
     suspend fun changeFavorite(
-        @Path("account_id") accountId: String,
-        @Query("session_id") sessionId: String,
+        @Path("account_id") accountId: Int,
         @Body body: FavoriteRequestParams
     ): PostResponse
 
     @POST("/3/account/{account_id}/watchlist")
     suspend fun changeAddToWatchList(
-        @Path("account_id") accountId: String,
-        @Query("session_id") sessionId: String,
+        @Path("account_id") accountId: Int,
         @Body body: WatchListRequestParams
     ): PostResponse
 

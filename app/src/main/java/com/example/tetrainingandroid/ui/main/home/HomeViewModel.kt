@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.tetrainingandroid.architecture.BaseViewModel
 import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.repo.MovieRepository
+import com.example.tetrainingandroid.repo.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repo: MovieRepository
+    private val repo: MovieRepository,
+    private val userRepo: UserRepository,
     ): BaseViewModel() {
     private val _trendingMovies = MutableLiveData<List<Movie>>()
     private val _popularMovies = MutableLiveData<List<Movie>>()
