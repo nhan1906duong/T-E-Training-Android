@@ -40,6 +40,12 @@
         <action
             android:id="@+id/action_mainFragment_to_castFragment"
             app:destination="@id/castFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_watchlistFragment"
+            app:destination="@id/watchlistFragment" />
     </fragment>
 
     <fragment
@@ -103,6 +109,22 @@
         <argument
             android:name="current"
             app:argType="com.example.tetrainingandroid.data.model.Image" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.tetrainingandroid.ui.main.account.favorite.FavoriteFragment"
+        android:label="FavoriteFragment" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/watchlistFragment"
+        android:name="com.example.tetrainingandroid.ui.main.account.watchlist.WatchlistFragment"
+        android:label="WatchlistFragment" >
+        <action
+            android:id="@+id/action_watchlistFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
 
 </navigation>

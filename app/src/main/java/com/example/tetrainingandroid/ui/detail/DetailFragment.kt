@@ -18,13 +18,14 @@ import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.data.model.Youtube
 import com.example.tetrainingandroid.di.CastAdapter
 import com.example.tetrainingandroid.di.CrewAdapter
+import com.example.tetrainingandroid.di.ListMovieAdapter
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
 import com.example.tetrainingandroid.extensions.toast
+import com.example.tetrainingandroid.ui.detail.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.people.adapter.PeopleAdapter
 import com.example.tetrainingandroid.ui.genre.adapter.GenreAdapter
 import com.example.tetrainingandroid.ui.main.UserViewModel
-import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoViewHolderType
 import com.example.tetrainingandroid.ui.media.adapter.model.Images
@@ -54,7 +55,7 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
     @Inject lateinit var backdropAdapter: PhotoAdapter
     @Inject lateinit var posterAdapter: PhotoAdapter
     @Inject lateinit var youtubeAdapter: YoutubeAdapter
-    @Inject lateinit var similarAdapter: MovieAdapter
+    @ListMovieAdapter @Inject lateinit var similarAdapter: MovieAdapter
     @Inject lateinit var reviewAdapter: ReviewAdapter
 
     private val args: DetailFragmentArgs by navArgs()

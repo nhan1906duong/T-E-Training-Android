@@ -10,9 +10,10 @@ import com.example.tetrainingandroid.architecture.CacheViewFragment
 import com.example.tetrainingandroid.data.model.*
 import com.example.tetrainingandroid.di.CareerAsCastAdapter
 import com.example.tetrainingandroid.di.CareerAsCrewAdapter
+import com.example.tetrainingandroid.di.ListMovieAdapter
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
-import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
+import com.example.tetrainingandroid.ui.detail.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoViewHolderType
 import com.example.tetrainingandroid.ui.media.adapter.model.Images
@@ -28,7 +29,7 @@ class PeopleFragment: CacheViewFragment<PeopleViewModel>(R.layout.people_fragmen
     override val viewModel: PeopleViewModel by viewModels()
     private val args: PeopleFragmentArgs by navArgs()
 
-    @Inject lateinit var knownForAdapter: MovieAdapter
+    @ListMovieAdapter @Inject lateinit var knownForAdapter: MovieAdapter
     @Inject lateinit var profileAdapter: PhotoAdapter
     @CareerAsCastAdapter @Inject lateinit var careerAsCastAdapter: CareerAdapter
     @CareerAsCrewAdapter @Inject lateinit var careerAsCrewAdapter: CareerAdapter

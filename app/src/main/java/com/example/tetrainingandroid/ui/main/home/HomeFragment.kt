@@ -13,12 +13,13 @@ import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
 import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.data.model.Movie
+import com.example.tetrainingandroid.di.ListMovieAdapter
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.getScreenWidth
 import com.example.tetrainingandroid.extensions.load
+import com.example.tetrainingandroid.ui.detail.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.main.MainFragmentDirections
 import com.example.tetrainingandroid.ui.main.UserViewModel
-import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.main.home.adapter.TrendingMovieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.header_home_layout.*
@@ -39,10 +40,10 @@ class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
     }
 
     @Inject lateinit var trendingMoviesAdapter: TrendingMovieAdapter
-    @Inject lateinit var popularMoviesAdapter: MovieAdapter
-    @Inject lateinit var topRatedMoviesAdapter: MovieAdapter
-    @Inject lateinit var nowPlayingMoviesAdapter: MovieAdapter
-    @Inject lateinit var upComingMoviesAdapter: MovieAdapter
+    @ListMovieAdapter @Inject lateinit var popularMoviesAdapter: MovieAdapter
+    @ListMovieAdapter @Inject lateinit var topRatedMoviesAdapter: MovieAdapter
+    @ListMovieAdapter @Inject lateinit var nowPlayingMoviesAdapter: MovieAdapter
+    @ListMovieAdapter @Inject lateinit var upComingMoviesAdapter: MovieAdapter
 
     override val viewModel: HomeViewModel by viewModels()
     private val userViewModel: UserViewModel by activityViewModels()

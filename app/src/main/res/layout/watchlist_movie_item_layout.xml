@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/rootLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgPoster"
+        android:layout_width="@dimen/movie_item_width"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="H, 2:3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:shapeAppearanceOverlay="@style/border_radius_8dp"
+        tools:src="@tools:sample/avatars"/>
+
+    <TextView
+        android:id="@+id/txtTitle"
+        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+        app:layout_constraintTop_toBottomOf="@id/imgPoster"
+        app:layout_constraintStart_toStartOf="@id/imgPoster"
+        app:layout_constraintEnd_toEndOf="@id/imgPoster"
+        tools:text="@tools:sample/full_names"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/layout_margin_8dp"
+        android:ellipsize="end"
+        android:maxLines="2" />
+
+    <TextView
+        android:id="@+id/txtFirstAirDate"
+        style="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintStart_toStartOf="@id/imgPoster"
+        app:layout_constraintEnd_toEndOf="@id/imgPoster"
+        app:layout_constraintTop_toBottomOf="@id/txtTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_margin_4dp"
+        android:lines="1"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgWatchlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin_8dp"
+        app:srcCompat="@drawable/ic_bookmark"
+        app:layout_constraintTop_toTopOf="@id/imgPoster"
+        app:layout_constraintEnd_toEndOf="@id/imgPoster"
+        app:tint="@android:color/holo_blue_light"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

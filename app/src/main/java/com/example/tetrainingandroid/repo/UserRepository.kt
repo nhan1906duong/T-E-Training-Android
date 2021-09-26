@@ -2,10 +2,12 @@ package com.example.tetrainingandroid.repo
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.data.model.User
 import com.example.tetrainingandroid.data.request.FavoriteRequestParams
 import com.example.tetrainingandroid.data.request.ReviewRequestParams
 import com.example.tetrainingandroid.data.request.WatchListRequestParams
+import com.example.tetrainingandroid.data.response.PageResponse
 import com.example.tetrainingandroid.data.response.PostResponse
 import com.example.tetrainingandroid.data.service.UserService
 import com.example.tetrainingandroid.di.DispatchersIO
@@ -42,12 +44,32 @@ class UserRepository @Inject constructor(
         }
     }
 
+    suspend fun removeFromWatchlist(movieId: Int): PostResponse? {
+        val accountId = _user.value?.id ?: return null
+        return withContext(coroutineDispatcher) {
+            service.changeAddToWatchList(
+                accountId = accountId,
+                body = WatchListRequestParams.removeFromWatchlist(movieId)
+            )
+        }
+    }
+
     suspend fun markFavorite(movieId: Int): PostResponse? {
         val accountId = _user.value?.id ?: return null
         return withContext(coroutineDispatcher) {
             service.changeFavorite(
                 accountId = accountId,
                 body = FavoriteRequestParams.markFavorite(movieId)
+            )
+        }
+    }
+
+    suspend fun removeFromFavorite(movieId: Int): PostResponse? {
+        val accountId = _user.value?.id ?: return null
+        return withContext(coroutineDispatcher) {
+            service.changeFavorite(
+                accountId = accountId,
+                body = FavoriteRequestParams.removeFavorite(movieId)
             )
         }
     }
@@ -62,4 +84,23 @@ class UserRepository @Inject constructor(
                 )
             )
         }
+
+    suspend fun getFavorite(page: Int): PageResponse<Movie>? {
+        val accountId = _user.value?.id ?: return null
+        return withContext(coroutineDispatcher) {
+            service.getFavorite(
+                accountId = accountId,
+                page = page
+            )
+        }
+    }
+    suspend fun getWatchlist(page: Int): PageResponse<Movie>? {
+        val accountId = _user.value?.id ?: return null
+        return withContext(coroutineDispatcher) {
+            service.getWatchList(
+                accountId = accountId,
+                page = page
+            )
+        }
+    }
 }

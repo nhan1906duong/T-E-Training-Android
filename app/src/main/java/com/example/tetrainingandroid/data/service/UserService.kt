@@ -31,15 +31,15 @@ interface UserService {
         @Body body: WatchListRequestParams
     ): PostResponse
 
-    @GET("/account/{account_id}/watchlist/movies")
+    @GET("/3/account/{account_id}/watchlist/movies")
     suspend fun getWatchList(
-        @Query("session_id") sessionId: String,
-        @Query("page") page: String,
+        @Path("account_id") accountId: Int,
+        @Query("page") page: Int,
     ): PageResponse<Movie>
 
-    @GET("/account/{account_id}/favorite/movies")
+    @GET("/3/account/{account_id}/favorite/movies")
     suspend fun getFavorite(
-        @Query("session_id") sessionId: String,
-        @Query("page") page: String,
+        @Path("account_id") accountId: Int,
+        @Query("page") page: Int,
     ): PageResponse<Movie>
 }

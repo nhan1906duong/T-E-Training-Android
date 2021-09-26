@@ -28,9 +28,7 @@ class PeopleAdapter(
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        recyclerView.addItemDecoration(dividerItemDecoration.apply {
-            setOrientation(if (type == PeopleViewHolderType.CREW) DividerItemDecoration.VERTICAL else DividerItemDecoration.HORIZONTAL)
-        })
+        recyclerView.addItemDecoration(dividerItemDecoration)
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {

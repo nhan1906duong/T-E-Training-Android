@@ -1,4 +1,4 @@
-package com.example.tetrainingandroid.ui.main.home.adapter
+package com.example.tetrainingandroid.ui.detail.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.tetrainingandroid.data.model.Movie

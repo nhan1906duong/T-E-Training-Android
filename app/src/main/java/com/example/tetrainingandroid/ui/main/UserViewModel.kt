@@ -48,4 +48,20 @@ class UserViewModel @Inject constructor(
         }
         return result
     }
+
+    fun removeFromWatchlist(movieId: Int): LiveData<PostResponse?> {
+        val result = MutableLiveData<PostResponse?>()
+        viewModelScope.launch(getHandler()) {
+            result.value = repo.removeFromWatchlist(movieId)
+        }
+        return result
+    }
+
+    fun removeFromFavorite(movieId: Int): LiveData<PostResponse?> {
+        val result = MutableLiveData<PostResponse?>()
+        viewModelScope.launch(getHandler()) {
+            result.value = repo.removeFromFavorite(movieId)
+        }
+        return result
+    }
 }
