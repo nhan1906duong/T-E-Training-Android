@@ -10,6 +10,7 @@ import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.data.model.People
 import com.example.tetrainingandroid.ui.main.MainFragmentDirections
 import com.example.tetrainingandroid.ui.main.search.adapter.SearchAdapter
+import com.example.tetrainingandroid.ui.shared.LoadMoreState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.search_fragment.*
 import javax.inject.Inject
@@ -23,15 +24,21 @@ class SearchFragment: CacheViewFragment<SearchViewModel>(R.layout.search_fragmen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         searchAdapter.setListener { data ->
-            when(data) {
+            when (data) {
                 is Movie -> navigateToMovieDetail(data)
                 is People -> navigateToPeopleDetail(data)
-                else -> {}
+                else -> {
+                }
             }
+        }
+        searchAdapter.setLoadMoreListener {
+            viewModel.loadMore()
         }
         rvSearch?.adapter = searchAdapter
         viewModel.data.observe(viewLifecycleOwner, {
-            searchAdapter.submitList(it?.filterNotNull())
+            if (it == null) return@observe
+            if(it.state == LoadMoreState.END) searchAdapter.setEndLoading()
+            searchAdapter.setList(it.data)
         })
         viewModel.search("X-men")
     }
