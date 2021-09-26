@@ -12,7 +12,6 @@ import com.example.tetrainingandroid.ui.splash.LoginState
 import com.example.tetrainingandroid.validate.Validation
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -48,16 +47,16 @@ class AuthenticationRepository @Inject constructor(
             var requestTokenResponse = requestTokenStorage.get()
             if (Validation.isRequestTokenExpire(requestTokenResponse)) {
                 requestTokenStorage.remove()
-                requestTokenResponse = (async { service.requestToken() }).await()
+                requestTokenResponse = service.requestToken()
             }
             val requestToken = requestTokenResponse?.requestToken
             if (requestToken == null) {
                 throw Exception("Request token is empty")
             } else {
                 requestTokenStorage.save(requestTokenResponse!!)
-                val result = (async { service.validateRequestToken(ValidateRequestTokenParams(requestToken)) }).await()
+                val result = service.validateRequestToken(ValidateRequestTokenParams(requestToken))
                 if (result.success == true) {
-                    val session = (async { service.createSession(SessionRequestParams(requestToken)) }).await()
+                    val session = service.createSession(SessionRequestParams(requestToken))
                     if (session.success == true && !session.sessionId.isNullOrEmpty()) {
                         sessionStorage.save(session)
                         withContext(Dispatchers.Main) {

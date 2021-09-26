@@ -8,7 +8,6 @@ import com.example.tetrainingandroid.architecture.BaseViewModel
 import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.repo.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,8 +33,7 @@ class DetailViewModel @Inject constructor(
 
     private fun getDetail() {
         viewModelScope.launch(getHandler()) {
-            val result = (async { repo.getDetail(movieId) }).await()
-            _movie.value = result
+            _movie.value = repo.getDetail(movieId)
         }
     }
 }

@@ -25,8 +25,7 @@ class PeopleViewModel @Inject constructor(
     override fun loadData() {
         super.loadData()
         viewModelScope.launch(getHandler()){
-            val result = (async { repo.getPeople(castId) }).await()
-            _people.value = result
+            _people.value = repo.getPeople(castId)
         }
     }
 }

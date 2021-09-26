@@ -33,7 +33,7 @@ class WatchlistFragment: CacheViewFragment<WatchlistViewModel>(R.layout.watchlis
             adapter.submitList(it.data)
         })
         adapter.setListener(::navigateToDetail)
-        adapter.setChildItemListener(::removeFromFavorite)
+        adapter.setChildItemListener(::removeFromWatchlist)
         rvWatchlist?.adapter = adapter
     }
 
@@ -42,8 +42,8 @@ class WatchlistFragment: CacheViewFragment<WatchlistViewModel>(R.layout.watchlis
         findNavController().navigate(action)
     }
 
-    private fun removeFromFavorite(movie: Movie) {
-        userViewModel.removeFromFavorite(movie.id!!).observe(viewLifecycleOwner, {
+    private fun removeFromWatchlist(movie: Movie) {
+        userViewModel.removeFromWatchlist(movie.id!!).observe(viewLifecycleOwner, {
             toast(it?.statusMessage)
             if (it?.success == true) {
                 viewModel.loadData()

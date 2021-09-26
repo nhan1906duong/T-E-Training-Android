@@ -42,7 +42,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private suspend fun processRequest() {
-        val response = (viewModelScope.async { repo.search(_currentQuery, searchPage.page) }).await()
+        val response = repo.search(_currentQuery, searchPage.page)
         val totalPage = response.totalPages ?: 1
         if (searchPage.page == totalPage) {
             val result = response.results?.filterNotNull() ?: listOf()
