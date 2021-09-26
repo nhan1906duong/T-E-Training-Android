@@ -15,7 +15,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/bottom_line"/>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/toolbarDisable"
@@ -23,15 +24,8 @@
         android:clickable="true"
         android:focusable="true"
         android:padding="@dimen/layout_padding_16dp"
-        android:layout_marginTop="@dimen/layout_margin_8dp">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/change_language"/>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
+        android:text="@string/change_language"
+        android:layout_marginTop="@dimen/layout_margin_8dp"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLogout"

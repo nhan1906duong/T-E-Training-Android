@@ -18,6 +18,7 @@
             android:layout_width="@dimen/avatar_image_size"
             android:layout_height="@dimen/avatar_image_size"
             android:layout_margin="@dimen/layout_margin_16dp"
+            android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/border_radius_18dp"
             tools:srcCompat="@tools:sample/avatars"/>
 

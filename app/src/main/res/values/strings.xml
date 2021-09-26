@@ -63,4 +63,6 @@
     <string name="finding_your_movie">Finding your movie</string>
     <string name="logout">Logout</string>
     <string name="change_language">Change language</string>
+    <string name="my_watch_list">My watchlist</string>
+    <string name="my_favorite">My favorite</string>
 </resources>

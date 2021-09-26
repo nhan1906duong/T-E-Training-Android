@@ -3,6 +3,7 @@ package com.example.tetrainingandroid.ui.main.home
 import android.os.Bundle
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -10,13 +11,15 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
+import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.data.model.Movie
+import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.getScreenWidth
+import com.example.tetrainingandroid.extensions.load
 import com.example.tetrainingandroid.ui.main.MainFragmentDirections
+import com.example.tetrainingandroid.ui.main.UserViewModel
 import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
-import com.example.tetrainingandroid.ui.main.home.adapter.MovieItemClickListener
 import com.example.tetrainingandroid.ui.main.home.adapter.TrendingMovieAdapter
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.header_home_layout.*
 import kotlinx.android.synthetic.main.home_fragment.*
@@ -42,6 +45,7 @@ class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
     @Inject lateinit var upComingMoviesAdapter: MovieAdapter
 
     override val viewModel: HomeViewModel by viewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
     private var sliderDelayJob: Job? = null
     private val sliderScope = CoroutineScope(Dispatchers.Main)
@@ -52,7 +56,6 @@ class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
         observeData()
         initView()
         initEvent()
-        Picasso.get().load("https://i.pravatar.cc/300").into(imgAvatar)
     }
 
     private fun initView() {
@@ -141,6 +144,14 @@ class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
 
         viewModel.upComingMovies.observe(viewLifecycleOwner, {
             upComingMoviesAdapter.submitList(it)
+        })
+
+        userViewModel.user.observe(viewLifecycleOwner, {
+            imgAvatar.load(
+                it?.avatar?.getAvatarPath(),
+                size = ImageConfiguration.Size.PROFILE,
+                type = ImageType.AVATAR
+            )
         })
     }
 
