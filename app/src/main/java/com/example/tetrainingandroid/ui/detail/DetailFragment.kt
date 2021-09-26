@@ -1,7 +1,12 @@
 package com.example.tetrainingandroid.ui.detail
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -13,12 +18,14 @@ import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.data.model.Youtube
 import com.example.tetrainingandroid.di.CastAdapter
 import com.example.tetrainingandroid.di.CrewAdapter
+import com.example.tetrainingandroid.di.ListMovieAdapter
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
 import com.example.tetrainingandroid.extensions.toast
+import com.example.tetrainingandroid.ui.detail.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.people.adapter.PeopleAdapter
 import com.example.tetrainingandroid.ui.genre.adapter.GenreAdapter
-import com.example.tetrainingandroid.ui.main.home.adapter.MovieAdapter
+import com.example.tetrainingandroid.ui.main.UserViewModel
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoViewHolderType
 import com.example.tetrainingandroid.ui.media.adapter.model.Images
@@ -35,6 +42,8 @@ import javax.inject.Inject
 class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragment) {
     override val viewModel: DetailViewModel by viewModels()
 
+    private val userViewModel: UserViewModel by activityViewModels()
+
 
     @CastAdapter
     @Inject lateinit var peopleAdapter: PeopleAdapter
@@ -46,7 +55,7 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
     @Inject lateinit var backdropAdapter: PhotoAdapter
     @Inject lateinit var posterAdapter: PhotoAdapter
     @Inject lateinit var youtubeAdapter: YoutubeAdapter
-    @Inject lateinit var similarAdapter: MovieAdapter
+    @ListMovieAdapter @Inject lateinit var similarAdapter: MovieAdapter
     @Inject lateinit var reviewAdapter: ReviewAdapter
 
     private val args: DetailFragmentArgs by navArgs()
@@ -93,6 +102,9 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
         rvRelativeMovie?.adapter = similarAdapter
 
         rvReview?.adapter = reviewAdapter
+
+        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
+        setHasOptionsMenu(true)
     }
 
     private fun initSwipeRefreshEvent() {
@@ -217,7 +229,7 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
         showLoading()
         val rating = ratingBar?.rating ?: 0.0f
         val content = edtContent?.text?.toString()
-        viewModel.postComment(rating, content).observe(viewLifecycleOwner, {
+        userViewModel.postComment(args.movieId, rating, content).observe(viewLifecycleOwner, {
             it?.let { hideLoading() }
             toast(it?.statusMessage)
         })
@@ -230,4 +242,32 @@ class DetailFragment : CacheViewFragment<DetailViewModel>(R.layout.detail_fragme
 
     private fun showLoading() = View.VISIBLE.also { linearProgress?.visibility = it }
     private fun hideLoading() = View.GONE.also { linearProgress?.visibility = it }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.detail_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.favorite -> {
+                showLoading()
+                userViewModel.markFavorite(args.movieId).observe(viewLifecycleOwner, {
+                    hideLoading()
+                    toast(it?.statusMessage)
+                })
+            }
+            R.id.watchlist -> {
+                showLoading()
+                userViewModel.addToWatchList(args.movieId).observe(viewLifecycleOwner, {
+                    hideLoading()
+                    toast(it?.statusMessage)
+                })
+            }
+            else -> {
+
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }

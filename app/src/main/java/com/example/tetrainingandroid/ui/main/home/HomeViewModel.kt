@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repo: MovieRepository
+    private val repo: MovieRepository,
     ): BaseViewModel() {
     private val _trendingMovies = MutableLiveData<List<Movie>>()
     private val _popularMovies = MutableLiveData<List<Movie>>()
@@ -37,11 +37,11 @@ class HomeViewModel @Inject constructor(
         val parentJob = viewModelScope.launch(getHandler()) {
             _loading.value = true
             supervisorScope {
-                launch { _trendingMovies.value = repo.getTrending() }
-                launch { _popularMovies.value = repo.getPopular() }
-                launch { _topRatedMovies.value = repo.getTopRated() }
-                launch { _nowPlayingMovies.value = repo.getNowPlaying() }
-                launch { _upComingMovies.value = repo.getUpComing() }
+                launch { _trendingMovies.value = repo.getTrending().results ?: listOf() }
+                launch { _popularMovies.value = repo.getPopular().results ?: listOf() }
+                launch { _topRatedMovies.value = repo.getTopRated().results ?: listOf() }
+                launch { _nowPlayingMovies.value = repo.getNowPlaying().results ?: listOf() }
+                launch { _upComingMovies.value = repo.getUpComing().results ?: listOf() }
             }
         }
         parentJob.invokeOnCompletion {

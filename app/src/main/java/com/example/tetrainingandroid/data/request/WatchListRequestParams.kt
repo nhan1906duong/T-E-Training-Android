@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 
 data class WatchListRequestParams(
     @Json(name = "media_type") val mediaType: String,
-    @Json(name = "media_type") val mediaId: Int,
+    @Json(name = "media_id") val mediaId: Int,
     @Json(name = "watchlist") val watchlist: Boolean,
 ) {
     companion object {

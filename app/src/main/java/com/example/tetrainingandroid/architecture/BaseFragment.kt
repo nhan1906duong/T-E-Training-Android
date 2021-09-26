@@ -1,6 +1,7 @@
 package com.example.tetrainingandroid.architecture
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -8,11 +9,19 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.tetrainingandroid.R
+import com.example.tetrainingandroid.data.storage.LanguageStorage
+import com.example.tetrainingandroid.data.storage.StorageHelper
 import com.example.tetrainingandroid.extensions.toast
+import com.example.tetrainingandroid.ui.MainActivity
 import kotlinx.android.synthetic.main.detail_fragment.*
+import javax.inject.Inject
 
 abstract class BaseFragment(@LayoutRes contentLayoutId: Int): Fragment(contentLayoutId) {
+    @Inject lateinit var storageHelper: StorageHelper
+    @Inject lateinit var languageStorage: LanguageStorage
+
     private var isViewCreatedBefore: Boolean = false
 
     open fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
@@ -39,5 +48,16 @@ abstract class BaseFragment(@LayoutRes contentLayoutId: Int): Fragment(contentLa
             imm?.hideSoftInputFromWindow(view?.windowToken, 0)
             currentFocus?.clearFocus()
         }
+    }
+
+    protected fun logout() {
+        storageHelper.removeUserCache()
+        findNavController().setGraph(R.navigation.nav_graph)
+    }
+
+    protected fun restart() {
+        val intent = Intent(requireActivity(), MainActivity::class.java)
+        startActivity(intent)
+        requireActivity().finishAffinity()
     }
 }

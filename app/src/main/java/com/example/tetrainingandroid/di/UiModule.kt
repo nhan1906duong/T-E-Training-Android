@@ -5,6 +5,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tetrainingandroid.R
+import com.example.tetrainingandroid.ui.detail.adapter.MovieAdapter
+import com.example.tetrainingandroid.ui.detail.adapter.MovieDiffCallback
+import com.example.tetrainingandroid.ui.detail.adapter.MovieViewHolderType
 import com.example.tetrainingandroid.ui.people.adapter.CastDiffCallback
 import com.example.tetrainingandroid.ui.people.adapter.CrewDiffCallback
 import com.example.tetrainingandroid.ui.people.adapter.PeopleAdapter
@@ -40,6 +43,13 @@ annotation class CareerAsCrewAdapter
 @Qualifier
 annotation class CareerAsCastAdapter
 
+/**
+ *  Movie Adapter
+ */
+@Qualifier annotation class FavoriteMovieAdapter
+@Qualifier annotation class WatchlistMovieAdapter
+@Qualifier annotation class ListMovieAdapter
+
 @InstallIn(ActivityComponent::class)
 @Module
 object UiModule {
@@ -47,7 +57,7 @@ object UiModule {
     @DividerVertical16
     @Provides
     fun provideDiverDecorationVertical16Item(@ActivityContext context: Context): DividerItemDecoration {
-        val decoration = DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL)
+        val decoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
         decoration.setDrawable(
             ContextCompat.getDrawable(
                 context,
@@ -128,6 +138,47 @@ object UiModule {
         return CareerAdapter(
             CareerViewHolderType.Crew,
             diffCallback = diffCallback,
+        )
+    }
+
+    @FavoriteMovieAdapter
+    @Provides
+    fun provideFavoriteMovieAdapter(
+        diffCallback: MovieDiffCallback,
+        @DividerVertical16 verticalDivider: DividerItemDecoration,
+        @DividerHorizontal8 horizontalDivider: DividerItemDecoration
+    ): MovieAdapter {
+        return MovieAdapter(
+            type = MovieViewHolderType.FAVORITE,
+            diffCallback = diffCallback,
+            decorations = listOf(verticalDivider, horizontalDivider)
+        )
+    }
+
+    @WatchlistMovieAdapter
+    @Provides
+    fun provideWatchlistMovieAdapter(
+        diffCallback: MovieDiffCallback,
+        @DividerVertical16 verticalDivider: DividerItemDecoration,
+        @DividerHorizontal8 horizontalDivider: DividerItemDecoration
+    ): MovieAdapter {
+        return MovieAdapter(
+            type = MovieViewHolderType.WATCHLIST,
+            diffCallback = diffCallback,
+            decorations = listOf(verticalDivider, horizontalDivider)
+        )
+    }
+
+    @ListMovieAdapter
+    @Provides
+    fun provideListMovieAdapter(
+        diffCallback: MovieDiffCallback,
+        @DividerHorizontal16 horizontalDivider: DividerItemDecoration
+    ): MovieAdapter {
+        return MovieAdapter(
+            type = MovieViewHolderType.LIST,
+            diffCallback = diffCallback,
+            decorations = listOf(horizontalDivider)
         )
     }
 }

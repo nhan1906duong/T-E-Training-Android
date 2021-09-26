@@ -31,7 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_collapseMode="pin"/>
+                app:layout_collapseMode="pin"
+                app:menu="@menu/detail_menu"/>
 
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/linearProgress"

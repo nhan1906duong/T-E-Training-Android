@@ -9,6 +9,7 @@ import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
+import com.example.tetrainingandroid.ui.detail.adapter.MovieItemClickListener
 
 class TrendingMovieViewHolder (private val imageView: AppCompatImageView): RecyclerView.ViewHolder(imageView) {
     companion object {

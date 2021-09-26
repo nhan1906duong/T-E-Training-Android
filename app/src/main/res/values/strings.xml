@@ -1,9 +1,9 @@
 <resources>
-    <string name="facebook_application_id">603985970975282</string>
+    <string name="facebook_application_id" translatable="false">603985970975282</string>
 
-    <string name="app_name">Netfake</string>
-    <string name="company_name">Teqnological Asia</string>
-    <string name="copyright">© 2021 Copyright Execution Lab</string>
+    <string name="app_name" translatable="false">Netfake</string>
+    <string name="company_name" translatable="false">Teqnological Asia</string>
+    <string name="copyright" translatable="false">© 2021 Copyright Execution Lab</string>
     <string name="username_hint_text">Enter your username</string>
     <string name="password_hint_text">Enter your password</string>
     <string name="login">Login</string>
@@ -59,4 +59,11 @@
     <string name="content_hint_text">Enter your comment</string>
     <string name="career">Career</string>
     <string name="leave_your_review_here">Leave your comment here:</string>
+    <string name="search_hint_text">Enter your query here…</string>
+    <string name="finding_your_movie">Finding your movie</string>
+    <string name="logout">Logout</string>
+    <string name="change_language">Change language</string>
+    <string name="my_watch_list">My watchlist</string>
+    <string name="my_favorite">My favorite</string>
+    <string name="switch_language">Switch language</string>
 </resources>

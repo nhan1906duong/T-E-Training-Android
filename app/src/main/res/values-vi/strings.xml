@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="username_hint_text">Enter your username</string>
+    <string name="password_hint_text">Enter your password</string>
+    <string name="login">Login</string>
+    <string name="or_login_via">or login via</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="validate_username">Please enter your username</string>
+    <string name="validate_password">Please enter your password</string>
+    <string name="login_failed">Login failed</string>
+    <string name="ok">OK</string>
+
+    <string name="zero_very_bad">Very bad</string>
+    <string name="one_poor">Poor</string>
+    <string name="two_soso">So-so</string>
+    <string name="three_ok">OK</string>
+    <string name="four_pretty_good">Pretty good</string>
+    <string name="five_excellent">Excellent!</string>
+
+    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="now_playing_movies">Now Playing Movies</string>
+    <string name="up_coming_movies">Up Coming Movies</string>
+    <string name="home">Trang chủ</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="account">Tài khoản</string>
+    <string name="setting">Cài đặt</string>
+    <string name="favorite">Favorite</string>
+    <string name="watchlist">Watch list</string>
+    <string name="overview">Overview:</string>
+    <string name="trailer">Trailer:</string>
+    <string name="more_photos">More photos:</string>
+    <string name="relative_movies">Relative movies:</string>
+    <string name="cast">Cast:</string>
+    <string name="crew">Crew:</string>
+    <string name="more_videos">More videos</string>
+    <string name="personal_info">Personal Info</string>
+    <string name="known_for">Known for</string>
+    <string name="known_credits">Known Credits</string>
+    <string name="gender">Gender</string>
+    <string name="birthday">Birthday</string>
+    <string name="place_of_birth">Place of Birth</string>
+    <string name="biography">Biography</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="unknown">Unknown</string>
+    <string name="more_poster">Poster</string>
+
+    <string name="by_author">by &lt;b>%s&lt;/b></string>
+    <string name="as_character">as &lt;b>%s&lt;/b></string>
+    <string name="reviews">Reviews</string>
+    <string name="send">Send</string>
+    <string name="content_hint_text">Enter your comment</string>
+    <string name="career">Career</string>
+    <string name="leave_your_review_here">Leave your comment here:</string>
+    <string name="search_hint_text">Enter your query here…</string>
+    <string name="finding_your_movie">Finding your movie</string>
+    <string name="logout">Logout</string>
+    <string name="change_language">Change language</string>
+    <string name="my_watch_list">My watchlist</string>
+    <string name="my_favorite">My favorite</string>
+</resources>

@@ -15,12 +15,9 @@ enum class HttpResponseStatusCode(val code: Int) {
     Unauthorized(401),
 }
 
-class ExceptionHandler @Inject constructor(
-    private val moshi: Moshi,
-    private val storageHelper: StorageHelper,
-) {
+class ExceptionHandler @Inject constructor(private val moshi: Moshi) {
     private val error = MutableLiveData<ErrorResponse?>()
-    private val _authorizeState = MutableLiveData<Boolean>(true)
+    private val _authorizeState = MutableLiveData(true)
 
     val errorMessage: LiveData<String?> = Transformations.map(error) { it?.statusMessage }
     val authorizeState: LiveData<Boolean> = _authorizeState
@@ -37,7 +34,6 @@ class ExceptionHandler @Inject constructor(
 
     private fun handleErrorRequest(exception: HttpException) {
         if (exception.code() == HttpResponseStatusCode.Unauthorized.code) {
-            storageHelper.removeUserCache()
             _authorizeState.value = false
         }
         val message = exception.response()?.errorBody()?.source()
