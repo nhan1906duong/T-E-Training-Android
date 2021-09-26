@@ -2,6 +2,7 @@ package com.example.tetrainingandroid.ui.main.search
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tetrainingandroid.R
@@ -21,8 +22,13 @@ class SearchFragment: CacheViewFragment<SearchViewModel>(R.layout.search_fragmen
 
     @Inject lateinit var searchAdapter: SearchAdapter
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreatedFirstTime(view, savedInstanceState)
+        setupAdapter()
+        observerSearch()
+    }
+
+    private fun setupAdapter() {
         searchAdapter.setListener { data ->
             when (data) {
                 is Movie -> navigateToMovieDetail(data)
@@ -34,13 +40,31 @@ class SearchFragment: CacheViewFragment<SearchViewModel>(R.layout.search_fragmen
         searchAdapter.setLoadMoreListener {
             viewModel.loadMore()
         }
-        rvSearch?.adapter = searchAdapter
+    }
+
+    private fun observerSearch() {
         viewModel.data.observe(viewLifecycleOwner, {
             if (it == null) return@observe
             if(it.state == LoadMoreState.END) searchAdapter.setEndLoading()
             searchAdapter.setList(it.data)
         })
-        viewModel.search("X-men")
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        rvSearch?.adapter = searchAdapter
+        initEvent()
+    }
+
+    private fun initEvent() {
+        edtSearch.setOnEditorActionListener { _, actionId, _ ->
+            if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                search()
+            }
+            true
+        }
+        imgSearch.setOnClickListener { search() }
+        rootLayout?.setOnClickListener { hideKeyboard() }
     }
 
     private fun navigateToMovieDetail(movie: Movie) {
@@ -51,5 +75,14 @@ class SearchFragment: CacheViewFragment<SearchViewModel>(R.layout.search_fragmen
     private fun navigateToPeopleDetail(people: People) {
         val action = MainFragmentDirections.actionMainFragmentToCastFragment(people.id!!, true)
         findNavController().navigate(action)
+    }
+
+    private fun search() {
+        hideKeyboard()
+        val query = edtSearch.text?.toString()
+        if (!query.isNullOrEmpty()) {
+            viewModel.search(query)
+        }
+        searchAdapter.resetLoading()
     }
 }

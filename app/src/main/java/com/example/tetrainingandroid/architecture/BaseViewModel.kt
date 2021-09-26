@@ -1,6 +1,7 @@
 package com.example.tetrainingandroid.architecture
 
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import javax.inject.Inject
 

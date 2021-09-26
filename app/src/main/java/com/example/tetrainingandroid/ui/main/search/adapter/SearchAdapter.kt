@@ -35,7 +35,8 @@ class SearchAdapter @Inject constructor(
         this.listener = listener
     }
 
-    fun setEndLoading() = true.also { loadMoreHasEnd = true }
+    fun setEndLoading() = true.also { loadMoreHasEnd = it }
+    fun resetLoading() = false.also { loadMoreHasEnd = it }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         MOVIE_TYPE -> MovieSearchViewHolder.from(parent)

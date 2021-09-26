@@ -59,4 +59,5 @@
     <string name="content_hint_text">Enter your comment</string>
     <string name="career">Career</string>
     <string name="leave_your_review_here">Leave your comment here:</string>
+    <string name="search_hint_text">Enter your query here...</string>
 </resources>

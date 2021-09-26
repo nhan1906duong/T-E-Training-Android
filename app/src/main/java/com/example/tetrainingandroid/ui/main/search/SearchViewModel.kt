@@ -11,6 +11,7 @@ import com.example.tetrainingandroid.ui.shared.LoadMoreState
 import com.example.tetrainingandroid.ui.shared.Page
 import com.example.tetrainingandroid.ui.shared.PageState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,28 +37,31 @@ class SearchViewModel @Inject constructor(
 
     private fun fetch() {
         viewModelScope.launch(getHandler()) {
-            Log.d("MSG", "${searchPage.page}")
-            val response = (async { repo.search(_currentQuery, searchPage.page) }).await()
-            val totalPage = response.totalPages ?: 1
-            if (searchPage.page == totalPage) {
-                val result = response.results?.filterNotNull() ?: listOf()
-                searchPage.complete(result)
+            processRequest()
+        }
+    }
+
+    private suspend fun processRequest() {
+        val response = (viewModelScope.async { repo.search(_currentQuery, searchPage.page) }).await()
+        val totalPage = response.totalPages ?: 1
+        if (searchPage.page == totalPage) {
+            val result = response.results?.filterNotNull() ?: listOf()
+            searchPage.complete(result)
+            _data.value = PageState(
+                data = searchPage.data,
+                state = LoadMoreState.END
+            )
+        } else {
+            val result = response.results?.filterNotNull()
+            if (result.isNullOrEmpty()) {
+                searchPage.add(listOf())
+                fetch() // not test this case
+            } else {
+                searchPage.add(result)
                 _data.value = PageState(
                     data = searchPage.data,
-                    state = LoadMoreState.END
+                    state = LoadMoreState.NORMAL
                 )
-            } else {
-                val result = response.results?.filterNotNull()
-                if (result.isNullOrEmpty()) {
-                    searchPage.add(listOf())
-                    fetch() // not test this case
-                } else {
-                    searchPage.add(result)
-                    _data.value = PageState(
-                        data = searchPage.data,
-                        state = LoadMoreState.NORMAL
-                    )
-                }
             }
         }
     }
