@@ -17,7 +17,6 @@ class AuthenticationInterceptor @Inject constructor(
 
         val originalUrl = original.url
         val newUrl = originalUrl.newBuilder().apply {
-            addQueryParameter("language", "en")
             val sessionId = sessionStorage.get()?.sessionId
             if (!sessionId.isNullOrEmpty()) {
                 addQueryParameter("session_id", sessionId)
