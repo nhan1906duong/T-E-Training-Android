@@ -25,11 +25,10 @@ class AuthenticationRepository @Inject constructor(
     @DispatchersIO private val coroutineDispatcher: CoroutineDispatcher,
     private val service: MovieDBOauth2Service
 ) {
-    val loginState = MediatorLiveData<LoginState>().apply {
-        value = LoginState.Initialize
-    }
+    val loginState = MediatorLiveData<LoginState>()
 
     suspend fun checkLogin() {
+        loginState.value = LoginState.Initialize
         val cacheSession = sessionStorage.get()
         val isLogin = loginStorage.get()
         if (!Validation.isSessionExpire(cacheSession)) {

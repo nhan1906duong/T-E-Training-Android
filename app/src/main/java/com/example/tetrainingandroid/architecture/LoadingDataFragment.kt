@@ -26,7 +26,7 @@ abstract class LoadingDataFragment<VM : BaseViewModel>(@LayoutRes contentLayoutI
         })
         viewModel.authorizeState().observe(viewLifecycleOwner, { isAuthorize ->
             if (isAuthorize == false && this !is SplashFragment && this !is LoginFragment) {
-                findNavController().setGraph(R.navigation.nav_graph)
+                logout()
             }
         })
     }

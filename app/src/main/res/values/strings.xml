@@ -60,4 +60,7 @@
     <string name="career">Career</string>
     <string name="leave_your_review_here">Leave your comment here:</string>
     <string name="search_hint_text">Enter your query here...</string>
+    <string name="finding_your_movie">Finding your movie</string>
+    <string name="logout">Logout</string>
+    <string name="change_language">Change language</string>
 </resources>
