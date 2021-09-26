@@ -1,11 +1,8 @@
 package com.example.tetrainingandroid.repo
 
-import com.example.tetrainingandroid.data.model.Movie
-import com.example.tetrainingandroid.data.model.Youtube
 import com.example.tetrainingandroid.data.service.MovieService
 import com.example.tetrainingandroid.di.DispatchersIO
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,64 +12,24 @@ class MovieRepository @Inject constructor(
     private val movieService: MovieService,
     @DispatchersIO private val coroutineDispatcher: CoroutineDispatcher,
 ) {
-    suspend fun getDetail(movieId: Int): Movie {
-        val movie: Movie
-        withContext(coroutineDispatcher) {
-            movie = (async {
-                movieService.getMovie(
-                    movieId,
-                    appendToResponse = "videos,images,casts,reviews,similar"
-                )
-            }).await()
-        }
-        return movie
+    suspend fun getDetail(movieId: Int) = withContext(coroutineDispatcher) {
+        movieService.getMovie(
+            movieId,
+            appendToResponse = "videos,images,casts,reviews,similar"
+        )
     }
 
-    suspend fun getTrending(): List<Movie> {
-        val result: List<Movie>
-        withContext(coroutineDispatcher) {
-            result = (async { movieService.getTrending("week") }).await().results ?: listOf()
-        }
-        return result
-    }
+    suspend fun getTrending() =
+        withContext(coroutineDispatcher) { movieService.getTrending("week") }
 
-    suspend fun getPopular(): List<Movie> {
-        val result: List<Movie>
-        withContext(coroutineDispatcher) {
-            result = (async { movieService.getPopular() }).await().results ?: listOf()
-        }
-        return result
-    }
+    suspend fun getPopular() = withContext(coroutineDispatcher) { movieService.getPopular() }
 
-    suspend fun getTopRated(): List<Movie> {
-        val result: List<Movie>
-        withContext(coroutineDispatcher) {
-            result = (async { movieService.getTopRated() }).await().results ?: listOf()
-        }
-        return result
-    }
+    suspend fun getTopRated() = withContext(coroutineDispatcher) { movieService.getPopular() }
 
-    suspend fun getNowPlaying(): List<Movie> {
-        val result: List<Movie>
-        withContext(coroutineDispatcher) {
-            result = (async { movieService.getNowPlaying() }).await().results ?: listOf()
-        }
-        return result
-    }
+    suspend fun getNowPlaying() = withContext(coroutineDispatcher) { movieService.getNowPlaying() }
 
-    suspend fun getUpComing(): List<Movie> {
-        val result: List<Movie>
-        withContext(coroutineDispatcher) {
-            result = (async { movieService.getUpcoming() }).await().results ?: listOf()
-        }
-        return result
-    }
+    suspend fun getUpComing() = withContext(coroutineDispatcher) { movieService.getUpcoming() }
 
-    suspend fun getTrailers(movieId: Int): List<Youtube> {
-        val result: List<Youtube>
-        withContext(coroutineDispatcher) {
-            result = (async { movieService.getTrailers(movieId) }).await().results ?: listOf()
-        }
-        return result
-    }
+    suspend fun getTrailers(movieId: Int) =
+        withContext(coroutineDispatcher) { movieService.getTrailers(movieId) }
 }

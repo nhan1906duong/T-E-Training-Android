@@ -8,7 +8,6 @@ import com.example.tetrainingandroid.architecture.BaseViewModel
 import com.example.tetrainingandroid.data.model.Youtube
 import com.example.tetrainingandroid.repo.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,8 +15,9 @@ import javax.inject.Inject
 class YoutubeViewModel @Inject constructor(
     stateHandle: SavedStateHandle,
     private val repo: MovieRepository,
-): BaseViewModel() {
-    private val movieId: Int = stateHandle["movieId"] ?: throw IllegalArgumentException("Missing movie id")
+) : BaseViewModel() {
+    private val movieId: Int =
+        stateHandle["movieId"] ?: throw IllegalArgumentException("Missing movie id")
 
     private val _videos = MutableLiveData<List<Youtube>>()
     val videos = _videos as LiveData<List<Youtube>>
@@ -29,8 +29,7 @@ class YoutubeViewModel @Inject constructor(
 
     private fun getTrailers() {
         viewModelScope.launch(getHandler()) {
-            val result = (async { repo.getTrailers(movieId) }).await()
-            _videos.value = result
+            _videos.value = repo.getTrailers(movieId).results ?: listOf()
         }
     }
 }
