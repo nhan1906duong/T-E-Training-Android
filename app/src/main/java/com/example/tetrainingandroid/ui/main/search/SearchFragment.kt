@@ -6,7 +6,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tetrainingandroid.R
-import com.example.tetrainingandroid.architecture.CacheViewFragment
+import com.example.tetrainingandroid.architecture.LoadingDataFragment
 import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.data.model.People
 import com.example.tetrainingandroid.ui.main.MainFragmentDirections
@@ -17,16 +17,10 @@ import kotlinx.android.synthetic.main.search_fragment.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchFragment: CacheViewFragment<SearchViewModel>(R.layout.search_fragment) {
+class SearchFragment: LoadingDataFragment<SearchViewModel>(R.layout.search_fragment) {
     override val viewModel: SearchViewModel by viewModels()
 
     @Inject lateinit var searchAdapter: SearchAdapter
-
-    override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreatedFirstTime(view, savedInstanceState)
-        setupAdapter()
-        observerSearch()
-    }
 
     private fun setupAdapter() {
         searchAdapter.setListener { data ->
@@ -40,6 +34,7 @@ class SearchFragment: CacheViewFragment<SearchViewModel>(R.layout.search_fragmen
         searchAdapter.setLoadMoreListener {
             viewModel.loadMore()
         }
+        rvSearch?.adapter = searchAdapter
     }
 
     private fun observerSearch() {
@@ -52,7 +47,8 @@ class SearchFragment: CacheViewFragment<SearchViewModel>(R.layout.search_fragmen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rvSearch?.adapter = searchAdapter
+        setupAdapter()
+        observerSearch()
         initEvent()
     }
 

@@ -1,9 +1,7 @@
 package com.example.tetrainingandroid.ui.main.search
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.tetrainingandroid.architecture.BaseViewModel
 import com.example.tetrainingandroid.data.model.Searchable
 import com.example.tetrainingandroid.repo.SearchRepository
@@ -11,9 +9,7 @@ import com.example.tetrainingandroid.ui.shared.LoadMoreState
 import com.example.tetrainingandroid.ui.shared.Page
 import com.example.tetrainingandroid.ui.shared.PageState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +23,8 @@ class SearchViewModel @Inject constructor(
     private var _currentQuery: String = ""
     private val searchPage = Page<Searchable>()
 
+    private val scope = CoroutineScope(Dispatchers.Main)
+
     fun search(query: String) {
         _currentQuery = query
         searchPage.refresh()
@@ -36,8 +34,11 @@ class SearchViewModel @Inject constructor(
     fun loadMore() = fetch()
 
     private fun fetch() {
-        viewModelScope.launch(getHandler()) {
-            processRequest()
+        scope.apply {
+            launch(getHandler()) {
+                ensureActive()
+                processRequest()
+            }
         }
     }
 
@@ -55,7 +56,7 @@ class SearchViewModel @Inject constructor(
             val result = response.results?.filterNotNull()
             if (result.isNullOrEmpty()) {
                 searchPage.add(listOf())
-                fetch() // not test this case
+                processRequest() // not test this case
             } else {
                 searchPage.add(result)
                 _data.value = PageState(
