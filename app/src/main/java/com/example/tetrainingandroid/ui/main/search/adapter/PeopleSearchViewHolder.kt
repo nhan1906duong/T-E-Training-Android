@@ -6,9 +6,9 @@ import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.data.model.People
 import com.example.tetrainingandroid.data.model.Searchable
+import com.example.tetrainingandroid.databinding.PeopleSearchItemLayoutBinding
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
-import kotlinx.android.synthetic.main.people_search_item_layout.view.*
 
 class PeopleSearchViewHolder(view: ViewGroup): SearchViewHolder(view) {
     companion object {
@@ -20,15 +20,15 @@ class PeopleSearchViewHolder(view: ViewGroup): SearchViewHolder(view) {
     }
     override fun bind(data: Searchable, listener: SearchItemClickListener?) {
         val people = data as People
-        view.apply {
-            rootLayout?.setOnClickListener { people.id?.let { listener?.invoke(people) } }
-            imgProfile?.load(
+        PeopleSearchItemLayoutBinding.bind(view).apply {
+            rootLayout.setOnClickListener { people.id?.let { listener?.invoke(people) } }
+            imgProfile.load(
                 people.profilePath,
                 size = ImageConfiguration.Size.PROFILE,
                 type = ImageType.BACKGROUND
             )
-            txtName?.text = people.name ?: context.getString(R.string.unknown)
-            txtKnownFor?.text = people.knownForDepartment ?: context.getString(R.string.unknown)
+            txtName.text = people.name ?: view.context.getString(R.string.unknown)
+            txtKnownFor.text = people.knownForDepartment ?: view.context.getString(R.string.unknown)
         }
     }
 }

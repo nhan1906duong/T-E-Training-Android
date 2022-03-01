@@ -1,13 +1,16 @@
 package com.example.tetrainingandroid.ui.people
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
 import com.example.tetrainingandroid.data.model.*
+import com.example.tetrainingandroid.databinding.PeopleFragmentBinding
 import com.example.tetrainingandroid.di.CareerAsCastAdapter
 import com.example.tetrainingandroid.di.CareerAsCrewAdapter
 import com.example.tetrainingandroid.di.ListMovieAdapter
@@ -18,10 +21,8 @@ import com.example.tetrainingandroid.ui.media.adapter.image.PhotoAdapter
 import com.example.tetrainingandroid.ui.media.adapter.image.PhotoViewHolderType
 import com.example.tetrainingandroid.ui.media.adapter.model.Images
 import com.example.tetrainingandroid.ui.people.adapter.career.CareerAdapter
+import com.example.tetrainingandroid.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.people_fragment.*
-import kotlinx.android.synthetic.main.people_fragment.collapsingToolbarLayout
-import kotlinx.android.synthetic.main.personal_info_layout.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,6 +36,16 @@ class PeopleFragment: CacheViewFragment<PeopleViewModel>(R.layout.people_fragmen
     @CareerAsCrewAdapter @Inject lateinit var careerAsCrewAdapter: CareerAdapter
 
     private val profilePhotos = mutableListOf<Image>()
+    private var binding: PeopleFragmentBinding by autoCleared()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = PeopleFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
@@ -46,37 +57,39 @@ class PeopleFragment: CacheViewFragment<PeopleViewModel>(R.layout.people_fragmen
         super.onViewCreated(view, savedInstanceState)
 
         knownForAdapter.setListener(::navigateToDetailFragment)
-        rvKnownFor?.adapter = knownForAdapter
+        binding.rvKnownFor.adapter = knownForAdapter
 
         profileAdapter.setProfileType()
         profileAdapter.setListener { image, _ -> navigateToPhotoViewer(image) }
-        rvMorePhotos?.adapter = profileAdapter
+        binding.rvMorePhotos.adapter = profileAdapter
 
-        rvCareerAsCast?.adapter = careerAsCastAdapter
-        rvCareerAsCrew?.adapter = careerAsCrewAdapter
+        binding.rvCareerAsCast.adapter = careerAsCastAdapter
+        binding.rvCareerAsCrew.adapter = careerAsCrewAdapter
     }
 
     private fun observerData() {
-        viewModel.people.observe(viewLifecycleOwner, { cast ->
+        viewModel.people.observe(viewLifecycleOwner) { cast ->
             if (cast != null) {
                 initView(cast)
             }
-        })
+        }
     }
 
     private fun initView(people: People) {
-        collapsingToolbarLayout?.title = people.name ?: getString(R.string.unknown)
-        txtKnownFor?.text = people.knownForDepartment ?: getString(R.string.unknown)
-        txtGender?.text = people.getGenre(this)
-        txtBirthday?.text = people.birthday ?: getString(R.string.unknown)
-        txtPlaceBirth?.text = people.placeOfBirth ?: getString(R.string.unknown)
-        if (people.biography.isNullOrEmpty()) {
-            groupBiography?.visibility = View.GONE
-        } else {
-            groupBiography?.visibility = View.VISIBLE
-            txtBiography?.text = people.biography
+        binding.collapsingToolbarLayout.title = people.name ?: getString(R.string.unknown)
+        binding.llPersonalInfo.apply {
+            txtKnownFor.text = people.knownForDepartment ?: getString(R.string.unknown)
+            txtGender.text = people.getGenre(this@PeopleFragment)
+            txtBirthday.text = people.birthday ?: getString(R.string.unknown)
+            txtPlaceBirth.text = people.placeOfBirth ?: getString(R.string.unknown)
         }
-        imgAvatar?.load(
+        if (people.biography.isNullOrEmpty()) {
+            binding.groupBiography.visibility = View.GONE
+        } else {
+            binding.groupBiography.visibility = View.VISIBLE
+            binding.txtBiography.text = people.biography
+        }
+        binding.imgAvatar.load(
             people.profilePath,
             size = ImageConfiguration.Size.PROFILE,
             type = ImageType.AVATAR
@@ -94,20 +107,20 @@ class PeopleFragment: CacheViewFragment<PeopleViewModel>(R.layout.people_fragmen
         }
 
         if (knownForList.isNullOrEmpty()) {
-            groupKnownForMovie?.visibility = View.GONE
+            binding.groupKnownForMovie.visibility = View.GONE
         } else {
-            groupKnownForMovie?.visibility = View.VISIBLE
+            binding.groupKnownForMovie.visibility = View.VISIBLE
             knownForAdapter.submitList(knownForList)
         }
     }
 
     private fun setupMorePhotos(images: List<Image>?) {
         if (images.isNullOrEmpty()) {
-            groupMorePhotos?.visibility = View.GONE
+            binding.groupMorePhotos.visibility = View.GONE
         } else {
             profilePhotos.clear()
             profilePhotos.addAll(images)
-            groupMorePhotos?.visibility = View.VISIBLE
+            binding.groupMorePhotos.visibility = View.VISIBLE
             profileAdapter.submitList(images)
         }
     }
@@ -115,24 +128,26 @@ class PeopleFragment: CacheViewFragment<PeopleViewModel>(R.layout.people_fragmen
     private fun setupCareer(career: CareerWrapper?) {
         val careerAsCast = career?.cast?.filter { !it.releaseDate.isNullOrEmpty() && !it.title.isNullOrEmpty() } ?: listOf()
         if (careerAsCast.isEmpty()) {
-            groupCareerAsCast?.visibility = View.GONE
+            binding.groupCareerAsCast.visibility = View.GONE
         } else {
-            groupCareerAsCast?.visibility = View.VISIBLE
+            binding.groupCareerAsCast.visibility = View.VISIBLE
             careerAsCastAdapter.submitList(careerAsCast)
         }
         val careerAsCrew = career?.crew?.filter { !it.releaseDate.isNullOrEmpty() && !it.title.isNullOrEmpty() } ?: listOf()
         if (careerAsCast.isEmpty()) {
-            groupCareerAsCrew?.visibility = View.GONE
+            binding.groupCareerAsCrew.visibility = View.GONE
         } else {
-            groupCareerAsCrew?.visibility = View.VISIBLE
+            binding.groupCareerAsCrew.visibility = View.VISIBLE
             careerAsCrewAdapter.submitList(careerAsCrew)
         }
-        val knownForCredits = careerAsCast.size + careerAsCrew.size
-        if (knownForCredits == 0) {
-            groupKnownCredits?.visibility = View.GONE
-        } else {
-            groupKnownCredits?.visibility = View.VISIBLE
-            txtKnownCredits?.text = knownForCredits.toString()
+        binding.llPersonalInfo.apply {
+            val knownForCredits = careerAsCast.size + careerAsCrew.size
+            if (knownForCredits == 0) {
+                groupKnownCredits.visibility = View.GONE
+            } else {
+                groupKnownCredits.visibility = View.VISIBLE
+                txtKnownCredits.text = knownForCredits.toString()
+            }
         }
     }
 

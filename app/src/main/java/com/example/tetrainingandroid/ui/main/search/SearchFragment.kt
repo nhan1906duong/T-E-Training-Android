@@ -1,7 +1,9 @@
 package com.example.tetrainingandroid.ui.main.search
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -9,11 +11,12 @@ import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.LoadingDataFragment
 import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.data.model.People
+import com.example.tetrainingandroid.databinding.SearchFragmentBinding
 import com.example.tetrainingandroid.ui.main.MainFragmentDirections
 import com.example.tetrainingandroid.ui.main.search.adapter.SearchAdapter
 import com.example.tetrainingandroid.ui.shared.LoadMoreState
+import com.example.tetrainingandroid.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.search_fragment.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -21,6 +24,16 @@ class SearchFragment: LoadingDataFragment<SearchViewModel>(R.layout.search_fragm
     override val viewModel: SearchViewModel by viewModels()
 
     @Inject lateinit var searchAdapter: SearchAdapter
+    private var binding: SearchFragmentBinding by autoCleared()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = SearchFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     private fun setupAdapter() {
         searchAdapter.setListener { data ->
@@ -34,15 +47,15 @@ class SearchFragment: LoadingDataFragment<SearchViewModel>(R.layout.search_fragm
         searchAdapter.setLoadMoreListener {
             viewModel.loadMore()
         }
-        rvSearch?.adapter = searchAdapter
+        binding.rvSearch.adapter = searchAdapter
     }
 
     private fun observerSearch() {
-        viewModel.data.observe(viewLifecycleOwner, {
+        viewModel.data.observe(viewLifecycleOwner) {
             if (it == null) return@observe
-            if(it.state == LoadMoreState.END) searchAdapter.setEndLoading()
+            if (it.state == LoadMoreState.END) searchAdapter.setEndLoading()
             searchAdapter.setList(it.data)
-        })
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,14 +66,14 @@ class SearchFragment: LoadingDataFragment<SearchViewModel>(R.layout.search_fragm
     }
 
     private fun initEvent() {
-        edtSearch.setOnEditorActionListener { _, actionId, _ ->
+        binding.edtSearch.setOnEditorActionListener { _, actionId, _ ->
             if(actionId == EditorInfo.IME_ACTION_SEARCH) {
                 search()
             }
             true
         }
-        imgSearch.setOnClickListener { search() }
-        rootLayout?.setOnClickListener { hideKeyboard() }
+        binding.imgSearch.setOnClickListener { search() }
+        binding.rootLayout.setOnClickListener { hideKeyboard() }
     }
 
     private fun navigateToMovieDetail(movie: Movie) {
@@ -75,7 +88,7 @@ class SearchFragment: LoadingDataFragment<SearchViewModel>(R.layout.search_fragm
 
     private fun search() {
         hideKeyboard()
-        val query = edtSearch.text?.toString()
+        val query = binding.edtSearch.text?.toString()
         if (!query.isNullOrEmpty()) {
             viewModel.search(query)
         }

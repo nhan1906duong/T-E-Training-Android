@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.data.model.Career
-import kotlinx.android.synthetic.main.career_as_crew_item_layout.view.*
+import com.example.tetrainingandroid.databinding.CareerAsCrewItemLayoutBinding
 
 class CareerAsCrewViewHolder(
     view: ViewGroup
@@ -18,10 +18,11 @@ class CareerAsCrewViewHolder(
     }
 
     override fun bind(career: Career) {
-        view.apply {
-            txtYear?.text = career.releaseDate?.split("-")?.firstOrNull() ?: "-"
-            txtMovieTitle?.text = career.title ?: context.getString(R.string.unknown)
-            txtJob?.text = career.job ?: context.getString(R.string.unknown)
+        CareerAsCrewItemLayoutBinding.bind(view).apply {
+            val context = view.context
+            txtYear.text = career.releaseDate?.split("-")?.firstOrNull() ?: "-"
+            txtMovieTitle.text = career.title ?: context.getString(R.string.unknown)
+            txtJob.text = career.job ?: context.getString(R.string.unknown)
         }
     }
 }

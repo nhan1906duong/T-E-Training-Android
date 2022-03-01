@@ -259,7 +259,9 @@
         tools:itemCount="3"
         tools:listitem="@layout/review_item_layout"/>
 
-    <include layout="@layout/post_review_layout"
+    <include
+        android:id="@+id/ratingLayout"
+        layout="@layout/post_review_layout"
         app:layout_constraintTop_toBottomOf="@id/rvReview"/>
 
     <View

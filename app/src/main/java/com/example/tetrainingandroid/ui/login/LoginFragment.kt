@@ -1,25 +1,36 @@
 package com.example.tetrainingandroid.ui.login
 
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.view.inputmethod.InputMethodManager
+import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.BaseFragment
 import com.example.tetrainingandroid.data.storage.LoginStorage
+import com.example.tetrainingandroid.databinding.LoginFragmentBinding
+import com.example.tetrainingandroid.utils.autoCleared
 import com.example.tetrainingandroid.validate.Validation
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.login_fragment.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment: BaseFragment(R.layout.login_fragment) {
     @Inject lateinit var loginStorage: LoginStorage
+    private var binding: LoginFragmentBinding by autoCleared()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = LoginFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
@@ -39,34 +50,36 @@ class LoginFragment: BaseFragment(R.layout.login_fragment) {
     }
 
     private fun setEvents() {
-        btnLogin.setOnClickListener {
-            hideKeyboard()
-            val username = edtUsername?.text?.toString()
-            val password = edtPassword?.text?.toString()
-            if (validate(username, password)) {
-                login(username!!, password!!)
+        binding.apply {
+            btnLogin.setOnClickListener {
+                hideKeyboard()
+                val username = edtUsername.text?.toString()
+                val password = edtPassword.text?.toString()
+                if (validate(username, password)) {
+                    login(username!!, password!!)
+                }
             }
-        }
 
-        btnFacebook.setOnClickListener {
-            loginViaSocialMedia(AuthUI.IdpConfig.FacebookBuilder().build())
-        }
+            btnFacebook.setOnClickListener {
+                loginViaSocialMedia(AuthUI.IdpConfig.FacebookBuilder().build())
+            }
 
-        btnGoogle.setOnClickListener {
-            loginViaSocialMedia(AuthUI.IdpConfig.GoogleBuilder().build())
-        }
+            btnGoogle.setOnClickListener {
+                loginViaSocialMedia(AuthUI.IdpConfig.GoogleBuilder().build())
+            }
 
-        parentLayout?.setOnClickListener { hideKeyboard() }
+            parentLayout.setOnClickListener { hideKeyboard() }
+        }
     }
 
     private fun validate(username: String?, password: String?): Boolean {
         var isValidate = true
         if (username.isNullOrEmpty()) {
-            edtUsername?.error = getString(R.string.validate_username)
+            binding.edtUsername.error = getString(R.string.validate_username)
             isValidate = false
         }
         if (password.isNullOrEmpty()) {
-            edtPassword?.error = getString(R.string.validate_password)
+            binding.edtPassword.error = getString(R.string.validate_password)
             isValidate = false
         }
         return isValidate

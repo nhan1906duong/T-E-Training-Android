@@ -5,10 +5,9 @@ import android.view.ViewGroup
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.data.model.People
+import com.example.tetrainingandroid.databinding.CrewItemLayoutBinding
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
-import kotlinx.android.synthetic.main.crew_item_layout.view.*
-import kotlinx.android.synthetic.main.crew_item_layout.view.txtName
 
 class CrewViewHolder (view: ViewGroup): PeopleViewHolder(view) {
         companion object {
@@ -20,15 +19,15 @@ class CrewViewHolder (view: ViewGroup): PeopleViewHolder(view) {
         }
 
     override fun bind(people: People, listener: PeopleItemClickListener?) {
-        view.apply {
-            rootLayout?.setOnClickListener { people.id?.let { listener?.invoke(people) } }
-            imgCrew?.load(
+        CrewItemLayoutBinding.bind(view).apply {
+            rootLayout.setOnClickListener { people.id?.let { listener?.invoke(people) } }
+            imgCrew.load(
                 people.profilePath,
                 size = ImageConfiguration.Size.PROFILE,
                 type = ImageType.AVATAR
             )
-            txtName?.text = people.name ?: ""
-            txtJob?.text = people.job ?: ""
+            txtName.text = people.name ?: ""
+            txtJob.text = people.job ?: ""
         }
     }
 }

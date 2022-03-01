@@ -1,7 +1,9 @@
 package com.example.tetrainingandroid.ui.main.home
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -13,6 +15,7 @@ import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.CacheViewFragment
 import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.data.model.Movie
+import com.example.tetrainingandroid.databinding.HomeFragmentBinding
 import com.example.tetrainingandroid.di.ListMovieAdapter
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.getScreenWidth
@@ -21,13 +24,8 @@ import com.example.tetrainingandroid.ui.detail.adapter.MovieAdapter
 import com.example.tetrainingandroid.ui.main.MainFragmentDirections
 import com.example.tetrainingandroid.ui.main.UserViewModel
 import com.example.tetrainingandroid.ui.main.home.adapter.TrendingMovieAdapter
+import com.example.tetrainingandroid.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.header_home_layout.*
-import kotlinx.android.synthetic.main.home_fragment.*
-import kotlinx.android.synthetic.main.now_playing_movies_layout.*
-import kotlinx.android.synthetic.main.popular_movies_layout.*
-import kotlinx.android.synthetic.main.top_rated_movies_layout.*
-import kotlinx.android.synthetic.main.up_coming_movies_layout.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.math.abs
@@ -47,10 +45,20 @@ class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
 
     override val viewModel: HomeViewModel by viewModels()
     private val userViewModel: UserViewModel by activityViewModels()
+    private var binding: HomeFragmentBinding by autoCleared()
 
     private var sliderDelayJob: Job? = null
     private val sliderScope = CoroutineScope(Dispatchers.Main)
     private var isLayoutVisibleOnce: Boolean = false
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = HomeFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
@@ -67,9 +75,9 @@ class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
     private fun setupTrendingSlider() {
         setViewPagerAnimation()
         makeViewPagerSlide()
-        vpSlider?.offscreenPageLimit = 3
+        binding.vpSlider.offscreenPageLimit = 3
         trendingMoviesAdapter.setListener(::navigateToDetailFragment)
-        vpSlider?.adapter = trendingMoviesAdapter
+        binding.vpSlider.adapter = trendingMoviesAdapter
     }
 
     private fun setViewPagerDimensionRation() {
@@ -77,9 +85,9 @@ class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
             val screenWidth = getScreenWidth() ?: return@run
             val padding = resources.getDimension(R.dimen.slider_horizontal_padding)
             val ratio = (BACKDROP_RATIO * screenWidth) / (screenWidth - (padding * 2))
-            val layoutParam = vpSlider?.layoutParams as? ConstraintLayout.LayoutParams
+            val layoutParam = binding.vpSlider.layoutParams as? ConstraintLayout.LayoutParams
             layoutParam?.dimensionRatio = "H,$ratio:1"
-            vpSlider?.layoutParams = layoutParam
+            binding.vpSlider.layoutParams = layoutParam
         }
     }
 
@@ -91,88 +99,88 @@ class HomeFragment : CacheViewFragment<HomeViewModel>(R.layout.home_fragment) {
             val radian = 1 - abs(position)
             page.scaleY = 0.85f + radian * 0.15f
         }
-        vpSlider?.setPageTransformer(transformer)
+        binding.vpSlider.setPageTransformer(transformer)
     }
 
     private fun makeViewPagerSlide() {
-        vpSlider?.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+        binding.vpSlider.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 sliderDelayJob?.cancel()
                 sliderDelayJob = sliderScope.launch {
                     delay(SLIDER_INTERVAL)
-                    vpSlider?.currentItem = (vpSlider.currentItem + 1) % trendingMoviesAdapter.itemCount
+                    binding.vpSlider.currentItem = (binding.vpSlider.currentItem + 1) % trendingMoviesAdapter.itemCount
                 }
             }
         })
     }
 
     private fun observeData() {
-        viewModel.loading.observe(viewLifecycleOwner, {
+        viewModel.loading.observe(viewLifecycleOwner) {
             if (it == true) {
-                pbLoading?.visibility = View.VISIBLE
+                binding.pbLoading.visibility = View.VISIBLE
             } else {
-                pbLoading?.visibility = View.GONE
+                binding.pbLoading.visibility = View.GONE
             }
             if (it == false) {
                 if (!isLayoutVisibleOnce) {
                     isLayoutVisibleOnce = true
-                    vpSlider?.visibility = View.VISIBLE
-                    popularBarrier?.visibility = View.VISIBLE
-                    topRatedBarrier?.visibility = View.VISIBLE
-                    nowPlayingBarrier?.visibility = View.VISIBLE
-                    upComingBarier?.visibility = View.VISIBLE
+                    binding.vpSlider.visibility = View.VISIBLE
+                    binding.popular.popularBarrier.visibility = View.VISIBLE
+                    binding.topRated.topRatedBarrier.visibility = View.VISIBLE
+                    binding.nowPlayingGroup.nowPlayingBarrier.visibility = View.VISIBLE
+                    binding.upComing.upComingBarier.visibility = View.VISIBLE
                     setViewPagerDimensionRation()
                 }
             }
-        })
+        }
 
-        viewModel.trendingMovies.observe(viewLifecycleOwner, {
+        viewModel.trendingMovies.observe(viewLifecycleOwner) {
             trendingMoviesAdapter.submitList(it)
-        })
+        }
 
-        viewModel.popularMovies.observe(viewLifecycleOwner, {
+        viewModel.popularMovies.observe(viewLifecycleOwner) {
             popularMoviesAdapter.submitList(it)
-        })
+        }
 
-        viewModel.topRatedMovies.observe(viewLifecycleOwner, {
+        viewModel.topRatedMovies.observe(viewLifecycleOwner) {
             topRatedMoviesAdapter.submitList(it)
-        })
+        }
 
-        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, {
+        viewModel.nowPlayingMovies.observe(viewLifecycleOwner) {
             nowPlayingMoviesAdapter.submitList(it)
-        })
+        }
 
-        viewModel.upComingMovies.observe(viewLifecycleOwner, {
+        viewModel.upComingMovies.observe(viewLifecycleOwner) {
             upComingMoviesAdapter.submitList(it)
-        })
+        }
 
-        userViewModel.user.observe(viewLifecycleOwner, {
-            imgAvatar.load(
+        userViewModel.user.observe(viewLifecycleOwner) {
+            binding.headerCard.imgAvatar.load(
                 it?.avatar?.getAvatarPath(),
                 size = ImageConfiguration.Size.PROFILE,
                 type = ImageType.AVATAR
             )
-        })
+        }
     }
 
     private fun setupRecyclerView() {
         popularMoviesAdapter.setListener(::navigateToDetailFragment)
-        rvPopularMovies?.adapter = popularMoviesAdapter
+        binding.popular.rvPopularMovies.adapter = popularMoviesAdapter
 
         topRatedMoviesAdapter.setListener(::navigateToDetailFragment)
-        rvTopRatedMovies?.adapter = topRatedMoviesAdapter
+        binding.topRated.rvTopRatedMovies.adapter = topRatedMoviesAdapter
 
         nowPlayingMoviesAdapter.setListener(::navigateToDetailFragment)
-        rvNowPlayingMovies?.adapter = nowPlayingMoviesAdapter
+        binding.nowPlayingGroup.rvNowPlayingMovies.adapter = nowPlayingMoviesAdapter
 
         upComingMoviesAdapter.setListener(::navigateToDetailFragment)
-        rvUpComingMovies?.adapter = upComingMoviesAdapter
+        binding.upComing.rvUpComingMovies.adapter = upComingMoviesAdapter
     }
 
     private fun initEvent() {
-        swipeRefreshLayout?.setOnRefreshListener {
-            swipeRefreshLayout?.isRefreshing = false
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isRefreshing = false
             viewModel.refresh()
         }
     }

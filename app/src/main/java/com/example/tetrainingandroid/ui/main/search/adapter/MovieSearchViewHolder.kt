@@ -6,9 +6,9 @@ import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.data.model.Searchable
+import com.example.tetrainingandroid.databinding.MovieSearchItemLayoutBinding
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
-import kotlinx.android.synthetic.main.movie_search_item_layout.view.*
 
 class MovieSearchViewHolder(view: ViewGroup): SearchViewHolder(view) {
     companion object {
@@ -20,15 +20,15 @@ class MovieSearchViewHolder(view: ViewGroup): SearchViewHolder(view) {
     }
     override fun bind(data: Searchable, listener: SearchItemClickListener?) {
         val movie = data as Movie
-        view.apply {
-            rootLayout?.setOnClickListener { movie.id?.let { listener?.invoke(movie) } }
-            imgPoster?.load(
+        MovieSearchItemLayoutBinding.bind(view).apply {
+            rootLayout.setOnClickListener { movie.id?.let { listener?.invoke(movie) } }
+            imgPoster.load(
                 movie.posterPath,
                 size = ImageConfiguration.Size.POSTER,
                 type = ImageType.BACKGROUND
             )
-            txtTitle?.text = movie.title ?: context.getString(R.string.unknown)
-            txtReleaseDate?.text = movie.releaseDate ?: context.getString(R.string.unknown)
+            txtTitle.text = movie.title ?: view.context.getString(R.string.unknown)
+            txtReleaseDate.text = movie.releaseDate ?: view.context.getString(R.string.unknown)
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.example.tetrainingandroid.ui.media
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -10,13 +12,14 @@ import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.architecture.LoadingDataFragment
 import com.example.tetrainingandroid.config.Config
 import com.example.tetrainingandroid.data.model.Youtube
+import com.example.tetrainingandroid.databinding.YoutubeFragmentBinding
 import com.example.tetrainingandroid.extensions.toast
 import com.example.tetrainingandroid.ui.media.adapter.video.YoutubeSelectableAdapter
+import com.example.tetrainingandroid.utils.autoCleared
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerCompatFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.youtube_fragment.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -27,6 +30,7 @@ class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fr
 
     private val args: YoutubeFragmentArgs by navArgs()
     override val viewModel: YoutubeViewModel by viewModels()
+    private var binding: YoutubeFragmentBinding by autoCleared()
     private var player: YouTubePlayer? = null
 
     private lateinit var currentVideo: Youtube
@@ -34,6 +38,15 @@ class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fr
 
     private var hasData = false
     private var isPlayingBeforeInvisible = false
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = YoutubeFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreatedFirstTime(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedFirstTime(view, savedInstanceState)
@@ -54,7 +67,7 @@ class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fr
             if (currentVideo == youtube) return@setListener
             playAt(videos.indexOf(youtube))
         }
-        rvTrailer?.adapter = youtubeAdapter
+        binding.rvTrailer.adapter = youtubeAdapter
     }
 
     private fun initYouTubePlayer() {
@@ -67,14 +80,14 @@ class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fr
     }
 
     private fun initToolbar() {
-        toolbar?.title = currentVideo.name ?: ""
+        binding.toolbar.title = currentVideo.name ?: ""
     }
 
     private fun observerVideos() {
-        viewModel.videos.observe(viewLifecycleOwner, { data ->
+        viewModel.videos.observe(viewLifecycleOwner) { data ->
             hasData = true
             if (data.isNullOrEmpty()) {
-                nestedScrollView?.visibility = View.GONE
+                binding.nestedScrollView.visibility = View.GONE
                 videos.clear()
                 videos.add(currentVideo)
                 initLoadVideos()
@@ -87,7 +100,7 @@ class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fr
                 }
 
             }
-        })
+        }
     }
 
     private fun filterListVideo(data: List<Youtube>) {
@@ -137,7 +150,7 @@ class YoutubeFragment: LoadingDataFragment<YoutubeViewModel>(R.layout.youtube_fr
     }
 
     private fun setTitle() {
-        toolbar?.title = currentVideo.name
+        binding.toolbar.title = currentVideo.name
     }
 
     private fun playNext() = onCurrentVideoChanged(nextIndex())

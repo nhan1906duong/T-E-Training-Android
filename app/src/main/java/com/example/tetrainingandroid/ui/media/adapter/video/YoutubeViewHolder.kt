@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.data.model.Youtube
+import com.example.tetrainingandroid.databinding.YoutubeItemLayoutBinding
 import com.example.tetrainingandroid.extensions.loadTrailer
-import kotlinx.android.synthetic.main.youtube_item_layout.view.*
 
 class YoutubeViewHolder(
     private val view: ViewGroup): RecyclerView.ViewHolder(view) {
@@ -19,11 +19,11 @@ class YoutubeViewHolder(
         }
 
     fun bind(youtube: Youtube, listener: YoutubeItemClickListener?) {
-        view.apply {
-            rootLayout?.setOnClickListener {
+        YoutubeItemLayoutBinding.bind(view).apply {
+            rootLayout.setOnClickListener {
                 youtube.key?.let { listener?.invoke(youtube) }
             }
-            imgTrailer?.loadTrailer(youtube.key)
+            imgTrailer.loadTrailer(youtube.key)
         }
     }
 }

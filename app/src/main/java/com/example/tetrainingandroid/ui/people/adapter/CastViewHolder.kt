@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.data.model.People
+import com.example.tetrainingandroid.databinding.CastItemLayoutBinding
 import com.example.tetrainingandroid.extensions.ImageType
 import com.example.tetrainingandroid.extensions.load
-import kotlinx.android.synthetic.main.cast_item_layout.view.*
 
 class CastViewHolder(
     view: ViewGroup
@@ -21,15 +21,15 @@ class CastViewHolder(
     }
 
     override fun bind(people: People, listener: PeopleItemClickListener?) {
-        view.apply {
-            rootLayout?.setOnClickListener { people.id?.let { listener?.invoke(people) } }
-            imgCast?.load(
+        CastItemLayoutBinding.bind(view).apply {
+            rootLayout.setOnClickListener { people.id?.let { listener?.invoke(people) } }
+            imgCast.load(
                 people.profilePath,
                 size = ImageConfiguration.Size.PROFILE,
                 type = ImageType.AVATAR
             )
-            txtName?.text = people.name ?: ""
-            txtCharacter?.text = people.character ?: ""
+            txtName.text = people.name ?: ""
+            txtCharacter.text = people.character ?: ""
         }
     }
 }

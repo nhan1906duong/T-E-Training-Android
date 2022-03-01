@@ -1,18 +1,14 @@
 package com.example.tetrainingandroid.ui.review
 
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tetrainingandroid.R
-import com.example.tetrainingandroid.data.model.ImageConfiguration
 import com.example.tetrainingandroid.data.model.Review
-import com.example.tetrainingandroid.extensions.ImageType
-import com.example.tetrainingandroid.extensions.load
+import com.example.tetrainingandroid.databinding.ReviewItemLayoutBinding
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.review_item_layout.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,8 +24,9 @@ class ReviewViewHolder(
     }
 
     fun bind(review: Review) {
-        view.apply {
-            txtName?.text = HtmlCompat.fromHtml(
+        ReviewItemLayoutBinding.bind(view).apply {
+            val context = view.context
+            txtName.text = HtmlCompat.fromHtml(
                 String.format(
                     context.getString(R.string.by_author),
                     review.authorUsername ?: context.getString(R.string.unknown)
@@ -37,14 +34,14 @@ class ReviewViewHolder(
             )
             val date = review.updatedAt ?: review.createdAt
             if (date == null) {
-                txtDate?.visibility = View.GONE
+                txtDate.visibility = View.GONE
             } else {
-                txtDate?.visibility = View.VISIBLE
+                txtDate.visibility = View.VISIBLE
                 val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                txtDate?.text = formatter.format(date)
+                txtDate.text = formatter.format(date)
             }
-            txtRating?.text = String.format("%.1f", review.author?.rating ?: 0.0)
-            txtContent?.text = review.content ?: ""
+            txtRating.text = String.format("%.1f", review.author?.rating ?: 0.0)
+            txtContent.text = review.content ?: ""
             var avatarPath = review.author?.avatarPath ?: return@apply
             if (avatarPath.startsWith("/")) {
                 avatarPath = avatarPath.substring(1)

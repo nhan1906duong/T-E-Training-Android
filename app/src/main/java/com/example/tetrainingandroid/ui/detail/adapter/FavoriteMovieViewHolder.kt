@@ -1,10 +1,10 @@
 package com.example.tetrainingandroid.ui.detail.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.data.model.Movie
-import kotlinx.android.synthetic.main.favorite_movie_item_layout.view.*
 
 class FavoriteMovieViewHolder(view: ViewGroup): MovieViewHolder(view) {
     companion object {
@@ -17,7 +17,7 @@ class FavoriteMovieViewHolder(view: ViewGroup): MovieViewHolder(view) {
 
     override fun bind(movie: Movie, listener: MovieItemClickListener?, childItemClickListener: MovieChildItemClickListener?) {
         super.bind(movie, listener, childItemClickListener)
-        view.imgFavorite?.setOnClickListener {
+        view.findViewById<View>(R.id.imgFavorite)?.setOnClickListener {
             childItemClickListener?.invoke(movie)
         }
     }

@@ -13,7 +13,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <include layout="@layout/header_home_layout"/>
+            <include
+                android:id="@+id/headerCard"
+                layout="@layout/header_home_layout"/>
 
             <ProgressBar
                 android:id="@+id/pbLoading"
@@ -38,19 +40,34 @@
                 android:visibility="gone"
                 tools:visibility="visible"/>
 
-            <include layout="@layout/popular_movies_layout"/>
-
-            <include layout="@layout/top_rated_movies_layout"/>
-
-            <include layout="@layout/now_playing_movies_layout"/>
-
-            <include layout="@layout/up_coming_movies_layout"/>
-
-            <View
-                app:layout_constraintTop_toBottomOf="@id/rvUpComingMovies"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/layout_margin_32dp"/>
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/vpSlider">
+                <include
+                    android:id="@+id/popular"
+                    layout="@layout/popular_movies_layout"/>
+
+                <include
+                    android:id="@+id/topRated"
+                    layout="@layout/top_rated_movies_layout"/>
+
+                <include
+                    android:id="@+id/nowPlayingGroup"
+                    layout="@layout/now_playing_movies_layout"/>
+
+                <include
+                    android:id="@+id/upComing"
+                    layout="@layout/up_coming_movies_layout"/>
+
+                <View
+                    app:layout_constraintTop_toBottomOf="@id/upComing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/layout_margin_32dp"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.data.model.Career
-import kotlinx.android.synthetic.main.career_as_cast_item_layout.view.*
+import com.example.tetrainingandroid.databinding.CareerAsCastItemLayoutBinding
 
 class CareerAsCastViewHolder(
     view: ViewGroup
@@ -20,10 +20,11 @@ class CareerAsCastViewHolder(
     }
 
     override fun bind(career: Career) {
-        view.apply {
-            txtYear?.text = career.releaseDate?.split("-")?.firstOrNull() ?: "-"
-            txtMovieTitle?.text = career.title ?: context.getString(R.string.unknown)
-            txtCharacter?.text = HtmlCompat.fromHtml(
+        CareerAsCastItemLayoutBinding.bind(view).apply {
+            val context = view.context
+            txtYear.text = career.releaseDate?.split("-")?.firstOrNull() ?: "-"
+            txtMovieTitle.text = career.title ?: context.getString(R.string.unknown)
+            txtCharacter.text = HtmlCompat.fromHtml(
                 String.format(
                     context.getString(R.string.as_character),
                     career.character ?: context.getString(R.string.unknown)

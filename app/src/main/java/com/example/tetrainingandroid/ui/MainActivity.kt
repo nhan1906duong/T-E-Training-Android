@@ -3,6 +3,8 @@ package com.example.tetrainingandroid.ui
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.compose.material.Text
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.locale.LocaleUtilsWrapper
 import dagger.hilt.android.AndroidEntryPoint
