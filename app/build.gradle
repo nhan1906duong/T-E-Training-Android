@@ -26,17 +26,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     buildFeatures {
         compose true
         viewBinding true
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
     }
@@ -91,6 +95,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0-alpha03'
     // UI Tests
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    implementation "com.google.android.material:compose-theme-adapter:1.1.5"
+
 
     // Security
     implementation "androidx.security:security-crypto:$crypto_version"
