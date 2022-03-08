@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TETrainingAndroid">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.compose.ui.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
