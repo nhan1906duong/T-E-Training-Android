@@ -24,14 +24,14 @@ import com.example.tetrainingandroid.ui.splash.LoginState
 
 @Composable
 fun SplashView(
-    navController: NavController,
+    onLoadingFinish: (Boolean) -> Unit = {},
     viewModel: SplashViewModel = hiltViewModel()
 ) {
     val auth by viewModel.loginData.observeAsState(initial = null)
-    if (auth is LoginState) {
-        navController.navigate("login", navOptions = NavOptions.Builder()
-            .setLaunchSingleTop(true)
-            .build())
+    when(auth) {
+        LoginState.Login -> onLoadingFinish(true)
+        LoginState.ApiAuthorization -> onLoadingFinish(false)
+        else -> {}
     }
     Scaffold(
         content = {

@@ -26,7 +26,7 @@ import com.example.tetrainingandroid.ui.compose.theme.TextGray
 
 @Composable
 fun LoginView(
-    navController: NavController,
+    onLoginSuccess: () -> Unit = {},
 ) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -113,11 +113,7 @@ fun LoginView(
                             .fillMaxWidth()
                             .padding(vertical = 16.dp),
                         shape = RoundedCornerShape(32.dp),
-                        onClick = {
-                            navController.navigate("home") {
-                                launchSingleTop = true
-                            }
-                        },
+                        onClick = onLoginSuccess,
                     )
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
