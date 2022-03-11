@@ -5,11 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,14 +15,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.tetrainingandroid.R
 import com.example.tetrainingandroid.ui.compose.ui.common.GradientButton
 import com.example.tetrainingandroid.ui.compose.theme.TextGray
 
 @Composable
 fun LoginView(
-    navController: NavController,
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -113,11 +109,7 @@ fun LoginView(
                             .fillMaxWidth()
                             .padding(vertical = 16.dp),
                         shape = RoundedCornerShape(32.dp),
-                        onClick = {
-                            navController.navigate("home") {
-                                launchSingleTop = true
-                            }
-                        },
+                        onClick = { viewModel.openMain() },
                     )
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,

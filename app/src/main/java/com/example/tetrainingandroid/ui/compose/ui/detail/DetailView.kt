@@ -12,7 +12,6 @@ import com.example.tetrainingandroid.R
 @Composable
 fun DetailView(
     movieId: Int,
-    navController: NavController,
     detailViewModel: DetailViewModel = hiltViewModel()
 ) {
     LaunchedEffect(key1 = movieId) {

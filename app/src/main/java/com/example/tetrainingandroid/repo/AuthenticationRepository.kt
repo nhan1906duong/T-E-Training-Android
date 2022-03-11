@@ -26,15 +26,15 @@ class AuthenticationRepository @Inject constructor(
 ) {
     val loginState = MediatorLiveData<LoginState>()
 
-    suspend fun checkLogin() {
+    suspend fun checkLogin(): LoginState {
         loginState.value = LoginState.Initialize
         val cacheSession = sessionStorage.get()
         val isLogin = loginStorage.get()
-        if (!Validation.isSessionExpire(cacheSession)) {
+        return if (!Validation.isSessionExpire(cacheSession)) {
             if (isLogin == true) {
-                loginState.value = LoginState.Login
+                LoginState.Login
             } else {
-                loginState.value = LoginState.ApiAuthorization
+                LoginState.ApiAuthorization
             }
         } else {
             cacheSession?.let { sessionStorage.remove() }
@@ -42,8 +42,8 @@ class AuthenticationRepository @Inject constructor(
         }
     }
 
-    private suspend fun createNewSession() {
-        withContext(coroutineDispatcher) {
+    private suspend fun createNewSession(): LoginState {
+        return withContext(coroutineDispatcher) {
             var requestTokenResponse = requestTokenStorage.get()
             if (Validation.isRequestTokenExpire(requestTokenResponse)) {
                 requestTokenStorage.remove()
@@ -59,9 +59,7 @@ class AuthenticationRepository @Inject constructor(
                     val session = service.createSession(SessionRequestParams(requestToken))
                     if (session.success == true && !session.sessionId.isNullOrEmpty()) {
                         sessionStorage.save(session)
-                        withContext(Dispatchers.Main) {
-                            loginState.value = LoginState.ApiAuthorization
-                        }
+                        return@withContext LoginState.ApiAuthorization
                     } else {
                         throw Exception("Session id is empty")
                     }

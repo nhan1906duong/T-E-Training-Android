@@ -5,7 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 
 @Composable
-fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), contain: @Composable () -> Unit) {
+fun NetFakeTheme(darkTheme: Boolean = isSystemInDarkTheme(), contain: @Composable () -> Unit) {
     MaterialTheme(
         //typography = ,
         shapes = Shapes,
