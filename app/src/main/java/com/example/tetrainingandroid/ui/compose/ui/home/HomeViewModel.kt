@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tetrainingandroid.data.model.Movie
 import com.example.tetrainingandroid.repo.MovieRepository
+import com.example.tetrainingandroid.ui.compose.module.navigation.NavigationAction
+import com.example.tetrainingandroid.ui.compose.module.navigation.NavigationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
@@ -13,6 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val navigationManager: NavigationManager,
     private val repo: MovieRepository,
     ): ViewModel() {
     private val _trendingMovies = MutableLiveData<List<Movie>>()
@@ -46,6 +49,12 @@ class HomeViewModel @Inject constructor(
         }
         parentJob.invokeOnCompletion {
             _loading.value = false
+        }
+    }
+
+    fun openDetail(movieId: Int) {
+        viewModelScope.launch {
+            navigationManager.submit(NavigationAction.createDetailAction(movieId))
         }
     }
 }

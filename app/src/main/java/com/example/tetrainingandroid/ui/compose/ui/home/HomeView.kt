@@ -15,14 +15,15 @@ import com.example.tetrainingandroid.ui.compose.ui.common.MovieSectionView
 
 @Composable
 fun HomeView(
-    openDetail: (Int) -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val nowPlaying by viewModel.nowPlayingMovies.observeAsState(initial = null)
     val topRated by viewModel.topRatedMovies.observeAsState(initial = null)
     val popular by viewModel.popularMovies.observeAsState(initial = null)
     val upComing by viewModel.upComingMovies.observeAsState(initial = null)
-    val onClick: (Int) -> Unit = openDetail
+    val onClick: (Int) -> Unit = {
+        viewModel.openDetail(it)
+    }
     Scaffold {
         Column(
             modifier = Modifier
